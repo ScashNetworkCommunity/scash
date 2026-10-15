@@ -14,11 +14,15 @@ enum class ChainType {
     TESTNET,
     SIGNET,
     REGTEST,
+<<<<<<< HEAD
     // !SCASH
     SCASHMAIN,
     SCASHTESTNET,
     SCASHREGTEST
     // !SCASH END
+=======
+    TESTNET4,
+>>>>>>> v28.4
 };
 
 std::string ChainTypeToString(ChainType chain);

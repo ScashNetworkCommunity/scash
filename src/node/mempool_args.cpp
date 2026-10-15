@@ -8,19 +8,20 @@
 #include <kernel/mempool_options.h>
 
 #include <common/args.h>
+#include <common/messages.h>
 #include <consensus/amount.h>
 #include <kernel/chainparams.h>
 #include <logging.h>
 #include <policy/feerate.h>
 #include <policy/policy.h>
 #include <tinyformat.h>
-#include <util/error.h>
 #include <util/moneystr.h>
 #include <util/translation.h>
 
 #include <chrono>
 #include <memory>
 
+using common::AmountErrMsg;
 using kernel::MemPoolLimits;
 using kernel::MemPoolOptions;
 
@@ -55,6 +56,7 @@ util::Result<void> ApplyArgsManOptions(const ArgsManager& argsman, const CChainP
         }
     }
 
+    static_assert(DEFAULT_MIN_RELAY_TX_FEE == DEFAULT_INCREMENTAL_RELAY_FEE);
     if (argsman.IsArgSet("-minrelaytxfee")) {
         if (std::optional<CAmount> min_relay_feerate = ParseMoney(argsman.GetArg("-minrelaytxfee", ""))) {
             // High fee check is done afterward in CWallet::Create()
@@ -92,6 +94,9 @@ util::Result<void> ApplyArgsManOptions(const ArgsManager& argsman, const CChainP
     }
 
     mempool_opts.full_rbf = argsman.GetBoolArg("-mempoolfullrbf", mempool_opts.full_rbf);
+    if (!mempool_opts.full_rbf) {
+        LogInfo("Warning: mempoolfullrbf=0 set but deprecated and will be removed in a future release\n");
+    }
 
     mempool_opts.persist_v1_dat = argsman.GetBoolArg("-persistmempoolv1", mempool_opts.persist_v1_dat);
 

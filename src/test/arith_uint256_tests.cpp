@@ -3,6 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <arith_uint256.h>
+#include <test/util/setup_common.h>
 #include <uint256.h>
 
 #include <boost/test/unit_test.hpp>
@@ -22,6 +23,11 @@ static inline arith_uint256 arith_uint256V(const std::vector<unsigned char>& vch
 {
     return UintToArith256(uint256(vch));
 }
+<<<<<<< HEAD
+=======
+// Takes a number written in hex (with most significant digits first).
+static inline arith_uint256 arith_uint256S(std::string_view str) { return UintToArith256(uint256S(str)); }
+>>>>>>> v28.4
 
 const unsigned char R1Array[] =
     "\x9c\x52\x4a\xdb\xcf\x56\x11\x12\x2b\x29\x12\x5e\x5d\x35\xd2\xd2"
@@ -95,6 +101,7 @@ BOOST_AUTO_TEST_CASE( basics ) // constructors, equality, inequality
     BOOST_CHECK(ZeroL == (OneL << 256));
 
     // String Constructor and Copy Constructor
+<<<<<<< HEAD
     BOOST_CHECK(arith_uint256("0x"+R1L.ToString()) == R1L);
     BOOST_CHECK(arith_uint256("0x"+R2L.ToString()) == R2L);
     BOOST_CHECK(arith_uint256("0x"+ZeroL.ToString()) == ZeroL);
@@ -104,6 +111,18 @@ BOOST_AUTO_TEST_CASE( basics ) // constructors, equality, inequality
     BOOST_CHECK(arith_uint256("   0x"+R1L.ToString()+"   ") == R1L);
     BOOST_CHECK(arith_uint256("") == ZeroL);
     BOOST_CHECK(R1L == arith_uint256(R1ArrayHex));
+=======
+    BOOST_CHECK(arith_uint256S("0x" + R1L.ToString()) == R1L);
+    BOOST_CHECK(arith_uint256S("0x" + R2L.ToString()) == R2L);
+    BOOST_CHECK(arith_uint256S("0x" + ZeroL.ToString()) == ZeroL);
+    BOOST_CHECK(arith_uint256S("0x" + OneL.ToString()) == OneL);
+    BOOST_CHECK(arith_uint256S("0x" + MaxL.ToString()) == MaxL);
+    BOOST_CHECK(arith_uint256S(R1L.ToString()) == R1L);
+    BOOST_CHECK(arith_uint256S("   0x" + R1L.ToString() + "   ") == R1L);
+    BOOST_CHECK(arith_uint256S("") == ZeroL);
+    BOOST_CHECK(arith_uint256S("1") == OneL);
+    BOOST_CHECK(R1L == arith_uint256S(R1ArrayHex));
+>>>>>>> v28.4
     BOOST_CHECK(arith_uint256(R1L) == R1L);
     BOOST_CHECK((arith_uint256(R1L^R2L)^R2L) == R1L);
     BOOST_CHECK(arith_uint256(ZeroL) == ZeroL);
@@ -277,6 +296,12 @@ BOOST_AUTO_TEST_CASE( comparison ) // <= >= < >
         BOOST_CHECK( R1L <= TmpL ); BOOST_CHECK( (R1L == TmpL) != (R1L < TmpL)); BOOST_CHECK( (TmpL == R1L) || !( R1L >= TmpL));
         BOOST_CHECK(! (TmpL < R1L)); BOOST_CHECK(! (R1L > TmpL));
     }
+
+    BOOST_CHECK_LT(ZeroL,
+                   OneL);
+    // Verify hex number representation has the most significant digits first.
+    BOOST_CHECK_LT(arith_uint256S("0000000000000000000000000000000000000000000000000000000000000001"),
+                   arith_uint256S("1000000000000000000000000000000000000000000000000000000000000000"));
 }
 
 BOOST_AUTO_TEST_CASE( plusMinus )

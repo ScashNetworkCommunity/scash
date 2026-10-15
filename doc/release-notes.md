@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 Bitcoin Core version 27.0 is now available from:
 
   <https://bitcoincore.org/bin/bitcoin-core-27.0/>
 
 This release includes new features, various bug fixes and performance
+=======
+Bitcoin Core version 28.4 is now available from:
+
+  <https://bitcoincore.org/bin/bitcoin-core-28.4/>
+
+This release includes various bug fixes and performance
+>>>>>>> v28.4
 improvements, as well as updated translations.
 
 Please report bugs using the issue tracker at GitHub:
@@ -30,13 +38,18 @@ Compatibility
 
 Bitcoin Core is supported and extensively tested on operating systems
 using the Linux Kernel 3.17+, macOS 11.0+, and Windows 7 and newer. Bitcoin
+<<<<<<< HEAD
 Core should also work on most other Unix-like systems but is not as
+=======
+Core should also work on most other UNIX-like systems but is not as
+>>>>>>> v28.4
 frequently tested on them. It is not recommended to use Bitcoin Core on
 unsupported systems.
 
 Notable changes
 ===============
 
+<<<<<<< HEAD
 libbitcoinconsensus
 -------------------
 
@@ -140,12 +153,39 @@ Init
 - Various fixes to prevent issues where subsequent instances of Bitcoin Core would
   result in deletion of files in use by an existing instance. (#28784, #28946)
 - Improved handling of empty `settings.json` files. (#29144)
+=======
+### Wallet
+
+- #34156 wallet: fix unnamed legacy wallet migration failure
+- #34215 wallettool: fix unnamed createfromdump failure walletsdir deletion
+- #34226 wallet: test: Relative wallet failed migration cleanup
+- #34370 Fix #34222 backport bugs
+
+### P2P
+
+- #33723 chainparams: remove dnsseed.bitcoin.dashjr-list-of-p2p-nodes.us
+
+### Build
+
+- #34227 guix: Fix `osslsigncode` tests
+
+### CI
+
+- #32513 ci: remove 3rd party js from windows dll gha job
+- #34344 ci: update GitHub Actions versions
+- #34463 ci: use macos-14 image
+
+### Misc
+
+- #34174 doc: update copyright year to 2026
+>>>>>>> v28.4
 
 Credits
 =======
 
 Thanks to everyone who directly contributed to this release:
 
+<<<<<<< HEAD
 - 22388o⚡️
 - Aaron Clauson
 - Amiti Uttarwar
@@ -215,3 +255,17 @@ Thanks to everyone who directly contributed to this release:
 
 As well as to everyone that helped with translations on
 [Transifex](https://www.transifex.com/bitcoin/bitcoin/).
+=======
+- achow101
+- davidgumberg
+- fanquake
+- furszy
+- Hennadii Stepanov
+- Luke Dashjr
+- m3dwards
+- Padraic Slattery
+- SatsAndSports
+
+As well as to everyone that helped with translations on
+[Transifex](https://explore.transifex.com/bitcoin/bitcoin/).
+>>>>>>> v28.4
