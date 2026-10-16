@@ -721,18 +721,11 @@ fs::path GetDefaultDataDir()
     // Unix-like: ~/.bitcoin
 #ifdef WIN32
     // Windows
-<<<<<<< HEAD
     // !SCASH
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Scash";
-    // !SCASH END
-=======
-    // Check for existence of datadir in old location and keep it there
-    fs::path legacy_path = GetSpecialFolderPath(CSIDL_APPDATA) / "Bitcoin";
+    fs::path legacy_path = GetSpecialFolderPath(CSIDL_APPDATA) / "Scash";
     if (fs::exists(legacy_path)) return legacy_path;
-
-    // Otherwise, fresh installs can start in the new, "proper" location
-    return GetSpecialFolderPath(CSIDL_LOCAL_APPDATA) / "Bitcoin";
->>>>>>> v28.4
+    return GetSpecialFolderPath(CSIDL_LOCAL_APPDATA) / "Scash";
+    // !SCASH END
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -815,7 +808,8 @@ std::variant<ChainType, std::string> ArgsManager::GetChainArg() const
     if (fRegTest) return ChainType::REGTEST;
     if (fSigNet) return ChainType::SIGNET;
     if (fTestNet) return ChainType::TESTNET;
-<<<<<<< HEAD
+    if (fTestNet4) return ChainType::TESTNET4;
+
 
     // !SCASH
     const bool fScashMain = get_net("-scash");
@@ -833,9 +827,6 @@ std::variant<ChainType, std::string> ArgsManager::GetChainArg() const
     if (fExecutableNamedScash) return ChainType::SCASHMAIN;
     // !SCASH END
 
-=======
-    if (fTestNet4) return ChainType::TESTNET4;
->>>>>>> v28.4
     return ChainType::MAIN;
 }
 

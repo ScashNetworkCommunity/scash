@@ -132,17 +132,12 @@ bool BlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, s
                 pindexNew->nStatus        = diskindex.nStatus;
                 pindexNew->nTx            = diskindex.nTx;
 
-<<<<<<< HEAD
-                // !SCASH
-                pindexNew->hashRandomX    = diskindex.hashRandomX;
+        // !SCASH
+        pindexNew->hashRandomX   = diskindex.hashRandomX;
 
-                if (!CheckProofOfWorkRandomX(pindexNew->GetBlockHeader(), consensusParams, POW_VERIFY_COMMITMENT_ONLY)) {
-                    return error("%s: CheckProofOfWork failed: %s", __func__, pindexNew->ToString());
-=======
-                if (!CheckProofOfWork(pindexNew->GetBlockHash(), pindexNew->nBits, consensusParams)) {
-                    LogError("%s: CheckProofOfWork failed: %s\n", __func__, pindexNew->ToString());
-                    return false;
->>>>>>> v28.4
+        if (!CheckProofOfWorkRandomX(pindexNew->GetBlockHeader(), consensusParams, POW_VERIFY_COMMITMENT_ONLY)) {
+            LogError("%s: CheckProofOfWork failed: %s\n", __func__, pindexNew->ToString());
+            return false;
                 }
                 // !SCASH END
 
@@ -1064,16 +1059,10 @@ bool BlockManager::ReadBlockFromDisk(CBlock& block, const FlatFilePos& pos) cons
     }
 
     // Check the header
-<<<<<<< HEAD
     // !SCASH
     if (!CheckProofOfWorkRandomX(block.GetBlockHeader(), GetConsensus(), POW_VERIFY_COMMITMENT_ONLY)) {
     // !SCASH END
         return error("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
-=======
-    if (!CheckProofOfWork(block.GetHash(), block.nBits, GetConsensus())) {
-        LogError("%s: Errors in block header at %s\n", __func__, pos.ToString());
-        return false;
->>>>>>> v28.4
     }
 
     // Signet only: check block solution

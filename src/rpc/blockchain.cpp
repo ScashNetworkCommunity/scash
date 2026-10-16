@@ -678,15 +678,8 @@ const RPCResult getblock_vin{
                 {
                     {RPCResult::Type::STR, "asm", "Disassembly of the output script"},
                     {RPCResult::Type::STR, "desc", "Inferred descriptor for the output"},
-<<<<<<< HEAD
-                    {RPCResult::Type::STR_HEX, "hex", "The raw public key script bytes, hex-encoded"},
-                    // !SCASH
-                    {RPCResult::Type::STR, "address", /*optional=*/true, "The Scash address (only if a well-defined address exists)"},
-                    // !SCASH END
-=======
                     {RPCResult::Type::STR_HEX, "hex", "The raw output script bytes, hex-encoded"},
-                    {RPCResult::Type::STR, "address", /*optional=*/true, "The Bitcoin address (only if a well-defined address exists)"},
->>>>>>> v28.4
+                    {RPCResult::Type::STR, "address", /*optional=*/true, "The Scash address (only if a well-defined address exists)"},
                     {RPCResult::Type::STR, "type", "The type (one of: " + GetAllOutputTypes() + ")"},
                 }},
             }},

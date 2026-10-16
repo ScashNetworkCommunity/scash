@@ -192,11 +192,7 @@ void sanity_check_chainparams(const ArgsManager& args, ChainType chain_type)
     } else
     // !SCASH END
     if (!consensus.fPowNoRetargeting) {
-<<<<<<< HEAD
         arith_uint256 targ_max("0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-=======
-        arith_uint256 targ_max{UintToArith256(uint256{"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"})};
->>>>>>> v28.4
         targ_max /= consensus.nPowTargetTimespan*4;
         BOOST_CHECK(UintToArith256(consensus.powLimit) < targ_max);
     }

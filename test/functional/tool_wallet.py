@@ -39,14 +39,11 @@ class ToolWalletTest(BitcoinTestFramework):
         self.num_nodes = 1
         self.setup_clean_chain = True
         self.rpc_timeout = 120
-<<<<<<< HEAD
         # !SCASH
         self.extra_args = [["-walletrbf=1"]]  # Scash sets default to false, test assumes true
         # !SCASH END
-=======
         if self.options.swap_bdb_endian:
             self.extra_args = [["-swapbdbendian"]]
->>>>>>> v28.4
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()

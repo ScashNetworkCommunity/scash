@@ -69,16 +69,9 @@ static std::optional<int> WalletAppInit(ArgsManager& args, int argc, char* argv[
             strUsage += FormatParagraph(LicenseInfo());
         } else {
             strUsage += "\n"
-<<<<<<< HEAD
-                        // !SCASH
                         "scash-wallet is an offline tool for creating and interacting with " PACKAGE_NAME " wallet files.\n"
                         "By default scash-wallet will act on wallets in the default mainnet wallet directory in the datadir.\n"
-                        "To change the target wallet, use the -datadir, -wallet and -regtest/-signet/-testnet arguments.\n\n"
-=======
-                        "bitcoin-wallet is an offline tool for creating and interacting with " PACKAGE_NAME " wallet files.\n"
-                        "By default bitcoin-wallet will act on wallets in the default mainnet wallet directory in the datadir.\n"
                         "To change the target wallet, use the -datadir, -wallet and -regtest/-signet/-testnet/-testnet4 arguments.\n\n"
->>>>>>> v28.4
                         "Usage:\n"
                         "  scash-wallet [options] <command>\n";
                         // !SCASH END

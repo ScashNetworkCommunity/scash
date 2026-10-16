@@ -1,19 +1,10 @@
 AC_PREREQ([2.69])
-<<<<<<< HEAD
-define(_CLIENT_VERSION_MAJOR, 27)
-define(_CLIENT_VERSION_MINOR, 0)
-define(_CLIENT_VERSION_BUILD, 0)
-define(_CLIENT_VERSION_RC, 0)
-define(_CLIENT_VERSION_IS_RELEASE, true)
-define(_COPYRIGHT_YEAR, 2024)
-=======
 define(_CLIENT_VERSION_MAJOR, 28)
 define(_CLIENT_VERSION_MINOR, 4)
 define(_CLIENT_VERSION_BUILD, 0)
 define(_CLIENT_VERSION_RC, 0)
 define(_CLIENT_VERSION_IS_RELEASE, true)
 define(_COPYRIGHT_YEAR, 2026)
->>>>>>> v28.4
 define(_COPYRIGHT_HOLDERS,[The %s developers])
 define(_COPYRIGHT_HOLDERS_SUBSTITUTION,[[Bitcoin Core]])
 

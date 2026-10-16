@@ -670,7 +670,6 @@ std::unique_ptr<const CChainParams> CChainParams::TestNet()
     return std::make_unique<const CTestNetParams>();
 }
 
-<<<<<<< HEAD
 // !SCASH
 
 // Compute block hash over entire header (including RandomX fields) even if global flag is not set
@@ -1019,7 +1018,7 @@ std::unique_ptr<const CChainParams> CChainParams::ScashMain()
 }
 
 // !SCASH END
-=======
+
 std::unique_ptr<const CChainParams> CChainParams::TestNet4()
 {
     return std::make_unique<const CTestNet4Params>();
@@ -1057,4 +1056,3 @@ std::optional<ChainType> GetNetworkForMagic(const MessageStartChars& message)
     }
     return std::nullopt;
 }
->>>>>>> v28.4

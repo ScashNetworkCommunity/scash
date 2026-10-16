@@ -265,15 +265,12 @@ BASE_SCRIPTS = [
     'p2p_invalid_tx.py --v2transport',
     'p2p_v2_transport.py',
     'p2p_v2_encrypted.py',
-<<<<<<< HEAD
+    'p2p_v2_misbehaving.py',
     'p2p_v2_earlykeyresponse.py',
     # !SCASH
     'p2p_invalid_block_pow.py',
     'feature_suspicious_reorg.py',
     # !SCASH END
-=======
-    'p2p_v2_misbehaving.py',
->>>>>>> v28.4
     'example_test.py',
     'mempool_truc.py',
     'wallet_txn_doublespend.py --legacy-wallet',

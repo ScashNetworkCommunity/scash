@@ -267,7 +267,6 @@ BOOST_AUTO_TEST_CASE(methods) // GetHex SetHexDeprecated FromHex begin() end() s
 
 BOOST_AUTO_TEST_CASE( conversion )
 {
-<<<<<<< HEAD
     BOOST_CHECK(ArithToUint256(UintToArith256(ZeroL)) == ZeroL);
     BOOST_CHECK(ArithToUint256(UintToArith256(OneL)) == OneL);
     BOOST_CHECK(ArithToUint256(UintToArith256(R1L)) == R1L);
@@ -280,20 +279,6 @@ BOOST_AUTO_TEST_CASE( conversion )
     BOOST_CHECK(arith_uint256(R2L.GetHex()) == UintToArith256(R2L));
     BOOST_CHECK(R1L.GetHex() == UintToArith256(R1L).GetHex());
     BOOST_CHECK(R2L.GetHex() == UintToArith256(R2L).GetHex());
-=======
-    BOOST_CHECK_EQUAL(ArithToUint256(UintToArith256(ZeroL)), ZeroL);
-    BOOST_CHECK_EQUAL(ArithToUint256(UintToArith256(OneL)), OneL);
-    BOOST_CHECK_EQUAL(ArithToUint256(UintToArith256(R1L)), R1L);
-    BOOST_CHECK_EQUAL(ArithToUint256(UintToArith256(R2L)), R2L);
-    BOOST_CHECK_EQUAL(UintToArith256(ZeroL), 0);
-    BOOST_CHECK_EQUAL(UintToArith256(OneL), 1);
-    BOOST_CHECK_EQUAL(ArithToUint256(0), ZeroL);
-    BOOST_CHECK_EQUAL(ArithToUint256(1), OneL);
-    BOOST_CHECK_EQUAL(arith_uint256(UintToArith256(uint256S(R1L.GetHex()))), UintToArith256(R1L));
-    BOOST_CHECK_EQUAL(arith_uint256(UintToArith256(uint256S(R2L.GetHex()))), UintToArith256(R2L));
-    BOOST_CHECK_EQUAL(R1L.GetHex(), UintToArith256(R1L).GetHex());
-    BOOST_CHECK_EQUAL(R2L.GetHex(), UintToArith256(R2L).GetHex());
->>>>>>> v28.4
 }
 
 BOOST_AUTO_TEST_CASE( operator_with_self )
@@ -415,7 +400,6 @@ BOOST_AUTO_TEST_CASE( check_ONE )
     BOOST_CHECK_EQUAL(one, uint256::ONE);
 }
 
-<<<<<<< HEAD
 // !SCASH
 BOOST_AUTO_TEST_CASE( check_512 )
 {
@@ -474,13 +458,12 @@ BOOST_AUTO_TEST_CASE( check_512 )
     BOOST_CHECK_EQUAL(target.GetHex(), "0000032b65e991cc4ff832b65e991cc4ff832b65e991cc4ff832b65e991cc4fe"); // overflow
 }
 // !SCASH END
-=======
+
 BOOST_AUTO_TEST_CASE(FromHex_vs_uint256)
 {
     auto runtime_uint{uint256::FromHex("4A5E1E4BAAB89F3A32518A88C31BC87F618f76673e2cc77ab2127b7afdeda33b").value()};
     constexpr uint256 consteval_uint{  "4a5e1e4baab89f3a32518a88c31bc87f618F76673E2CC77AB2127B7AFDEDA33B"};
     BOOST_CHECK_EQUAL(consteval_uint, runtime_uint);
 }
->>>>>>> v28.4
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -2212,17 +2212,13 @@ void CConnman::ThreadDNSAddressSeed()
 
     FastRandomContext rng;
     std::vector<std::string> seeds = m_params.DNSSeeds();
-<<<<<<< HEAD
 
     // !SCASH
     auto added_dns_seeds = gArgs.GetArgs("-adddnsseed");
     seeds.insert(seeds.end(), added_dns_seeds.begin(), added_dns_seeds.end());
     // !SCASH END
 
-    Shuffle(seeds.begin(), seeds.end(), rng);
-=======
     std::shuffle(seeds.begin(), seeds.end(), rng);
->>>>>>> v28.4
     int seeds_right_now = 0; // Number of seeds left before testing if we have enough connections
 
     if (gArgs.GetBoolArg("-forcednsseed", DEFAULT_FORCEDNSSEED)) {

@@ -430,12 +430,9 @@ private:
     std::string ChainToString() const
     {
         switch (gArgs.GetChainType()) {
-<<<<<<< HEAD
-        // !SCASH
-=======
         case ChainType::TESTNET4:
             return " testnet4";
->>>>>>> v28.4
+        // !SCASH
         case ChainType::TESTNET:
             return " btctestnet";
         case ChainType::SIGNET:

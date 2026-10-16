@@ -27,15 +27,12 @@ class ListSinceBlockTest(BitcoinTestFramework):
         self.num_nodes = 4
         self.setup_clean_chain = True
         # whitelist peers to speed up tx relay / mempool sync
-<<<<<<< HEAD
+        self.noban_tx_relay = True
         self.extra_args = [["-whitelist=noban@127.0.0.1"]] * self.num_nodes
         # !SCASH
         for args in self.extra_args:
             args.append("-datacarrier=1")
         # !SCASH END
-=======
-        self.noban_tx_relay = True
->>>>>>> v28.4
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()

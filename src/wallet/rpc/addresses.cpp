@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 // Copyright (c) 2011-2022 The Bitcoin Core developers
 // Copyright (c) 2024 The Scash developers
-=======
-// Copyright (c) 2011-present The Bitcoin Core developers
->>>>>>> v28.4
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
