@@ -1062,7 +1062,7 @@ bool BlockManager::ReadBlockFromDisk(CBlock& block, const FlatFilePos& pos) cons
     // !SCASH
     if (!CheckProofOfWorkRandomX(block.GetBlockHeader(), GetConsensus(), POW_VERIFY_COMMITMENT_ONLY)) {
     // !SCASH END
-        return error("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
+        { LogError("ReadBlockFromDisk: Errors in block header at %s\n", pos.ToString()); return false; }
     }
 
     // Signet only: check block solution

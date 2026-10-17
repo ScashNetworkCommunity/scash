@@ -662,7 +662,7 @@ static RPCHelpMan getnetworkinfo()
                                 {RPCResult::Type::NUM, "score", "relative score"},
                             }},
                         }},
-                        (!node.args.IsArgNegated("-deprecatedrpc") && (node.args.GetArgs("-deprecatedrpc").empty() || IsDeprecatedRPCEnabled("warnings")) ?
+                        (IsDeprecatedRPCEnabled("warnings") ?
                             RPCResult{RPCResult::Type::STR, "warnings", "any network and blockchain warnings (DEPRECATED)"} :
                             RPCResult{RPCResult::Type::ARR, "warnings", "any network and blockchain warnings (run with `-deprecatedrpc=warnings` to return the latest warning as a single string)",
                             {
@@ -719,7 +719,7 @@ static RPCHelpMan getnetworkinfo()
         }
     }
     obj.pushKV("localaddresses", std::move(localAddresses));
-    obj.pushKV("warnings", node::GetWarningsForRpc(*CHECK_NONFATAL(node.warnings), !node.args.IsArgNegated("-deprecatedrpc") && (node.args.GetArgs("-deprecatedrpc").empty() || IsDeprecatedRPCEnabled("warnings"))));
+    obj.pushKV("warnings", node::GetWarningsForRpc(*CHECK_NONFATAL(node.warnings), true));
     return obj;
 },
     };

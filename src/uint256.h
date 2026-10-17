@@ -94,6 +94,8 @@ public:
      */
     void SetHexDeprecated(std::string_view str);
     std::string ToString() const;
+    void SetHex(const char* psz);
+    void SetHex(std::string_view str);
     /**@}*/
 
     constexpr const unsigned char* data() const { return m_data.data(); }

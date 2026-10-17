@@ -1309,7 +1309,7 @@ RPCHelpMan getblockchaininfo()
                 {RPCResult::Type::NUM, "pruneheight", /*optional=*/true, "height of the last block pruned, plus one (only present if pruning is enabled)"},
                 {RPCResult::Type::BOOL, "automatic_pruning", /*optional=*/true, "whether automatic pruning is enabled (only present if pruning is enabled)"},
                 {RPCResult::Type::NUM, "prune_target_size", /*optional=*/true, "the target size used by pruning (only present if automatic pruning is enabled)"},
-                (!node.args.IsArgNegated("-deprecatedrpc") && (node.args.GetArgs("-deprecatedrpc").empty() || IsDeprecatedRPCEnabled("warnings")) ?
+                (IsDeprecatedRPCEnabled("warnings") ?
                     RPCResult{RPCResult::Type::STR, "warnings", "any network and blockchain warnings (DEPRECATED)"} :
                     RPCResult{RPCResult::Type::ARR, "warnings", "any network and blockchain warnings (run with `-deprecatedrpc=warnings` to return the latest warning as a single string)",
                     {
@@ -1355,7 +1355,7 @@ RPCHelpMan getblockchaininfo()
     }
 
     NodeContext& node = EnsureAnyNodeContext(request.context);
-    obj.pushKV("warnings", node::GetWarningsForRpc(*CHECK_NONFATAL(node.warnings), !node.args.IsArgNegated("-deprecatedrpc") && (node.args.GetArgs("-deprecatedrpc").empty() || IsDeprecatedRPCEnabled("warnings"))));
+    obj.pushKV("warnings", node::GetWarningsForRpc(*CHECK_NONFATAL(node.warnings), true));
     return obj;
 },
     };
