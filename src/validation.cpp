@@ -1251,7 +1251,7 @@ bool MemPoolAccept::PolicyScriptChecks(const ATMPArgs& args, Workspace& ws)
     TxValidationState& state = ws.m_state;
 
     // !SCASH
-    const unsigned int scriptVerifyFlags = STANDARD_SCRIPT_VERIFY_FLAGS | (g_isRandomX ? SCRIPT_VERIFY_DISCOURAGE_ORDINALS : 0);
+    const unsigned int scriptVerifyFlags = STANDARD_SCRIPT_VERIFY_FLAGS | (g_isRandomX ? static_cast<unsigned int>(SCRIPT_VERIFY_DISCOURAGE_ORDINALS) : 0U);
     // !SCASH END
 
     // Check input scripts and signatures.
@@ -3357,7 +3357,7 @@ bool Chainstate::ActivateBestChainStep(BlockValidationState& state, CBlockIndex*
                                         strprintf(("*  fork point @ height %d (%s)\n"), pindexFork->nHeight, pindexFork->phashBlock->GetHex());
         LogPrintf("%s", strMessage);
         uiInterface.ThreadSafeMessageBox(Untranslated(strMessage), "", CClientUIInterface::MSG_ERROR);
-                FatalError(m_chainman.GetNotifications(), state, strMessage);
+                FatalError(m_chainman.GetNotifications(), state, Untranslated(strMessage));
                 return false;
             }
         }
