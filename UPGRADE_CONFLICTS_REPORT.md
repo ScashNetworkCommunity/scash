@@ -1,4 +1,4 @@
-# Scash v28.4 Build & Unit Test Report (Ubuntu 24.04 + Clang 18 + Qt5)
+# Scash v28.4 Build, Unit Test & Regtest Verification Report
 
 ## 1. Compiler & Configure Summary (exit code: 0)
 ```text
@@ -6,43 +6,40 @@ Ubuntu clang version 18.1.3 (1ubuntu1)
 Target: x86_64-pc-linux-gnu
 ```
 
-## 2. Build & Test Outcome
+## 2. Build Outcome
 COMPILER / BUILD LOG OUTPUT:
 ```text
-571-  CXX      test/test_bitcoin-argsman_tests.o
-572-  CXX      test/test_bitcoin-arith_uint256_tests.o
-573:test/arith_uint256_tests.cpp:285:20: error: use of undeclared identifier 'arith_uint256S'
-574-  285 |     BOOST_CHECK_LT(arith_uint256S("0000000000000000000000000000000000000000000000000000000000000001"),
-575-      |                    ^
-576:test/arith_uint256_tests.cpp:286:20: error: use of undeclared identifier 'arith_uint256S'
-577-  286 |                    arith_uint256S("1000000000000000000000000000000000000000000000000000000000000000"));
-578-      |                    ^
+908-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE[_ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE]+0x37): undefined reference to `base_blob<512u>::SetHex(char const*)'
+909-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexEPKc[_ZN9base_uintILj512EE6SetHexEPKc]+0x34): undefined reference to `base_blob<512u>::SetHex(char const*)'
+910:clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+911-make[2]: *** [Makefile:7371: bitcoin-util] Error 1
+912-  CXX      init/qt_bitcoin_qt-bitcoin-qt.o
 --
-916-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE[_ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE]+0x37): undefined reference to `base_blob<512u>::SetHex(char const*)'
-917-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexEPKc[_ZN9base_uintILj512EE6SetHexEPKc]+0x34): undefined reference to `base_blob<512u>::SetHex(char const*)'
-918:clang++: error: linker command failed with exit code 1 (use -v to see invocation)
-919-make[2]: *** [Makefile:7371: bitcoin-util] Error 1
-920-  CXX      init/qt_bitcoin_qt-bitcoin-qt.o
+1042-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE[_ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE]+0x37): undefined reference to `base_blob<512u>::SetHex(char const*)'
+1043-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexEPKc[_ZN9base_uintILj512EE6SetHexEPKc]+0x34): undefined reference to `base_blob<512u>::SetHex(char const*)'
+1044:clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+1045-make[2]: *** [Makefile:7383: bitcoind] Error 1
+1046-/usr/bin/ld: warning: jit_compiler_x86_static.S.o: missing .note.GNU-stack section implies executable stack
 --
-1049-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE[_ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE]+0x37): undefined reference to `base_blob<512u>::SetHex(char const*)'
-1050-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexEPKc[_ZN9base_uintILj512EE6SetHexEPKc]+0x34): undefined reference to `base_blob<512u>::SetHex(char const*)'
-1051:clang++: error: linker command failed with exit code 1 (use -v to see invocation)
-1052-make[2]: *** [Makefile:7383: bitcoind] Error 1
-1053-/usr/bin/ld: warning: jit_compiler_x86_static.S.o: missing .note.GNU-stack section implies executable stack
+1056-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE[_ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE]+0x37): undefined reference to `base_blob<512u>::SetHex(char const*)'
+1057-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexEPKc[_ZN9base_uintILj512EE6SetHexEPKc]+0x34): undefined reference to `base_blob<512u>::SetHex(char const*)'
+1058:clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+1059-make[2]: *** [Makefile:7716: test/fuzz/fuzz] Error 1
+1060-/usr/bin/ld: libbitcoin_consensus.a(libbitcoin_consensus_a-arith_uint256.o): in function `base_uint<256u>::SetHex(char const*)':
 --
-1061-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE[_ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE]+0x37): undefined reference to `base_blob<512u>::SetHex(char const*)'
-1062-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexEPKc[_ZN9base_uintILj512EE6SetHexEPKc]+0x34): undefined reference to `base_blob<512u>::SetHex(char const*)'
-1063:clang++: error: linker command failed with exit code 1 (use -v to see invocation)
-1064-make[2]: *** [Makefile:7716: test/fuzz/fuzz] Error 1
-1065-  AR       qt/libbitcoinqt.a
+1066-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE[_ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE]+0x37): undefined reference to `base_blob<512u>::SetHex(char const*)'
+1067-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexEPKc[_ZN9base_uintILj512EE6SetHexEPKc]+0x34): undefined reference to `base_blob<512u>::SetHex(char const*)'
+1068:clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+1069-make[2]: *** [Makefile:7999: test/test_bitcoin] Error 1
+1070-  AR       qt/libbitcoinqt.a
 --
-1086-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE[_ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE]+0x37): undefined reference to `base_blob<512u>::SetHex(char const*)'
-1087-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexEPKc[_ZN9base_uintILj512EE6SetHexEPKc]+0x34): undefined reference to `base_blob<512u>::SetHex(char const*)'
-1088:clang++: error: linker command failed with exit code 1 (use -v to see invocation)
-1089-make[2]: *** [Makefile:7397: qt/bitcoin-qt] Error 1
-1090:clang++: error: linker command failed with exit code 1 (use -v to see invocation)
-1091-make[2]: *** [Makefile:7440: qt/test/test_bitcoin-qt] Error 1
-1092-make[2]: Target 'all-am' not remade because of errors.
+1091-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE[_ZN9base_uintILj512EE6SetHexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE]+0x37): undefined reference to `base_blob<512u>::SetHex(char const*)'
+1092-/usr/bin/ld: ./src/./src/arith_uint256.cpp:161:(.text._ZN9base_uintILj512EE6SetHexEPKc[_ZN9base_uintILj512EE6SetHexEPKc]+0x34): undefined reference to `base_blob<512u>::SetHex(char const*)'
+1093:clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+1094-make[2]: *** [Makefile:7397: qt/bitcoin-qt] Error 1
+1095:clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+1096-make[2]: *** [Makefile:7440: qt/test/test_bitcoin-qt] Error 1
+1097-make[2]: Target 'all-am' not remade because of errors.
 --- Tail of build.log ---
 /usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
 /usr/bin/ld: libbitcoin_consensus.a(libbitcoin_consensus_a-arith_uint256.o): in function `base_uint<256u>::SetHex(char const*)':
