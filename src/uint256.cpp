@@ -95,9 +95,3 @@ void base_blob<BITS>::SetHex(std::string_view str)
     SetHex(std::string(str).c_str());
 }
 
-template void base_blob<160>::SetHex(const char*);
-template void base_blob<160>::SetHex(std::string_view);
-template void base_blob<256>::SetHex(const char*);
-template void base_blob<256>::SetHex(std::string_view);
-template void base_blob<512>::SetHex(const char*);
-template void base_blob<512>::SetHex(std::string_view);
