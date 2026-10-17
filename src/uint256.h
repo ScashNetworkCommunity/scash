@@ -97,8 +97,7 @@ public:
     void SetHex(const char* psz)
     {
         std::fill(m_data.begin(), m_data.end(), 0);
-        while (*psz == ' ' || *psz == '	' || *psz == '
-' || *psz == '' || *psz == '' || *psz == '') psz++;
+        while (*psz == 32 || (*psz >= 9 && *psz <= 13)) psz++;
         if (psz[0] == '0' && (psz[1] == 'x' || psz[1] == 'X')) psz += 2;
         auto hex_val = [](char c) -> int {
             if (c >= '0' && c <= '9') return c - '0';
