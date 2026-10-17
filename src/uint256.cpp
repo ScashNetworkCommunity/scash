@@ -68,30 +68,3 @@ const uint256 uint256::ONE(1);
 template std::string base_blob<512>::GetHex() const;
 template std::string base_blob<512>::ToString() const;
 // !SCASH END
-
-
-template <unsigned int BITS>
-void base_blob<BITS>::SetHex(const char* psz)
-{
-    std::fill(m_data.begin(), m_data.end(), 0);
-    while (IsSpace(*psz)) psz++;
-    if (psz[0] == '0' && ToLower(psz[1]) == 'x') psz += 2;
-    size_t digits = 0;
-    while (::HexDigit(psz[digits]) != -1) digits++;
-    unsigned char* p1 = m_data.data();
-    const unsigned char* pend = p1 + WIDTH;
-    while (digits > 0 && p1 < pend) {
-        *p1 = ::HexDigit(psz[--digits]);
-        if (digits > 0) {
-            *p1 |= ((unsigned char)::HexDigit(psz[--digits]) << 4);
-            p1++;
-        }
-    }
-}
-
-template <unsigned int BITS>
-void base_blob<BITS>::SetHex(std::string_view str)
-{
-    SetHex(std::string(str).c_str());
-}
-

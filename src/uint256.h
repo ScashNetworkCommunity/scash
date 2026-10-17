@@ -94,8 +94,31 @@ public:
      */
     void SetHexDeprecated(std::string_view str);
     std::string ToString() const;
-    void SetHex(const char* psz);
-    void SetHex(std::string_view str);
+    void SetHex(const char* psz)
+    {
+        std::fill(m_data.begin(), m_data.end(), 0);
+        while (*psz == ' ' || *psz == '	' || *psz == '
+' || *psz == '' || *psz == '' || *psz == '') psz++;
+        if (psz[0] == '0' && (psz[1] == 'x' || psz[1] == 'X')) psz += 2;
+        auto hex_val = [](char c) -> int {
+            if (c >= '0' && c <= '9') return c - '0';
+            if (c >= 'a' && c <= 'f') return c - 'a' + 10;
+            if (c >= 'A' && c <= 'F') return c - 'A' + 10;
+            return -1;
+        };
+        size_t digits = 0;
+        while (hex_val(psz[digits]) != -1) digits++;
+        unsigned char* p1 = m_data.data();
+        const unsigned char* pend = p1 + WIDTH;
+        while (digits > 0 && p1 < pend) {
+            *p1 = static_cast<unsigned char>(hex_val(psz[--digits]));
+            if (digits > 0) {
+                *p1 |= static_cast<unsigned char>(hex_val(psz[--digits]) << 4);
+                p1++;
+            }
+        }
+    }
+    void SetHex(const std::string& str) { SetHex(str.c_str()); }
     /**@}*/
 
     constexpr const unsigned char* data() const { return m_data.data(); }
