@@ -26,7 +26,7 @@ public:
     std::vector<std::byte> m_prefix_range_start;
     std::vector<std::byte> m_prefix_range_end;
 
-    explicit SQLiteCursor() {}
+    explicit SQLiteCursor() = default;
     explicit SQLiteCursor(std::vector<std::byte> start_range, std::vector<std::byte> end_range)
         : m_prefix_range_start(std::move(start_range)),
         m_prefix_range_end(std::move(end_range))
@@ -41,7 +41,7 @@ public:
 class SQliteExecHandler
 {
 public:
-    virtual ~SQliteExecHandler() {}
+    virtual ~SQliteExecHandler() = default;
     virtual int Exec(SQLiteDatabase& database, const std::string& statement);
 };
 
@@ -104,7 +104,7 @@ class SQLiteDatabase : public WalletDatabase
 private:
     const bool m_mock{false};
 
-    const std::string m_dir_path;
+    const fs::path m_dir_path;
 
     const std::string m_file_path;
 
@@ -165,6 +165,14 @@ public:
     void IncrementUpdateCounter() override { ++nUpdateCounter; }
 
     std::string Filename() override { return m_file_path; }
+    /** Return paths to all database created files */
+    std::vector<fs::path> Files() override
+    {
+        std::vector<fs::path> files;
+        files.emplace_back(m_dir_path / fs::PathFromString(m_file_path));
+        files.emplace_back(m_dir_path / fs::PathFromString(m_file_path + "-journal"));
+        return files;
+    }
     std::string Format() override { return "sqlite"; }
 
     /** Make a SQLiteBatch connected to this database */

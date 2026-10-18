@@ -71,13 +71,13 @@ https://repology.org/project/guix/versions
 
 ### Debian / Ubuntu
 
-Guix is available as a distribution package in [Debian
-](https://packages.debian.org/search?keywords=guix) and [Ubuntu
-](https://packages.ubuntu.com/search?keywords=guix).
+Currently, the `guix` package is no longer present in recent Debian or Ubuntu
+repositories. Any other installation option mentioned in this document may be
+used.
 
-To install:
+If you previously installed `guix` via `apt`, you can remove it with:
 ```sh
-sudo apt install guix
+sudo apt purge guix
 ```
 
 ### Arch Linux
@@ -319,7 +319,7 @@ Source: https://logs.guix.gnu.org/guix/2020-11-12.log#232527
 Start by cloning Guix:
 
 ```
-git clone https://git.savannah.gnu.org/git/guix.git
+git clone https://codeberg.org/guix/guix.git
 cd guix
 ```
 
@@ -607,7 +607,7 @@ checklist.
    ```
    Generation 38   Feb 22 2021 16:39:31    (current)
      guix f350df4
-       repository URL: https://git.savannah.gnu.org/git/guix.git
+       repository URL: https://codeberg.org/guix/guix.git
        branch: version-1.2.0
        commit: f350df405fbcd5b9e27e6b6aa500da7f101f41e7
    ```
@@ -671,6 +671,8 @@ More information: https://github.com/python/cpython/issues/81765
 OpenSSL includes tests that will fail once some certificate has expired.
 The workarounds from the GnuTLS section immediately below can be used.
 
+For openssl-1.1.1l use 2022-05-01 as the date.
+
 ### GnuTLS: test-suite FAIL: status-request-revoked
 
 *The derivation is likely identified by: `/gnu/store/vhphki5sg9xkdhh2pbc8gi6vhpfzryf0-gnutls-3.6.12.drv`*
@@ -705,11 +707,12 @@ authorized.
 This workaround was described [here](https://issues.guix.gnu.org/44559#5).
 
 Basically:
-2. Turn off NTP
-3. Set system time to 2020-10-01
-4. guix build --no-substitutes /gnu/store/vhphki5sg9xkdhh2pbc8gi6vhpfzryf0-gnutls-3.6.12.drv
-5. Set system time back to accurate current time
-6. Turn NTP back on
+
+1. Turn off NTP
+2. Set system time to 2020-10-01
+3. guix build --no-substitutes /gnu/store/vhphki5sg9xkdhh2pbc8gi6vhpfzryf0-gnutls-3.6.12.drv
+4. Set system time back to accurate current time
+5. Turn NTP back on
 
 For example,
 
@@ -757,8 +760,8 @@ Please see the following links for more details:
 
 - An upstream coreutils bug has been filed: [debbugs#47940](https://debbugs.gnu.org/cgi/bugreport.cgi?bug=47940)
 - A Guix bug detailing the underlying problem has been filed: [guix-issues#47935](https://issues.guix.gnu.org/47935), [guix-issues#49985](https://issues.guix.gnu.org/49985#5)
-- A commit to skip this test in Guix has been merged into the core-updates branch:
-[savannah/guix@6ba1058](https://git.savannah.gnu.org/cgit/guix.git/commit/?id=6ba1058df0c4ce5611c2367531ae5c3cdc729ab4)
+- A commit to skip this test is included since Guix 1.4.0:
+[codeberg/guix@6ba1058](https://codeberg.org/guix/guix/commit/6ba1058df0c4ce5611c2367531ae5c3cdc729ab4)
 
 
 [install-script]: #options-1-and-2-using-the-official-shell-installer-script-or-binary-tarball

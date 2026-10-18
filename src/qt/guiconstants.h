@@ -55,6 +55,7 @@ static const int TOOLTIP_WRAP_THRESHOLD = 80;
 #define QAPP_APP_NAME_BTC "Bitcoin-Qt"
 // !SCASH END
 #define QAPP_APP_NAME_TESTNET "Bitcoin-Qt-testnet"
+#define QAPP_APP_NAME_TESTNET4 "Bitcoin-Qt-testnet4"
 #define QAPP_APP_NAME_SIGNET "Bitcoin-Qt-signet"
 #define QAPP_APP_NAME_REGTEST "Bitcoin-Qt-regtest"
 

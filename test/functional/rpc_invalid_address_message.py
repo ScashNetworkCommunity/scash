@@ -13,6 +13,7 @@ from test_framework.util import (
 )
 
 BECH32_VALID = 'bcrt1qtmp74ayg7p24uslctssvjm06q5phz4yrxucgnv'
+BECH32_VALID_UNKNOWN_WITNESS = 'bcrt1p424qxxyd0r'
 BECH32_VALID_CAPITALS = 'BCRT1QPLMTZKC2XHARPPZDLNPAQL78RSHJ68U33RAH7R'
 BECH32_VALID_MULTISIG = 'bcrt1qdg3myrgvzw7ml9q0ejxhlkyxm7vl9r56yzkfgvzclrf4hkpx9yfqhpsuks'
 
@@ -81,6 +82,7 @@ class InvalidAddressErrorMessageTest(BitcoinTestFramework):
 
         # Valid Bech32
         self.check_valid(BECH32_VALID)
+        self.check_valid(BECH32_VALID_UNKNOWN_WITNESS)
         self.check_valid(BECH32_VALID_CAPITALS)
         self.check_valid(BECH32_VALID_MULTISIG)
 
@@ -112,6 +114,7 @@ class InvalidAddressErrorMessageTest(BitcoinTestFramework):
         assert_raises_rpc_error(-5, "Invalid or unsupported Segwit (Bech32) or Base58 encoding.", node.getaddressinfo, BECH32_INVALID_PREFIX)
         assert_raises_rpc_error(-5, "Invalid or unsupported Base58-encoded address.", node.getaddressinfo, BASE58_INVALID_PREFIX)
         assert_raises_rpc_error(-5, "Invalid or unsupported Segwit (Bech32) or Base58 encoding.", node.getaddressinfo, INVALID_ADDRESS)
+        assert "isscript" not in node.getaddressinfo(BECH32_VALID_UNKNOWN_WITNESS)
 
     def run_test(self):
         self.test_validateaddress()
@@ -122,4 +125,4 @@ class InvalidAddressErrorMessageTest(BitcoinTestFramework):
 
 
 if __name__ == '__main__':
-    InvalidAddressErrorMessageTest().main()
+    InvalidAddressErrorMessageTest(__file__).main()

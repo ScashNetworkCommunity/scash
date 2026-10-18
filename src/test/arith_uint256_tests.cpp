@@ -3,6 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <arith_uint256.h>
+#include <test/util/setup_common.h>
 #include <uint256.h>
 
 #include <boost/test/unit_test.hpp>
@@ -277,6 +278,12 @@ BOOST_AUTO_TEST_CASE( comparison ) // <= >= < >
         BOOST_CHECK( R1L <= TmpL ); BOOST_CHECK( (R1L == TmpL) != (R1L < TmpL)); BOOST_CHECK( (TmpL == R1L) || !( R1L >= TmpL));
         BOOST_CHECK(! (TmpL < R1L)); BOOST_CHECK(! (R1L > TmpL));
     }
+
+    BOOST_CHECK_LT(ZeroL,
+                   OneL);
+    // Verify hex number representation has the most significant digits first.
+    BOOST_CHECK_LT(arith_uint256("0000000000000000000000000000000000000000000000000000000000000001"),
+                   arith_uint256("1000000000000000000000000000000000000000000000000000000000000000"));
 }
 
 BOOST_AUTO_TEST_CASE( plusMinus )

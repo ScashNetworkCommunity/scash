@@ -10,7 +10,7 @@ define $(package)_preprocess_cmds
 endef
 
 define $(package)_config_cmds
-  $($(package)_cmake)
+  $($(package)_cmake) -DCMAKE_CXX_FLAGS="-include cstdint"
 endef
 
 define $(package)_build_cmds

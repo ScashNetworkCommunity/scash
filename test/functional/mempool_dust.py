@@ -115,4 +115,4 @@ class DustRelayFeeTest(BitcoinTestFramework):
 
 
 if __name__ == '__main__':
-    DustRelayFeeTest().main()
+    DustRelayFeeTest(__file__).main()

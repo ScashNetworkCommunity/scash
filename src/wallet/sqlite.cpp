@@ -2,9 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#if defined(HAVE_CONFIG_H)
-#include <config/bitcoin-config.h>
-#endif
+#include <config/bitcoin-config.h> // IWYU pragma: keep
 
 #include <wallet/sqlite.h>
 
@@ -54,7 +52,7 @@ static int TraceSqlCallback(unsigned code, void* context, void* param1, void* pa
         // in the log file, only expand statements that query the database, not
         // statements that update the database.
         char* expanded{sqlite3_stmt_readonly(stmt) ? sqlite3_expanded_sql(stmt) : nullptr};
-        LogPrintf("[%s] SQLite Statement: %s\n", db->Filename(), expanded ? expanded : sqlite3_sql(stmt));
+        LogTrace(BCLog::WALLETDB, "[%s] SQLite Statement: %s\n", db->Filename(), expanded ? expanded : sqlite3_sql(stmt));
         if (expanded) sqlite3_free(expanded);
     }
     return SQLITE_OK;
@@ -114,12 +112,12 @@ Mutex SQLiteDatabase::g_sqlite_mutex;
 int SQLiteDatabase::g_sqlite_count = 0;
 
 SQLiteDatabase::SQLiteDatabase(const fs::path& dir_path, const fs::path& file_path, const DatabaseOptions& options, bool mock)
-    : WalletDatabase(), m_mock(mock), m_dir_path(fs::PathToString(dir_path)), m_file_path(fs::PathToString(file_path)), m_write_semaphore(1), m_use_unsafe_sync(options.use_unsafe_sync)
+    : WalletDatabase(), m_mock(mock), m_dir_path(dir_path), m_file_path(fs::PathToString(file_path)), m_write_semaphore(1), m_use_unsafe_sync(options.use_unsafe_sync)
 {
     {
         LOCK(g_sqlite_mutex);
         LogPrintf("Using SQLite Version %s\n", SQLiteDatabaseVersion());
-        LogPrintf("Using wallet %s\n", m_dir_path);
+        LogPrintf("Using wallet %s\n", fs::PathToString(m_dir_path));
 
         if (++g_sqlite_count == 1) {
             // Setup logging
@@ -255,7 +253,7 @@ void SQLiteDatabase::Open()
 
     if (m_db == nullptr) {
         if (!m_mock) {
-            TryCreateDirectories(fs::PathFromString(m_dir_path));
+            TryCreateDirectories(m_dir_path);
         }
         int ret = sqlite3_open_v2(m_file_path.c_str(), &m_db, flags, nullptr);
         if (ret != SQLITE_OK) {
