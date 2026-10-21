@@ -132,6 +132,8 @@ public:
     /** Return path to main database filename */
     std::string Filename() override { return fs::PathToString(env->Directory() / m_filename); }
 
+    std::vector<fs::path> Files() override;
+
     std::string Format() override { return "bdb"; }
     /**
      * Pointer to shared database environment.
@@ -146,6 +148,9 @@ public:
 
     /** Database pointer. This is initialized lazily and reset during flushes, so it can be null. */
     std::unique_ptr<Db> m_db;
+
+    // Whether to byteswap
+    bool m_byteswap;
 
     fs::path m_filename;
     int64_t m_max_log_mb;

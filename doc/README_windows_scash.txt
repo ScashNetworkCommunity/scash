@@ -21,3 +21,7 @@ process can take anywhere from a few hours to a day or more.
 See the Scash docs at:
   https://github.com/scash-project/gitbook-scash
 for more help and information.
+
+Data Directory Note (Scash 2.1.0+)
+----------------------------------
+Starting in Scash 2.1.0 (Bitcoin Core 28.4), fresh installations on Windows create the default data directory at %LOCALAPPDATA%\Scash (C:\Users\USERNAME\AppData\Local\Scash). Existing installations in %APPDATA%\Scash (AppData\Roaming\Scash) continue working automatically.

@@ -51,11 +51,11 @@ struct AssumeutxoData {
     //! The expected hash of the deserialized UTXO set.
     AssumeutxoHash hash_serialized;
 
-    //! Used to populate the nChainTx value, which is used during BlockManager::LoadBlockIndex().
+    //! Used to populate the m_chain_tx_count value, which is used during BlockManager::LoadBlockIndex().
     //!
     //! We need to hardcode the value here because this is computed cumulatively using block data,
     //! which we do not necessarily have at the time of snapshot load.
-    unsigned int nChainTx;
+    uint64_t m_chain_tx_count;
 
     //! The hash of the base block for this snapshot. Used to refer to assumeutxo data
     //! prior to having a loaded blockindex.
@@ -70,7 +70,7 @@ struct AssumeutxoData {
  */
 struct ChainTxData {
     int64_t nTime;    //!< UNIX timestamp of last known number of transactions
-    int64_t nTxCount; //!< total number of transactions between genesis and that timestamp
+    uint64_t tx_count; //!< total number of transactions between genesis and that timestamp
     double dTxRate;   //!< estimated number of transactions per second after that timestamp
 };
 
@@ -94,6 +94,7 @@ public:
     const Consensus::Params& GetConsensus() const { return consensus; }
     const MessageStartChars& MessageStart() const { return pchMessageStart; }
     uint16_t GetDefaultPort() const { return nDefaultPort; }
+    std::vector<int> GetAvailableSnapshotHeights() const;
 
     const CBlock& GenesisBlock() const { return genesis; }
     /** Default value for -checkmempool and -checkblockindex argument */
@@ -161,6 +162,7 @@ public:
     static std::unique_ptr<const CChainParams> SigNet(const SigNetOptions& options);
     static std::unique_ptr<const CChainParams> Main();
     static std::unique_ptr<const CChainParams> TestNet();
+    static std::unique_ptr<const CChainParams> TestNet4();
 
     // !SCASH
     static std::unique_ptr<const CChainParams> ScashRegTest(const RegTestOptions& options);
@@ -169,7 +171,7 @@ public:
     // !SCASH END
 
 protected:
-    CChainParams() {}
+    CChainParams() = default;
 
     Consensus::Params consensus;
     MessageStartChars pchMessageStart;
@@ -189,5 +191,7 @@ protected:
     std::vector<AssumeutxoData> m_assumeutxo_data;
     ChainTxData chainTxData;
 };
+
+std::optional<ChainType> GetNetworkForMagic(const MessageStartChars& pchMessageStart);
 
 #endif // BITCOIN_KERNEL_CHAINPARAMS_H

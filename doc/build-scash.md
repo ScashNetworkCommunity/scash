@@ -4,7 +4,7 @@ Scash (s/atoshi/cash) is a fork of Bitcoin Core which adds a new chain option to
 
 Technical details are documented in the [Scash Protocol spec](https://github.com/scash-project/sips/blob/main/scash-protocol-spec.md).
 
-Building Scash follows the same instructions as building Bitcoin. The Scash network shares the same features and rules as Bitcoin mainnet, as specified in Bitcoin Core v26.0.
+Building Scash follows the same instructions as building Bitcoin. The Scash network shares the same features and rules as Bitcoin mainnet, as specified in Bitcoin Core v28.4.
 
 The Linux version of the node `scashd` and GUI app `scash-qt` are both supported, with Windows binaries also  available (cross-compiled on Linux). MacOS is not yet supported. Note that Windows users can build from source by following the Linux instructions when building in Ubuntu on [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/about).
 
