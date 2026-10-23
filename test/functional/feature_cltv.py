@@ -87,7 +87,6 @@ class BIP65Test(BitcoinTestFramework):
         self.noban_tx_relay = True
         self.extra_args = [[
             f'-testactivationheight=cltv@{CLTV_HEIGHT}',
-            '-par=1',  # Use only one script thread to get the exact reject reason for testing
             '-acceptnonstdtxn=1',  # cltv_invalidate is nonstandard
         ]]
         self.setup_clean_chain = True
@@ -149,23 +148,32 @@ class BIP65Test(BitcoinTestFramework):
         # create and test one invalid tx per CLTV failure reason (5 in total)
         for i in range(5):
             spendtx = wallet.create_self_transfer()['tx']
+            assert_equal(len(spendtx.vin), 1)
+            coin = spendtx.vin[0]
+            coin_txid = format(coin.prevout.hash, '064x')
+            coin_vout = coin.prevout.n
             cltv_invalidate(spendtx, i)
 
+            blk_rej = "mandatory-script-verify-flag-failed"
+            tx_rej = "mempool-script-verify-flag-failed"
             expected_cltv_reject_reason = [
-                "mandatory-script-verify-flag-failed (Operation not valid with the current stack size)",
-                "mandatory-script-verify-flag-failed (Negative locktime)",
-                "mandatory-script-verify-flag-failed (Locktime requirement not satisfied)",
-                "mandatory-script-verify-flag-failed (Locktime requirement not satisfied)",
-                "mandatory-script-verify-flag-failed (Locktime requirement not satisfied)",
+                " (Operation not valid with the current stack size)",
+                " (Negative locktime)",
+                " (Locktime requirement not satisfied)",
+                " (Locktime requirement not satisfied)",
+                " (Locktime requirement not satisfied)",
             ][i]
             # First we show that this tx is valid except for CLTV by getting it
             # rejected from the mempool for exactly that reason.
+            spendtx_txid = spendtx.hash
+            spendtx_wtxid = spendtx.getwtxid()
             assert_equal(
                 [{
-                    'txid': spendtx.hash,
-                    'wtxid': spendtx.getwtxid(),
+                    'txid': spendtx_txid,
+                    'wtxid': spendtx_wtxid,
                     'allowed': False,
-                    'reject-reason': expected_cltv_reject_reason,
+                    'reject-reason': tx_rej + expected_cltv_reject_reason,
+                    'reject-details': tx_rej + expected_cltv_reject_reason + f", input 0 of {spendtx_txid} (wtxid {spendtx_wtxid}), spending {coin_txid}:{coin_vout}"
                 }],
                 self.nodes[0].testmempoolaccept(rawtxs=[spendtx.serialize().hex()], maxfeerate=0),
             )
@@ -175,7 +183,7 @@ class BIP65Test(BitcoinTestFramework):
             block.hashMerkleRoot = block.calc_merkle_root()
             block.solve()
 
-            with self.nodes[0].assert_debug_log(expected_msgs=[f'CheckInputScripts on {block.vtx[-1].hash} failed with {expected_cltv_reject_reason}']):
+            with self.nodes[0].assert_debug_log(expected_msgs=[f'Block validation error: {blk_rej + expected_cltv_reject_reason}']):
                 peer.send_and_ping(msg_block(block))
                 assert_equal(int(self.nodes[0].getbestblockhash(), 16), tip)
                 peer.sync_with_ping()

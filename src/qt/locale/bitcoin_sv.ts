@@ -26,6 +26,10 @@
         <translation type="unfinished">S&amp;täng</translation>
     </message>
     <message>
+        <source>Delete the currently selected address from the list</source>
+        <translation type="unfinished">Radera den markerade adressen från listan</translation>
+    </message>
+    <message>
         <source>Enter address or label to search</source>
         <translation type="unfinished">Ange en adress eller etikett att söka efter</translation>
     </message>
@@ -44,6 +48,10 @@
     <message>
         <source>Choose the address to send coins to</source>
         <translation type="unfinished">Välj en adress att skicka transaktionen till</translation>
+    </message>
+    <message>
+        <source>Choose the address to receive coins with</source>
+        <translation type="unfinished">Välj en adress att ` emot transaktionen med</translation>
     </message>
     <message>
         <source>C&amp;hoose</source>
@@ -292,6 +300,10 @@ Försök igen.</translation>
     <message>
         <source>unknown</source>
         <translation type="unfinished">okänd</translation>
+    </message>
+    <message>
+        <source>Embedded "%1"</source>
+        <translation type="unfinished">Inbäddad "%1"</translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -1580,11 +1592,6 @@ Om den här plånboken innehåller lösbara</translation>
         <translation type="unfinished">Vid avstängning av denna inställning kommer den fullständiga blockkedjan behövas laddas ned igen.</translation>
     </message>
     <message>
-        <source>Maximum database cache size. A larger cache can contribute to faster sync, after which the benefit is less pronounced for most use cases. Lowering the cache size will reduce memory usage. Unused mempool memory is shared for this cache.</source>
-        <extracomment>Tooltip text for Options window setting that sets the size of the database cache. Explains the corresponding effects of increasing/decreasing this value.</extracomment>
-        <translation type="unfinished">Maximal storlek för databasens cacheminne. Större cache kan bidra till snabbare synkronisering, dock blir fördelen mindre uppenbar för de flesta användningsområdena efter den initiala synkroniseringen. En lägre storlek på databasens cacheminne minskar minnesanvändningen. Mempoolens outnyttjade minne delas med denna cache.</translation>
-    </message>
-    <message>
         <source>Set the number of script verification threads. Negative values correspond to the number of cores you want to leave free to the system.</source>
         <extracomment>Tooltip text for Options window setting that sets the number of script verification threads. Explains that negative values mean to leave these many cores free to the system.</extracomment>
         <translation type="unfinished">Sätt antalet trådar för skriptverifiering. Negativa värden motsvarar antalet kärnor som skall lämnas tillgängliga för systemet. </translation>
@@ -1632,18 +1639,6 @@ Om den här plånboken innehåller lösbara</translation>
     <message>
         <source>External Signer (e.g. hardware wallet)</source>
         <translation type="unfinished">Extern signerare (e.g. hårdvaruplånbok)</translation>
-    </message>
-    <message>
-        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation type="unfinished">Öppna automatiskt Bitcoin-klientens port på routern. Detta fungerar endast om din router stödjer UPnP och det är är aktiverat.</translation>
-    </message>
-    <message>
-        <source>Map port using &amp;UPnP</source>
-        <translation type="unfinished">Tilldela port med hjälp av &amp;UPnP</translation>
-    </message>
-    <message>
-        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports NAT-PMP and it is enabled. The external port could be random.</source>
-        <translation type="unfinished">Öppna automatiskt Bitcoin-klientens port på routern. Detta fungerar endast om din router stödjer NAT-PMP och det är är aktiverat. Den externa porten kan vara slumpmässig.</translation>
     </message>
     <message>
         <source>Accept connections from outside.</source>
@@ -2135,6 +2130,10 @@ Om den här plånboken innehåller lösbara</translation>
     <message>
         <source>Number of connections</source>
         <translation type="unfinished">Antalet anslutningar</translation>
+    </message>
+    <message>
+        <source>Local Addresses</source>
+        <translation type="unfinished">Lokala adresser</translation>
     </message>
     <message>
         <source>Block chain</source>
@@ -3202,6 +3201,10 @@ Om den här plånboken innehåller lösbara</translation>
         <translation type="unfinished">Utmatningsindex</translation>
     </message>
     <message>
+        <source>%1 (Certificate was not verified)</source>
+        <translation type="unfinished">%1 (certifikatet verifierades inte)</translation>
+    </message>
+    <message>
         <source>Merchant</source>
         <translation type="unfinished">Handlare</translation>
     </message>
@@ -3618,10 +3621,6 @@ Gå till Fil &gt; Öppna plånbok för att läsa in en plånbok.
         <translation type="unfinished">%s är korrupt. Testa att använda verktyget bitcoin-wallet för att rädda eller återställa en backup.</translation>
     </message>
     <message>
-        <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
-        <translation type="unfinished">Kan inte låsa datakatalogen %s. %s körs förmodligen redan.</translation>
-    </message>
-    <message>
         <source>Distributed under the MIT software license, see the accompanying file %s or %s</source>
         <translation type="unfinished">Distribuerad under MIT mjukvarulicens, se den bifogade filen %s eller %s</translation>
     </message>
@@ -3706,8 +3705,12 @@ Gå till Fil &gt; Öppna plånbok för att läsa in en plånbok.
         <translation type="unfinished">Kan inte använda -peerblockfilters utan -blockfilterindex.</translation>
     </message>
     <message>
-        <source>Cannot write to data directory '%s'; check permissions.</source>
-        <translation type="unfinished">Kan inte skriva till mapp "%s", var vänlig se över filbehörigheter.</translation>
+        <source>Maximum transaction weight is less than transaction weight without inputs</source>
+        <translation type="unfinished">Maximal transaktionsvikt är mindre än transaktionsvikten utan inmatningar</translation>
+    </message>
+    <message>
+        <source>Maximum transaction weight is too low, can not accommodate change output</source>
+        <translation type="unfinished">Maximal transaktionsvikt är för låg, kan inte tillgodose ändrad utdata</translation>
     </message>
     <message>
         <source>Config setting for %s only applied on %s network when in [%s] section.</source>
@@ -3728,10 +3731,6 @@ Gå till Fil &gt; Öppna plånbok för att läsa in en plånbok.
     <message>
         <source>Disk space is too low!</source>
         <translation type="unfinished">Diskutrymmet är för lågt!</translation>
-    </message>
-    <message>
-        <source>Do you want to rebuild the block database now?</source>
-        <translation type="unfinished">Vill du bygga om blockdatabasen nu?</translation>
     </message>
     <message>
         <source>Done loading</source>
@@ -3868,10 +3867,6 @@ Gå till Fil &gt; Öppna plånbok för att läsa in en plånbok.
     <message>
         <source>No addresses available</source>
         <translation type="unfinished">Inga adresser tillgängliga</translation>
-    </message>
-    <message>
-        <source>Not enough file descriptors available.</source>
-        <translation type="unfinished">Inte tillräckligt med filbeskrivningar tillgängliga.</translation>
     </message>
     <message>
         <source>Prune cannot be configured with a negative value.</source>

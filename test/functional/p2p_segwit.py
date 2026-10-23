@@ -5,7 +5,6 @@
 """Test segwit transactions and blocks on P2P network."""
 from decimal import Decimal
 import random
-import time
 
 from test_framework.blocktools import (
     WITNESS_COMMITMENT_HEADER,
@@ -83,8 +82,9 @@ from test_framework.script_util import (
 from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
-    softfork_active,
     assert_raises_rpc_error,
+    ensure_for,
+    softfork_active,
 )
 from test_framework.wallet import MiniWallet
 from test_framework.wallet_util import generate_keypair
@@ -184,8 +184,7 @@ class TestP2PConn(P2PInterface):
             else:
                 self.wait_for_getdata([tx.sha256])
         else:
-            time.sleep(5)
-            assert not self.last_message.get("getdata")
+            ensure_for(duration=5, f=lambda: not self.last_message.get("getdata"))
 
     def announce_block_and_wait_for_getdata(self, block, use_header, timeout=60):
         with p2p_lock:
@@ -215,6 +214,9 @@ class SegWitTest(BitcoinTestFramework):
         self.noban_tx_relay = True
         # This test tests SegWit both pre and post-activation, so use the normal BIP9 activation.
         self.extra_args = [
+            # -par=1 should not affect validation outcome or logging/reported failures. It is kept
+            # here to exercise the code path still (as it is distinct for multithread script
+            # validation).
             ["-acceptnonstdtxn=1", f"-testactivationheight=segwit@{SEGWIT_HEIGHT}", "-par=1"],
             ["-acceptnonstdtxn=0", f"-testactivationheight=segwit@{SEGWIT_HEIGHT}"],
         ]
@@ -508,10 +510,6 @@ class SegWitTest(BitcoinTestFramework):
             # When the block is serialized without witness, validation fails because the transaction is
             # invalid (transactions are always validated with SCRIPT_VERIFY_WITNESS so a segwit v0 transaction
             # without a witness is invalid).
-            # Note: The reject reason for this failure could be
-            # 'block-validation-failed' (if script check threads > 1) or
-            # 'mandatory-script-verify-flag-failed (Witness program was passed an
-            # empty witness)' (otherwise).
             test_witness_block(self.nodes[0], self.test_node, block, accepted=False, with_witness=False,
                                reason='mandatory-script-verify-flag-failed (Witness program was passed an empty witness)')
 
@@ -706,14 +704,20 @@ class SegWitTest(BitcoinTestFramework):
         # segwit activation.  Note that older bitcoind's that are not
         # segwit-aware would also reject this for failing CLEANSTACK.
         with self.nodes[0].assert_debug_log(
-                expected_msgs=[spend_tx.hash, 'was not accepted: mandatory-script-verify-flag-failed (Witness program was passed an empty witness)']):
+                expected_msgs=[spend_tx.hash, 'was not accepted: mempool-script-verify-flag-failed (Witness program was passed an empty witness)']):
+            test_transaction_acceptance(self.nodes[0], self.test_node, spend_tx, with_witness=False, accepted=False)
+
+        # The transaction was detected as witness stripped above and not added to the reject
+        # filter. Trying again will check it again and result in the same error.
+        with self.nodes[0].assert_debug_log(
+                expected_msgs=[spend_tx.hash, 'was not accepted: mempool-script-verify-flag-failed (Witness program was passed an empty witness)']):
             test_transaction_acceptance(self.nodes[0], self.test_node, spend_tx, with_witness=False, accepted=False)
 
         # Try to put the witness script in the scriptSig, should also fail.
         spend_tx.vin[0].scriptSig = CScript([p2wsh_pubkey, b'a'])
         spend_tx.rehash()
         with self.nodes[0].assert_debug_log(
-                expected_msgs=[spend_tx.hash, 'was not accepted: mandatory-script-verify-flag-failed (Script evaluated without error but finished with a false/empty top stack element)']):
+                expected_msgs=[spend_tx.hash, 'was not accepted: mempool-script-verify-flag-failed (Script evaluated without error but finished with a false/empty top stack element)']):
             test_transaction_acceptance(self.nodes[0], self.test_node, spend_tx, with_witness=False, accepted=False)
 
         # Now put the witness script in the witness, should succeed after
@@ -1016,7 +1020,7 @@ class SegWitTest(BitcoinTestFramework):
         tx2.vout.append(CTxOut(tx.vout[0].nValue, CScript([OP_TRUE])))
         tx2.wit.vtxinwit.extend([CTxInWitness(), CTxInWitness()])
         tx2.wit.vtxinwit[0].scriptWitness.stack = [CScript([CScriptNum(1)]), CScript([CScriptNum(1)]), witness_script]
-        tx2.wit.vtxinwit[1].scriptWitness.stack = [CScript([OP_TRUE])]
+        tx2.wit.vtxinwit[1].scriptWitness.stack = []
 
         block = self.build_next_block()
         self.update_witness_block_with_transactions(block, [tx2])
@@ -1284,6 +1288,13 @@ class SegWitTest(BitcoinTestFramework):
         test_transaction_acceptance(self.nodes[0], self.test_node, tx2, with_witness=True, accepted=True)
         test_transaction_acceptance(self.nodes[0], self.test_node, tx3, with_witness=True, accepted=False)
 
+        # Now do the opposite: strip the witness entirely. This will be detected as witness stripping and
+        # the (w)txid won't be added to the reject filter: we can try again and get the same error.
+        tx3.wit.vtxinwit[0].scriptWitness.stack = []
+        reason = "was not accepted: mempool-script-verify-flag-failed (Witness program was passed an empty witness)"
+        test_transaction_acceptance(self.nodes[0], self.test_node, tx3, with_witness=False, accepted=False, reason=reason)
+        test_transaction_acceptance(self.nodes[0], self.test_node, tx3, with_witness=False, accepted=False, reason=reason)
+
         # Get rid of the extra witness, and verify acceptance.
         tx3.wit.vtxinwit[0].scriptWitness.stack = [witness_script]
         # Also check that old_node gets a tx announcement, even though this is
@@ -1479,7 +1490,7 @@ class SegWitTest(BitcoinTestFramework):
         sign_input_segwitv0(tx2, 0, script, tx.vout[0].nValue, key)
 
         # Should fail policy test.
-        test_transaction_acceptance(self.nodes[0], self.test_node, tx2, True, False, 'non-mandatory-script-verify-flag (Using non-compressed keys in segwit)')
+        test_transaction_acceptance(self.nodes[0], self.test_node, tx2, True, False, 'mempool-script-verify-flag-failed (Using non-compressed keys in segwit)')
         # But passes consensus.
         block = self.build_next_block()
         self.update_witness_block_with_transactions(block, [tx2])
@@ -1498,7 +1509,7 @@ class SegWitTest(BitcoinTestFramework):
         sign_p2pk_witness_input(witness_script, tx3, 0, SIGHASH_ALL, tx2.vout[0].nValue, key)
 
         # Should fail policy test.
-        test_transaction_acceptance(self.nodes[0], self.test_node, tx3, True, False, 'non-mandatory-script-verify-flag (Using non-compressed keys in segwit)')
+        test_transaction_acceptance(self.nodes[0], self.test_node, tx3, True, False, 'mempool-script-verify-flag-failed (Using non-compressed keys in segwit)')
         # But passes consensus.
         block = self.build_next_block()
         self.update_witness_block_with_transactions(block, [tx3])
@@ -1515,7 +1526,7 @@ class SegWitTest(BitcoinTestFramework):
         sign_p2pk_witness_input(witness_script, tx4, 0, SIGHASH_ALL, tx3.vout[0].nValue, key)
 
         # Should fail policy test.
-        test_transaction_acceptance(self.nodes[0], self.test_node, tx4, True, False, 'non-mandatory-script-verify-flag (Using non-compressed keys in segwit)')
+        test_transaction_acceptance(self.nodes[0], self.test_node, tx4, True, False, 'mempool-script-verify-flag-failed (Using non-compressed keys in segwit)')
         block = self.build_next_block()
         self.update_witness_block_with_transactions(block, [tx4])
         test_witness_block(self.nodes[0], self.test_node, block, accepted=True)
@@ -2052,6 +2063,9 @@ class SegWitTest(BitcoinTestFramework):
         with p2p_lock:
             self.wtx_node.last_message.pop("getdata", None)
         test_transaction_acceptance(self.nodes[0], self.wtx_node, tx2, with_witness=True, accepted=False)
+
+        # Disconnect tx_node to avoid the possibility of it being selected for orphan resolution.
+        self.tx_node.peer_disconnect()
 
         # Expect a request for parent (tx) by txid despite use of WTX peer
         self.wtx_node.wait_for_getdata([tx.sha256], timeout=60)

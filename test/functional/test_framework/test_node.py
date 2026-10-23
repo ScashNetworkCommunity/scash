@@ -21,6 +21,7 @@ import time
 import urllib.parse
 import collections
 import shlex
+import sys
 from pathlib import Path
 
 from .authproxy import (
@@ -49,6 +50,7 @@ BITCOIND_PROC_WAIT_TIMEOUT = 60
 NUM_XOR_BYTES = 8
 # The null blocks key (all 0s)
 NULL_BLK_XOR_KEY = bytes([0] * NUM_XOR_BYTES)
+BITCOIN_PID_FILENAME_DEFAULT = "bitcoind.pid"
 
 
 class FailedToStartError(Exception):
@@ -138,6 +140,8 @@ class TestNode():
             self.args.append("-logsourcelocations")
         if self.version_is_at_least(239000):
             self.args.append("-loglevel=trace")
+        if self.version_is_at_least(290100):
+            self.args.append("-nologratelimit")
 
         # Default behavior from global -v2transport flag is added to args to persist it over restarts.
         # May be overwritten in individual tests, using extra_args.
@@ -160,7 +164,6 @@ class TestNode():
         self.rpc = None
         self.url = None
         self.log = logging.getLogger('TestFramework.node%d' % i)
-        self.cleanup_on_exit = True # Whether to kill the node when this object goes away
         # Cache perf subprocesses here by their data output filename.
         self.perf_subprocesses = {}
 
@@ -202,11 +205,11 @@ class TestNode():
     def __del__(self):
         # Ensure that we don't leave any bitcoind processes lying around after
         # the test ends
-        if self.process and self.cleanup_on_exit:
+        if self.process:
             # Should only happen on test failure
             # Avoid using logger, as that may have already been shutdown when
             # this destructor is called.
-            print(self._node_msg("Cleaning up leftover process"))
+            print(self._node_msg("Cleaning up leftover process"), file=sys.stderr)
             self.process.kill()
 
     def __getattr__(self, name):
@@ -354,16 +357,16 @@ class TestNode():
         self.log.debug("TestNode.generate() dispatches `generate` call to `generatetoaddress`")
         return self.generatetoaddress(nblocks=nblocks, address=self.get_deterministic_priv_key().address, maxtries=maxtries, **kwargs)
 
-    def generateblock(self, *args, invalid_call, **kwargs):
-        assert not invalid_call
+    def generateblock(self, *args, called_by_framework, **kwargs):
+        assert called_by_framework, "Direct call of this mining RPC is discouraged. Please use one of the self.generate* methods on the test framework, which sync the nodes to avoid intermittent test issues. You may use sync_fun=self.no_op to disable the sync explicitly."
         return self.__getattr__('generateblock')(*args, **kwargs)
 
-    def generatetoaddress(self, *args, invalid_call, **kwargs):
-        assert not invalid_call
+    def generatetoaddress(self, *args, called_by_framework, **kwargs):
+        assert called_by_framework, "Direct call of this mining RPC is discouraged. Please use one of the self.generate* methods on the test framework, which sync the nodes to avoid intermittent test issues. You may use sync_fun=self.no_op to disable the sync explicitly."
         return self.__getattr__('generatetoaddress')(*args, **kwargs)
 
-    def generatetodescriptor(self, *args, invalid_call, **kwargs):
-        assert not invalid_call
+    def generatetodescriptor(self, *args, called_by_framework, **kwargs):
+        assert called_by_framework, "Direct call of this mining RPC is discouraged. Please use one of the self.generate* methods on the test framework, which sync the nodes to avoid intermittent test issues. You may use sync_fun=self.no_op to disable the sync explicitly."
         return self.__getattr__('generatetodescriptor')(*args, **kwargs)
 
     def setmocktime(self, timestamp):
@@ -444,6 +447,11 @@ class TestNode():
         if "expected_ret_code" not in kwargs:
             kwargs["expected_ret_code"] = 1 if expect_error else 0  # Whether node shutdown return EXIT_FAILURE or EXIT_SUCCESS
         self.wait_until(lambda: self.is_node_stopped(**kwargs), timeout=timeout)
+
+    def kill_process(self):
+        self.process.kill()
+        self.wait_until_stopped(expected_ret_code=1 if platform.system() == "Windows" else -9)
+        assert self.is_node_stopped()
 
     def replace_in_config(self, replacements):
         """
@@ -716,7 +724,6 @@ class TestNode():
         if supports_v2_p2p is None:
             supports_v2_p2p = self.use_v2transport
 
-        p2p_conn.p2p_connected_to_node = True
         if self.use_v2transport:
             kwargs['services'] = kwargs.get('services', P2P_SERVICES) | NODE_P2P_V2
         supports_v2_p2p = self.use_v2transport and supports_v2_p2p
@@ -783,7 +790,6 @@ class TestNode():
             self.log.debug("Connecting to %s:%d %s" % (address, port, connection_type))
             self.addconnection('%s:%d' % (address, port), connection_type, advertise_v2_p2p)
 
-        p2p_conn.p2p_connected_to_node = False
         if supports_v2_p2p is None:
             supports_v2_p2p = self.use_v2transport
         if advertise_v2_p2p is None:
@@ -840,8 +846,8 @@ class TestNode():
         self.mocktime += seconds
         self.setmocktime(self.mocktime)
 
-    def wait_until(self, test_function, timeout=60):
-        return wait_until_helper_internal(test_function, timeout=timeout, timeout_factor=self.timeout_factor)
+    def wait_until(self, test_function, timeout=60, check_interval=0.05):
+        return wait_until_helper_internal(test_function, timeout=timeout, timeout_factor=self.timeout_factor, check_interval=check_interval)
 
 
 class TestNodeCLIAttr:

@@ -153,9 +153,9 @@ BOOST_AUTO_TEST_CASE(GetBlockProofEquivalentTime_test)
     }
 
     for (int j = 0; j < 1000; j++) {
-        CBlockIndex *p1 = &blocks[InsecureRandRange(10000)];
-        CBlockIndex *p2 = &blocks[InsecureRandRange(10000)];
-        CBlockIndex *p3 = &blocks[InsecureRandRange(10000)];
+        CBlockIndex *p1 = &blocks[m_rng.randrange(10000)];
+        CBlockIndex *p2 = &blocks[m_rng.randrange(10000)];
+        CBlockIndex *p3 = &blocks[m_rng.randrange(10000)];
 
         int64_t tdiff = GetBlockProofEquivalentTime(*p1, *p2, *p3, chainParams->GetConsensus());
         BOOST_CHECK_EQUAL(tdiff, p1->GetBlockTime() - p2->GetBlockTime());
@@ -192,7 +192,7 @@ void sanity_check_chainparams(const ArgsManager& args, ChainType chain_type)
     } else
     // !SCASH END
     if (!consensus.fPowNoRetargeting) {
-        arith_uint256 targ_max("0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+        arith_uint256 targ_max{UintToArith256(uint256{"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"})};
         targ_max /= consensus.nPowTargetTimespan*4;
         BOOST_CHECK(UintToArith256(consensus.powLimit) < targ_max);
     }

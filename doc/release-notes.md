@@ -1,6 +1,6 @@
-Bitcoin Core version 28.4 is now available from:
+Bitcoin Core version 29.3 is now available from:
 
-  <https://bitcoincore.org/bin/bitcoin-core-28.4/>
+  <https://bitcoincore.org/bin/bitcoin-core-29.3/>
 
 This release includes various bug fixes and performance
 improvements, as well as updated translations.
@@ -28,29 +28,15 @@ wallet versions of Bitcoin Core are generally supported.
 Compatibility
 ==============
 
-Bitcoin Core is supported and extensively tested on operating systems
-using the Linux Kernel 3.17+, macOS 11.0+, and Windows 7 and newer. Bitcoin
-Core should also work on most other UNIX-like systems but is not as
+Bitcoin Core is supported and tested on operating systems using the
+Linux Kernel 3.17+, macOS 13+, and Windows 10+. Bitcoin
+Core should also work on most other Unix-like systems but is not as
 frequently tested on them. It is not recommended to use Bitcoin Core on
 unsupported systems.
 
 Notable changes
 ===============
 
-
-Pruning
--------
-
-- When pruning during initial block download, more blocks will be pruned at each
-  flush in order to speed up the syncing of such nodes. (#20827)
-
-Init
-----
-
-- Various fixes to prevent issues where subsequent instances of Bitcoin Core would
-  result in deletion of files in use by an existing instance. (#28784, #28946)
-- Improved handling of empty `settings.json` files. (#29144)
-=======
 ### Wallet
 
 - #34156 wallet: fix unnamed legacy wallet migration failure
@@ -62,34 +48,70 @@ Init
 
 - #33723 chainparams: remove dnsseed.bitcoin.dashjr-list-of-p2p-nodes.us
 
+=======
+### P2P
+
+- #33050 net, validation: don't punish peers for consensus-invalid txs
+- #33723 chainparams: remove dnsseed.bitcoin.dashjr-list-of-p2p-nodes.us
+
+### Validation
+
+- #32473 Introduce per-txin sighash midstate cache for legacy/p2sh/segwitv0 scripts
+- #33105 validation: detect witness stripping without re-running Script checks
+
+### Wallet
+
+- #33268 wallet: Identify transactions spending 0-value outputs, and add tests for anchor outputs in a wallet
+- #34156 wallet: fix unnamed legacy wallet migration failure
+- #34226 wallet: test: Relative wallet failed migration cleanup
+- #34123 wallet: migration, avoid creating spendable wallet from a watch-only legacy wallet
+- #34215 wallettool: fix unnamed createfromdump failure walletsdir deletion
+- #34370 wallet: Additional cleanups for migration, and fixes for createfromdump with BDB
+
+### Mining
+
+- #33475 bugfix: miner: fix `addPackageTxs` unsigned integer overflow
+
 ### Build
 
 - #34227 guix: Fix `osslsigncode` tests
 
-### CI
+### Documentation
 
-- #32513 ci: remove 3rd party js from windows dll gha job
-- #34344 ci: update GitHub Actions versions
-- #34463 ci: use macos-14 image
+- #33623 doc: document capnproto and libmultiprocess deps in 29.x
+
+### Test
+
+- #33612 test: change log rate limit version gate
 
 ### Misc
 
-- #34174 doc: update copyright year to 2026
+- #32513 ci: remove 3rd party js from windows dll gha job
+- #33508 ci: fix buildx gha cache authentication on forks
+- #33581 ci: Properly include $FILE_ENV in DEPENDS_HASH
+- #34344 ci: update GitHub Actions versions
 
 Credits
 =======
 
 Thanks to everyone who directly contributed to this release:
 
-- achow101
-- davidgumberg
+- Anthony Towns
+- Antoine Poinsot
+- Ava Chow
+- David Gumberg
+- Eugene Siegel
 - fanquake
 - furszy
 - Hennadii Stepanov
-- Luke Dashjr
+- ismaelsadeeq
+- luke-jr
 - m3dwards
 - Padraic Slattery
+- Pieter Wuille
 - SatsAndSports
+- sedited
+- willcl-ark
 
 As well as to everyone that helped with translations on
 [Transifex](https://explore.transifex.com/bitcoin/bitcoin/).

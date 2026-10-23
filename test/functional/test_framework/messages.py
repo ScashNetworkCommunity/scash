@@ -33,6 +33,8 @@ from test_framework.util import assert_equal
 
 MAX_LOCATOR_SZ = 101
 MAX_BLOCK_WEIGHT = 4000000
+DEFAULT_BLOCK_RESERVED_WEIGHT = 8000
+MINIMUM_BLOCK_RESERVED_WEIGHT = 2000
 MAX_BLOOM_FILTER_SIZE = 36000
 MAX_BLOOM_HASH_FUNCS = 50
 
@@ -335,7 +337,7 @@ class CAddress:
         elif self.net == self.NET_CJDNS:
             self.ip = socket.inet_ntop(socket.AF_INET6, addr_bytes)
         else:
-            raise Exception(f"Address type not supported")
+            raise Exception("Address type not supported")
 
         self.port = int.from_bytes(f.read(2), "big")
 
@@ -362,7 +364,7 @@ class CAddress:
         elif self.net == self.NET_CJDNS:
             r += socket.inet_pton(socket.AF_INET6, self.ip)
         else:
-            raise Exception(f"Address type not supported")
+            raise Exception("Address type not supported")
         r += self.port.to_bytes(2, "big")
         return r
 
@@ -1364,7 +1366,7 @@ class msg_block:
 # for cases where a user needs tighter control over what is sent over the wire
 # note that the user must supply the name of the msgtype, and the data
 class msg_generic:
-    __slots__ = ("data")
+    __slots__ = ("msgtype", "data")
 
     def __init__(self, msgtype, data=None):
         self.msgtype = msgtype

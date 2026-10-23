@@ -7,6 +7,7 @@
 from .blocktools import (
     COINBASE_MATURITY,
 )
+from .messages import CTransaction
 from .util import (
     assert_equal,
     assert_greater_than,
@@ -17,17 +18,34 @@ from .wallet import (
     MiniWallet,
 )
 
+ORPHAN_TX_EXPIRE_TIME = 1200
 # Default for -minrelaytxfee in sat/kvB
 DEFAULT_MIN_RELAY_TX_FEE = 100
 # Default for -incrementalrelayfee in sat/kvB
 DEFAULT_INCREMENTAL_RELAY_FEE = 100
+
+def assert_mempool_contents(test_framework, node, expected=None, sync=True):
+    """Assert that all transactions in expected are in the mempool,
+    and no additional ones exist. 'expected' is an array of
+    CTransaction objects
+    """
+    if sync:
+        test_framework.sync_mempools()
+    if not expected:
+        expected = []
+    assert_equal(len(expected), len(set(expected)))
+    mempool = node.getrawmempool(verbose=False)
+    assert_equal(len(mempool), len(expected))
+    for tx in expected:
+        assert tx.rehash() in mempool
+
 
 def fill_mempool(test_framework, node, *, tx_sync_fun=None):
     """Fill mempool until eviction.
 
     Allows for simpler testing of scenarios with floating mempoolminfee > minrelay
     Requires -datacarriersize=100000 and -maxmempool=5 and assumes -minrelaytxfee
-    is 100 sat/kvB.
+    is 1 sat/vbyte.
     To avoid unintentional tx dependencies, the mempool filling txs are created with a
     tagged ephemeral miniwallet instance.
     """
@@ -84,3 +102,8 @@ def fill_mempool(test_framework, node, *, tx_sync_fun=None):
     test_framework.log.debug("Check that mempoolminfee is larger than minrelaytxfee")
     assert_equal(node.getmempoolinfo()['minrelaytxfee'], minrelayfee)
     assert_greater_than(node.getmempoolinfo()['mempoolminfee'], minrelayfee)
+
+def tx_in_orphanage(node, tx: CTransaction) -> bool:
+    """Returns true if the transaction is in the orphanage."""
+    found = [o for o in node.getorphantxs(verbosity=1) if o["txid"] == tx.rehash() and o["wtxid"] == tx.getwtxid()]
+    return len(found) == 1

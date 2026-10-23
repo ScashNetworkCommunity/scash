@@ -1,4 +1,7 @@
-*.tar.gz
+# Build subdirectories.
+/*build*
+!/build-aux
+!/build_msvc
 
 *.exe
 *.pdb
@@ -79,86 +82,19 @@ src/qt/bitcoin-qt.includes
 *.rej
 *.orig
 *.pyc
-*.o
-*.o-*
-*.a
-*.pb.cc
-*.pb.h
-*.dat
-
-*.log
-*.trs
-*.zip
-
-*.json.h
-*.raw.h
 
 # Only ignore unexpected patches
 *.patch
 !contrib/guix/patches/*.patch
 !depends/patches/**/*.patch
 
-#libtool object files
-*.lo
-*.la
-
-# Compilation and Qt preprocessor part
-*.qm
-Makefile
-!depends/Makefile
-src/qt/bitcoin-qt
-Bitcoin-Qt.app
-
-# Qt Creator
-Makefile.am.user
-
-# Unit-tests
-Makefile.test
-bitcoin-qt_test
-
-# Resources cpp
-qrc_*.cpp
-
-# Mac specific
-.DS_Store
-build
+/CMakeUserPresets.json
 
 # Previous releases
-releases
-
-#lcov
-*.gcno
-*.gcda
-/*.info
-test_bitcoin.coverage/
-total.coverage/
-fuzz.coverage/
-coverage_percent.txt
-/cov_tool_wrapper.sh
-qa-assets/
+/releases
 
 #build tests
-linux-coverage-build
-linux-build
-win32-build
-test/config.ini
-test/cache/*
-test/.mypy_cache/
 test/lint/test_runner/target/
-
-!src/leveldb*/Makefile
-
-/doc/doxygen/
-
-contrib/devtools/split-debug.sh
-
-# Output from running db4 installation
-db4/
-
-# clang-check
-*.plist
-
-dist/
 
 /guix-build-*
 

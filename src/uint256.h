@@ -9,6 +9,7 @@
 #include <crypto/common.h>
 #include <span.h>
 #include <util/strencodings.h>
+#include <util/string.h>
 
 #include <algorithm>
 #include <array>
@@ -17,6 +18,7 @@
 #include <cstring>
 #include <optional>
 #include <string>
+#include <string_view>
 
 /** Template base class for fixed-sized opaque blobs. */
 template<unsigned int BITS>
@@ -67,16 +69,27 @@ public:
 
     /** @name Hex representation
      *
-     * The reverse-byte hex representation is a convenient way to view the blob
-     * as a number, because it is consistent with the way the base_uint class
-     * converts blobs to numbers.
+     * The hex representation used by GetHex(), ToString(), FromHex() and
+     * SetHexDeprecated() is unusual, since it shows bytes of the base_blob in
+     * reverse order. For example, a 4-byte blob {0x12, 0x34, 0x56, 0x78} is
+     * represented as "78563412" instead of the more typical "12345678"
+     * representation that would be shown in a hex editor or used by typical
+     * byte-array / hex conversion functions like python's bytes.hex() and
+     * bytes.fromhex().
      *
-     * @note base_uint treats the blob as an array of bytes with the numerically
-     * least significant byte first and the most significant byte last. Because
-     * numbers are typically written with the most significant digit first and
-     * the least significant digit last, the reverse hex display of the blob
-     * corresponds to the same numeric value that base_uint interprets from the
-     * blob.
+     * The nice thing about the reverse-byte representation, even though it is
+     * unusual, is that if a blob contains an arithmetic number in little endian
+     * format (with least significant bytes first, and most significant bytes
+     * last), the GetHex() output will match the way the number would normally
+     * be written in base-16 (with most significant digits first and least
+     * significant digits last).
+     *
+     * This means, for example, that ArithToUint256(num).GetHex() can be used to
+     * display an arith_uint256 num value as a number, because
+     * ArithToUint256() converts the number to a blob in little-endian format,
+     * so the arith_uint256 class doesn't need to have its own number parsing
+     * and formatting functions.
+     *
      * @{*/
     std::string GetHex() const;
     /** Unlike FromHex this accepts any invalid input, thus it is fragile and deprecated!
@@ -94,30 +107,6 @@ public:
      */
     void SetHexDeprecated(std::string_view str);
     std::string ToString() const;
-    void SetHex(const char* psz)
-    {
-        std::fill(m_data.begin(), m_data.end(), 0);
-        while (*psz == 32 || (*psz >= 9 && *psz <= 13)) psz++;
-        if (psz[0] == '0' && (psz[1] == 'x' || psz[1] == 'X')) psz += 2;
-        auto hex_val = [](char c) -> int {
-            if (c >= '0' && c <= '9') return c - '0';
-            if (c >= 'a' && c <= 'f') return c - 'a' + 10;
-            if (c >= 'A' && c <= 'F') return c - 'A' + 10;
-            return -1;
-        };
-        size_t digits = 0;
-        while (hex_val(psz[digits]) != -1) digits++;
-        unsigned char* p1 = m_data.data();
-        const unsigned char* pend = p1 + WIDTH;
-        while (digits > 0 && p1 < pend) {
-            *p1 = static_cast<unsigned char>(hex_val(psz[--digits]));
-            if (digits > 0) {
-                *p1 |= static_cast<unsigned char>(hex_val(psz[--digits]) << 4);
-                p1++;
-            }
-        }
-    }
-    void SetHex(const std::string& str) { SetHex(str.c_str()); }
     /**@}*/
 
     constexpr const unsigned char* data() const { return m_data.data(); }
@@ -149,20 +138,11 @@ public:
 template <unsigned int BITS>
 consteval base_blob<BITS>::base_blob(std::string_view hex_str)
 {
-    // Non-lookup table version of HexDigit().
-    auto from_hex = [](const char c) -> int8_t {
-        if (c >= '0' && c <= '9') return c - '0';
-        if (c >= 'a' && c <= 'f') return c - 'a' + 0xA;
-        if (c >= 'A' && c <= 'F') return c - 'A' + 0xA;
-
-        assert(false); // Reached if ctor is called with an invalid hex digit.
-    };
-
-    assert(hex_str.length() == m_data.size() * 2); // 2 hex digits per byte.
+    if (hex_str.length() != m_data.size() * 2) throw "Hex string must fit exactly";
     auto str_it = hex_str.rbegin();
     for (auto& elem : m_data) {
-        auto lo = from_hex(*(str_it++));
-        elem = (from_hex(*(str_it++)) << 4) | lo;
+        auto lo = util::ConstevalHexDigit(*(str_it++));
+        elem = (util::ConstevalHexDigit(*(str_it++)) << 4) | lo;
     }
 }
 
@@ -180,6 +160,25 @@ std::optional<uintN_t> FromHex(std::string_view str)
     uintN_t rv;
     rv.SetHexDeprecated(str);
     return rv;
+}
+/**
+ * @brief Like FromHex(std::string_view str), but allows an "0x" prefix
+ *        and pads the input with leading zeroes if it is shorter than
+ *        the expected length of uintN_t::size()*2.
+ *
+ *        Designed to be used when dealing with user input.
+ */
+template <class uintN_t>
+std::optional<uintN_t> FromUserHex(std::string_view input)
+{
+    input = util::RemovePrefixView(input, "0x");
+    constexpr auto expected_size{uintN_t::size() * 2};
+    if (input.size() < expected_size) {
+        auto padded = std::string(expected_size, '0');
+        std::copy(input.begin(), input.end(), padded.begin() + expected_size - input.size());
+        return FromHex<uintN_t>(padded);
+    }
+    return FromHex<uintN_t>(input);
 }
 } // namespace detail
 
@@ -202,6 +201,7 @@ public:
 class uint256 : public base_blob<256> {
 public:
     static std::optional<uint256> FromHex(std::string_view str) { return detail::FromHex<uint256>(str); }
+    static std::optional<uint256> FromUserHex(std::string_view str) { return detail::FromUserHex<uint256>(str); }
     constexpr uint256() = default;
     consteval explicit uint256(std::string_view hex_str) : base_blob<256>(hex_str) {}
     constexpr explicit uint256(uint8_t v) : base_blob<256>(v) {}
@@ -209,15 +209,5 @@ public:
     static const uint256 ZERO;
     static const uint256 ONE;
 };
-
-/* uint256 from std::string_view, containing byte-reversed hex encoding.
- * DEPRECATED. Unlike FromHex this accepts any invalid input, thus it is fragile and deprecated!
- */
-inline uint256 uint256S(std::string_view str)
-{
-    uint256 rv;
-    rv.SetHexDeprecated(str);
-    return rv;
-}
 
 #endif // BITCOIN_UINT256_H

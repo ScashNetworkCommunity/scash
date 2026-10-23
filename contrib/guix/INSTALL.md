@@ -71,13 +71,13 @@ https://repology.org/project/guix/versions
 
 ### Debian / Ubuntu
 
-Currently, the `guix` package is no longer present in recent Debian or Ubuntu
-repositories. Any other installation option mentioned in this document may be
-used.
+Guix is available as a distribution package in [Debian
+](https://packages.debian.org/search?keywords=guix) and [Ubuntu
+](https://packages.ubuntu.com/search?keywords=guix).
 
-If you previously installed `guix` via `apt`, you can remove it with:
+To install:
 ```sh
-sudo apt purge guix
+sudo apt install guix
 ```
 
 ### Arch Linux
@@ -456,7 +456,7 @@ Alternately, see `guix package --search-paths -p "$HOME/.guix-profile"'.
 
 However, this is somewhat tedious to do for both `guix pull` and `guix install`
 for each user on the system that wants to properly use `guix`. I recommend that
-you instead add an entry to `/etc/profile.d` instead. This is done by default
+you add an entry to `/etc/profile.d` instead. This is done by default
 when installing the Debian package later than 1.2.0-4 and when using the shell
 script installer.
 

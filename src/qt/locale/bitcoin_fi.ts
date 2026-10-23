@@ -1644,9 +1644,9 @@ Siirtoprosessi luo varmuuskopion lompakosta ennen siirtoa. Tämä varmuuskopioti
         <translation type="unfinished">Tämän asetuksen muuttaminen vaatii koko lohkoketjun uudelleenlataamista.</translation>
     </message>
     <message>
-        <source>Maximum database cache size. A larger cache can contribute to faster sync, after which the benefit is less pronounced for most use cases. Lowering the cache size will reduce memory usage. Unused mempool memory is shared for this cache.</source>
-        <extracomment>Tooltip text for Options window setting that sets the size of the database cache. Explains the corresponding effects of increasing/decreasing this value.</extracomment>
-        <translation type="unfinished">Tietokannan välimuistin enimmäiskoko. Suurempi välimuisti voi nopeuttaa synkronointia, mutta sen jälkeen hyöty ei ole enää niin merkittävä useimmissa käyttötapauksissa. Välimuistin koon pienentäminen vähentää muistin käyttöä. Käyttämätön mempool-muisti jaetaan tätä välimuistia varten.</translation>
+        <source>Set the number of script verification threads. Negative values correspond to the number of cores you want to leave free to the system.</source>
+        <extracomment>Tooltip text for Options window setting that sets the number of script verification threads. Explains that negative values mean to leave these many cores free to the system.</extracomment>
+        <translation type="unfinished">Aseta komentosarjan vahvistusketjujen määrä. Negatiiviset arvot vastaavat niiden ytimien määrää, jotka haluat jättää järjestelmälle vapaiksi.</translation>
     </message>
     <message>
         <source>Set the number of script verification threads. Negative values correspond to the number of cores you want to leave free to the system.</source>
@@ -1714,22 +1714,6 @@ Siirtoprosessi luo varmuuskopion lompakosta ennen siirtoa. Tämä varmuuskopioti
     <message>
         <source>&amp;External signer script path</source>
         <translation type="unfinished">&amp;Ulkoisen allekirjoittajan komentosarjapolku</translation>
-    </message>
-    <message>
-        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation type="unfinished">Avaa Bitcoin-asiakasohjelman portti reitittimellä automaattisesti. Tämä toimii vain, jos reitittimesi tukee UPnP:tä ja se on käytössä.</translation>
-    </message>
-    <message>
-        <source>Map port using &amp;UPnP</source>
-        <translation type="unfinished">Portin uudelleenohjaus &amp;UPnP:llä</translation>
-    </message>
-    <message>
-        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports NAT-PMP and it is enabled. The external port could be random.</source>
-        <translation type="unfinished">Avaa reitittimen Bitcoin client-portti automaattisesti. Tämä toimii vain, jos reitittimesi tukee NAT-PMP:tä ja se on käytössä. Ulkoinen portti voi olla satunnainen.</translation>
-    </message>
-    <message>
-        <source>Map port using NA&amp;T-PMP</source>
-        <translation type="unfinished">Kartoita portti käyttämällä NA&amp;T-PMP:tä</translation>
     </message>
     <message>
         <source>Accept connections from outside.</source>
@@ -2294,6 +2278,14 @@ Jos saat tämän virheen, pyydä kauppiasta antamaan BIP21-yhteensopiva URI.</tr
         <translation type="unfinished">Yhteyksien lukumäärä</translation>
     </message>
     <message>
+        <source>Local Addresses</source>
+        <translation type="unfinished">Paikalliset osoitteet</translation>
+    </message>
+    <message>
+        <source>Network addresses that your Bitcoin node is currently using to communicate with other nodes.</source>
+        <translation type="unfinished">Verkko-osoitteet, joita Bitcoin-solmusi käyttää tällä hetkellä kommunikoidakseen muiden solmujen kanssa.</translation>
+    </message>
+    <message>
         <source>Block chain</source>
         <translation type="unfinished">Lohkoketju</translation>
     </message>
@@ -2340,6 +2332,10 @@ Jos saat tämän virheen, pyydä kauppiasta antamaan BIP21-yhteensopiva URI.</tr
     <message>
         <source>Select a peer to view detailed information.</source>
         <translation type="unfinished">Valitse vertainen eriteltyjä tietoja varten.</translation>
+    </message>
+    <message>
+        <source>Hide Peers Detail</source>
+        <translation type="unfinished">Piilota vertaisten yksityiskohdat</translation>
     </message>
     <message>
         <source>The transport layer version: %1</source>
@@ -2454,6 +2450,10 @@ Jos saat tämän virheen, pyydä kauppiasta antamaan BIP21-yhteensopiva URI.</tr
     <message>
         <source>Direction/Type</source>
         <translation type="unfinished">Suunta/Tyyppi</translation>
+    </message>
+    <message>
+        <source>The BIP324 session ID string in hex.</source>
+        <translation type="unfinished">BIP324-istunnon ID-merkkijono heksana.</translation>
     </message>
     <message>
         <source>The network protocol this peer is connected through: IPv4, IPv6, Onion, I2P, or CJDNS.</source>
@@ -3363,6 +3363,10 @@ Huom: Koska maksu lasketaan per tavu, "100 satoshin per kB" maksunopeus 500 virt
         <translation type="unfinished">&amp;Allekirjoita viesti</translation>
     </message>
     <message>
+        <source>You can sign messages/agreements with your legacy (P2PKH) addresses to prove you can receive bitcoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation type="unfinished">Voit allekirjoittaa viestejä/sopimuksia vanhojen (P2PKH) osoitteidesi kanssa todistaaksesi, että voit vastaanottaa niihin lähetettyjä bitcoineja. Varo allekirjoittamasta mitään epämääräistä tai satunnaista, sillä phishing-hyökkäykset voivat yrittää huijata sinua allekirjoittamaan henkilöllisyytesi heille. Allekirjoita vain täysin yksityiskohtaiset lausunnot, joihin suostut.</translation>
+    </message>
+    <message>
         <source>The Bitcoin address to sign the message with</source>
         <translation type="unfinished">Bitcoin-osoite jolla viesti allekirjoitetaan</translation>
     </message>
@@ -4017,12 +4021,20 @@ Varoitus: Tämä voi maksaa ylimääräisen maksun vähentämällä vaihtotuloja
         <translation type="unfinished">PSBT kopioitu</translation>
     </message>
     <message>
+        <source>Fee-bump PSBT copied to clipboard</source>
+        <translation type="unfinished">Siirtokulujen nosto PSBT kopioitu leikepöydälle</translation>
+    </message>
+    <message>
         <source>Can't sign transaction.</source>
         <translation type="unfinished">Siirtoa ei voida allekirjoittaa.</translation>
     </message>
     <message>
         <source>Could not commit transaction</source>
         <translation type="unfinished">Siirtoa ei voitu tehdä</translation>
+    </message>
+    <message>
+        <source>Signer error</source>
+        <translation type="unfinished">Signaalivirhe</translation>
     </message>
     <message>
         <source>Can't display address</source>
@@ -4085,12 +4097,12 @@ Varoitus: Tämä voi maksaa ylimääräisen maksun vähentämällä vaihtotuloja
 ilman, että käytetään mitään snapshot-tietoja. Ilmoita tästä tapauksesta osoitteeseen%s, mukaan lukien se, miten sait snapshotin. Virheellinen snapshot-tilatiedosto jätetään levylle, jos se on hyödyllinen ongelman diagnosoinnissa, joka aiheutti tämän virheen.</translation>
     </message>
     <message>
-        <source>Cannot downgrade wallet from version %i to version %i. Wallet version unchanged.</source>
-        <translation type="unfinished">Ei voida alentaa lompakon versiota versiosta %i versioon %i. Lompakon versio pysyy ennallaan.</translation>
+        <source>%s request to listen on port %u. This port is considered "bad" and thus it is unlikely that any peer will connect to it. See doc/p2p-bad-ports.md for details and a full list.</source>
+        <translation type="unfinished">%s pyyntö kuunnella porttia %u. Tätä porttia pidetään ”huonona”, joten on epätodennäköistä, että mikään vertaisohjelma muodostaa siihen yhteyden. Katso lisätietoja ja täydellinen luettelo doc/p2p-bad-ports.md-tiedostosta.</translation>
     </message>
     <message>
-        <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
-        <translation type="unfinished">Ei voida lukita data-hakemistoa %s. %s on luultavasti jo käynnissä.</translation>
+        <source>Cannot downgrade wallet from version %i to version %i. Wallet version unchanged.</source>
+        <translation type="unfinished">Ei voida alentaa lompakon versiota versiosta %i versioon %i. Lompakon versio pysyy ennallaan.</translation>
     </message>
     <message>
         <source>Distributed under the MIT software license, see the accompanying file %s or %s</source>
@@ -4185,8 +4197,20 @@ ilman, että käytetään mitään snapshot-tietoja. Ilmoita tästä tapauksesta
         <translation type="unfinished">-peerblockfiltersiä ei voida asettaa ilman -blockfilterindexiä.</translation>
     </message>
     <message>
-        <source>Cannot write to data directory '%s'; check permissions.</source>
-        <translation type="unfinished">Hakemistoon '%s' ei voida kirjoittaa. Tarkista käyttöoikeudet.</translation>
+        <source>
+Unable to cleanup failed migration</source>
+        <translation type="unfinished">
+Epäonnistuneen migraation siivoaminen epäonnistui</translation>
+    </message>
+    <message>
+        <source>
+Unable to restore backup of wallet.</source>
+        <translation type="unfinished">
+Ei voinut palauttaa lompakon varmuuskopiota..</translation>
+    </message>
+    <message>
+        <source>Block verification was interrupted</source>
+        <translation type="unfinished">Lohkon vahvistus keskeytettiin</translation>
     </message>
     <message>
         <source>
@@ -4227,10 +4251,6 @@ Ei voinut palauttaa lompakon varmuuskopiota..</translation>
     <message>
         <source>Disk space is too low!</source>
         <translation type="unfinished">Liian vähän levytilaa!</translation>
-    </message>
-    <message>
-        <source>Do you want to rebuild the block database now?</source>
-        <translation type="unfinished">Haluatko uudelleenrakentaa lohkotietokannan nyt?</translation>
     </message>
     <message>
         <source>Done loading</source>
@@ -4327,10 +4347,6 @@ Ei voinut palauttaa lompakon varmuuskopiota..</translation>
     <message>
         <source>Error: Unable to write record to new wallet</source>
         <translation type="unfinished">Virhe: Tiedon kirjoittaminen lompakkoon epäonnistui</translation>
-    </message>
-    <message>
-        <source>Error: address book copy failed for wallet %s</source>
-        <translation type="unfinished">Virhe: osoitekirjan kopiointi epäonnistui lompakolle %s</translation>
     </message>
     <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
@@ -4453,8 +4469,12 @@ Ei voinut palauttaa lompakon varmuuskopiota..</translation>
         <translation type="unfinished">Osoitteita ei ole saatavilla</translation>
     </message>
     <message>
-        <source>Not enough file descriptors available.</source>
-        <translation type="unfinished">Ei tarpeeksi tiedostomerkintöjä vapaana.</translation>
+        <source>Not found pre-selected input %s</source>
+        <translation type="unfinished">Esivalittua tuloa ei löydy %s</translation>
+    </message>
+    <message>
+        <source>Not solvable pre-selected input %s</source>
+        <translation type="unfinished">Ei ratkaistavissa esivalittu tulo%s</translation>
     </message>
     <message>
         <source>Not found pre-selected input %s</source>

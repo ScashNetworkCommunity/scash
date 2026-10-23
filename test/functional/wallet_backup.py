@@ -338,6 +338,8 @@ class WalletBackupTest(BitcoinTestFramework):
         for sourcePath in sourcePaths:
             assert_raises_rpc_error(-4, "backup failed", self.nodes[0].backupwallet, sourcePath)
 
+        self.test_pruned_wallet_backup()
+
 
 if __name__ == '__main__':
     WalletBackupTest(__file__).main()
