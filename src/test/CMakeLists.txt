@@ -212,5 +212,4 @@ install_binary_component(test_bitcoin)
 
 if(TARGET test_bitcoin)
   set_target_properties(test_bitcoin PROPERTIES OUTPUT_NAME "test_scash")
-  target_link_libraries(test_bitcoin PRIVATE ${RANDOMX_LIBRARY})
 endif()
