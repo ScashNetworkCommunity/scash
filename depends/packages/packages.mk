@@ -1,4 +1,5 @@
-packages:=randomx
+packages:=
+
 randomx_packages = randomx
 
 boost_packages = boost

@@ -7,18 +7,7 @@
 
 #include <util/macros.h>
 
-#include <bitcoin-build-config.h>
-#define SCASH_RELEASE_NAME_FALLBACK_DEFINED 1
-#ifndef SCASH_CLIENT_VERSION_MAJOR
-#define SCASH_CLIENT_VERSION_MAJOR 2
-#define SCASH_CLIENT_VERSION_MINOR 2
-#define SCASH_CLIENT_VERSION_BUILD 0
-#define SCASH_CLIENT_VERSION_IS_RELEASE true
-#endif
-#ifndef SCASH_RELEASE_NAME
-#define SCASH_RELEASE_NAME "fillory"
-#endif
- // IWYU pragma: keep
+#include <bitcoin-build-config.h> // IWYU pragma: keep
 
 // Check that required client information is defined
 #if !defined(CLIENT_VERSION_MAJOR) || !defined(CLIENT_VERSION_MINOR) || !defined(CLIENT_VERSION_BUILD) || !defined(CLIENT_VERSION_IS_RELEASE) || !defined(COPYRIGHT_YEAR)

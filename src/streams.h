@@ -465,10 +465,6 @@ public:
         ::Unserialize(*this, obj);
         return *this;
     }
-
-    bool Commit();
-    bool IsError();
-    bool Truncate(unsigned size);
 };
 
 /** Wrapper around an AutoFile& that implements a ring buffer to

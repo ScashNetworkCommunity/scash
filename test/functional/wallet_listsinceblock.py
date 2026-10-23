@@ -27,7 +27,6 @@ class ListSinceBlockTest(BitcoinTestFramework):
         self.num_nodes = 4
         self.setup_clean_chain = True
         # whitelist peers to speed up tx relay / mempool sync
-        self.noban_tx_relay = True
         self.extra_args = [["-whitelist=noban@127.0.0.1"]] * self.num_nodes
         # !SCASH
         for args in self.extra_args:

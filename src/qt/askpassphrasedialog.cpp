@@ -101,14 +101,12 @@ void AskPassphraseDialog::accept()
             // Cannot encrypt with empty passphrase
             break;
         }
-        QMessageBox msgBoxConfirm(QMessageBox::Question,
-                                  tr("Confirm wallet encryption"),
-                                  tr("Warning: If you encrypt your wallet and lose your passphrase, you will <b>LOSE ALL OF YOUR SCASH</b>!") + "<br><br>" + tr("Are you sure you wish to encrypt your wallet?"),
-                                  QMessageBox::Cancel | QMessageBox::Yes, this);
-        msgBoxConfirm.button(QMessageBox::Yes)->setText(tr("Continue"));
-        msgBoxConfirm.button(QMessageBox::Cancel)->setText(tr("Back"));
-        msgBoxConfirm.setDefaultButton(QMessageBox::Cancel);
-        QMessageBox::StandardButton retval = (QMessageBox::StandardButton)msgBoxConfirm.exec();
+        QMessageBox::StandardButton retval = QMessageBox::question(this, tr("Confirm wallet encryption"),
+                 // !SCASH
+                 tr("Warning: If you encrypt your wallet and lose your passphrase, you will <b>LOSE ALL OF YOUR SCASH</b>!") + "<br><br>" + tr("Are you sure you wish to encrypt your wallet?"),
+                 // !SCASH END
+                 QMessageBox::Yes|QMessageBox::Cancel,
+                 QMessageBox::Cancel);
         if(retval == QMessageBox::Yes)
         {
             if(newpass1 == newpass2)

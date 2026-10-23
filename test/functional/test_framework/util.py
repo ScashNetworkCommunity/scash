@@ -325,13 +325,6 @@ def bpf_cflags():
     ]
 
 
-def bpf_cflags():
-    return [
-        "-Wno-error=implicit-function-declaration",
-        "-Wno-duplicate-decl-specifier",  # https://github.com/bitcoin/bitcoin/issues/32322
-    ]
-
-
 def sha256sum_file(filename):
     h = hashlib.sha256()
     with open(filename, 'rb') as f:

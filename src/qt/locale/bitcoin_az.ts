@@ -1495,10 +1495,6 @@ Daxil olma, yalnız 'qanuni' tipli ünvanlar ilə mümkündür.</translation>
         <source>unknown</source>
         <translation type="unfinished">naməlum</translation>
     </message>
-    <message>
-        <source>own address</source>
-        <translation type="unfinished">öz ünvanı</translation>
-    </message>
     <message numerus="yes">
         <source>matures in %n more block(s)</source>
         <translation type="unfinished">

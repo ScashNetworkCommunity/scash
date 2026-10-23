@@ -1649,11 +1649,6 @@ Siirtoprosessi luo varmuuskopion lompakosta ennen siirtoa. Tämä varmuuskopioti
         <translation type="unfinished">Aseta komentosarjan vahvistusketjujen määrä. Negatiiviset arvot vastaavat niiden ytimien määrää, jotka haluat jättää järjestelmälle vapaiksi.</translation>
     </message>
     <message>
-        <source>Set the number of script verification threads. Negative values correspond to the number of cores you want to leave free to the system.</source>
-        <extracomment>Tooltip text for Options window setting that sets the number of script verification threads. Explains that negative values mean to leave these many cores free to the system.</extracomment>
-        <translation type="unfinished">Aseta komentosarjan vahvistusketjujen määrä. Negatiiviset arvot vastaavat niiden ytimien määrää, jotka haluat jättää järjestelmälle vapaiksi.</translation>
-    </message>
-    <message>
         <source>(0 = auto, &lt;0 = leave that many cores free)</source>
         <translation type="unfinished">(0 = auto, &lt;0 = jätä näin monta ydintä vapaaksi)</translation>
     </message>
@@ -4213,22 +4208,6 @@ Ei voinut palauttaa lompakon varmuuskopiota..</translation>
         <translation type="unfinished">Lohkon vahvistus keskeytettiin</translation>
     </message>
     <message>
-        <source>
-Unable to cleanup failed migration</source>
-        <translation type="unfinished">
-Epäonnistuneen migraation siivoaminen epäonnistui</translation>
-    </message>
-    <message>
-        <source>
-Unable to restore backup of wallet.</source>
-        <translation type="unfinished">
-Ei voinut palauttaa lompakon varmuuskopiota..</translation>
-    </message>
-    <message>
-        <source>Block verification was interrupted</source>
-        <translation type="unfinished">Lohkon vahvistus keskeytettiin</translation>
-    </message>
-    <message>
         <source>Config setting for %s only applied on %s network when in [%s] section.</source>
         <translation type="unfinished">Konfigurointiasetuksen %s käyttöön vain %s -verkossa, kun osassa [%s].</translation>
     </message>
@@ -4467,14 +4446,6 @@ Ei voinut palauttaa lompakon varmuuskopiota..</translation>
     <message>
         <source>No addresses available</source>
         <translation type="unfinished">Osoitteita ei ole saatavilla</translation>
-    </message>
-    <message>
-        <source>Not found pre-selected input %s</source>
-        <translation type="unfinished">Esivalittua tuloa ei löydy %s</translation>
-    </message>
-    <message>
-        <source>Not solvable pre-selected input %s</source>
-        <translation type="unfinished">Ei ratkaistavissa esivalittu tulo%s</translation>
     </message>
     <message>
         <source>Not found pre-selected input %s</source>

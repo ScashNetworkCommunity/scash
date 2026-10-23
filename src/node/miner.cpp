@@ -36,7 +36,7 @@ int64_t GetMinimumTime(const CBlockIndex* pindexPrev, const int64_t difficulty_a
     const int height{pindexPrev->nHeight + 1};
     // Account for BIP94 timewarp rule on all networks. This makes future
     // activation safer.
-    if (height % difficulty_adjustment_interval == 0) {
+    if (!g_isRandomX && height % difficulty_adjustment_interval == 0) {
         min_time = std::max<int64_t>(min_time, pindexPrev->GetBlockTime() - MAX_TIMEWARP);
     }
     return min_time;
@@ -48,20 +48,12 @@ int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParam
     int64_t nNewTime{std::max<int64_t>(GetMinimumTime(pindexPrev, consensusParams.DifficultyAdjustmentInterval()),
                                        TicksSinceEpoch<std::chrono::seconds>(NodeClock::now()))};
 
-    if (consensusParams.enforce_BIP94) {
-        // Height of block to be mined.
-        const int height{pindexPrev->nHeight + 1};
-        if (height % consensusParams.DifficultyAdjustmentInterval() == 0) {
-            nNewTime = std::max<int64_t>(nNewTime, pindexPrev->GetBlockTime() - MAX_TIMEWARP);
-        }
-    }
-
     if (nOldTime < nNewTime) {
         pblock->nTime = nNewTime;
     }
 
     // Updating time can change work required on testnet:
-    if (consensusParams.fPowAllowMinDifficultyBlocks) {
+    if (consensusParams.fPowAllowMinDifficultyBlocks || g_isRandomX) {
         pblock->nBits = GetNextWorkRequired(pindexPrev, pblock, consensusParams);
     }
 

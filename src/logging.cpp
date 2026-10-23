@@ -20,9 +20,6 @@
 using util::Join;
 using util::RemovePrefixView;
 
-using util::Join;
-using util::RemovePrefixView;
-
 const char * const DEFAULT_DEBUGLOGFILE = "debug.log";
 constexpr auto MAX_USER_SETABLE_SEVERITY_LEVEL{BCLog::Level::Info};
 

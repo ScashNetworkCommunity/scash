@@ -1,5 +1,4 @@
 // Copyright (c) 2009-2022 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -493,9 +492,7 @@ static RPCHelpMan getaddednodeinfo()
                             {
                                 {RPCResult::Type::OBJ, "", "",
                                 {
-                                    // !SCASH
-                                    {RPCResult::Type::STR, "address", "The Scash server IP and port we're connected to"},
-                                    // !SCASH END
+                                    {RPCResult::Type::STR, "address", "The bitcoin server IP and port we're connected to"},
                                     {RPCResult::Type::STR, "connected", "connection, inbound or outbound"},
                                 }},
                             }},
@@ -662,7 +659,7 @@ static RPCHelpMan getnetworkinfo()
                                 {RPCResult::Type::NUM, "score", "relative score"},
                             }},
                         }},
-                        (IsDeprecatedRPCEnabled("warnings") ?
+                        ((node.args->GetArgs("-deprecatedrpc").empty() || IsDeprecatedRPCEnabled("warnings")) ?
                             RPCResult{RPCResult::Type::STR, "warnings", "any network and blockchain warnings (DEPRECATED)"} :
                             RPCResult{RPCResult::Type::ARR, "warnings", "any network and blockchain warnings (run with `-deprecatedrpc=warnings` to return the latest warning as a single string)",
                             {
@@ -719,7 +716,7 @@ static RPCHelpMan getnetworkinfo()
         }
     }
     obj.pushKV("localaddresses", std::move(localAddresses));
-    obj.pushKV("warnings", node::GetWarningsForRpc(*CHECK_NONFATAL(node.warnings), IsDeprecatedRPCEnabled("warnings")));
+    obj.pushKV("warnings", node::GetWarningsForRpc(*CHECK_NONFATAL(node.warnings), (node.args->GetArgs("-deprecatedrpc").empty() || IsDeprecatedRPCEnabled("warnings"))));
     return obj;
 },
     };

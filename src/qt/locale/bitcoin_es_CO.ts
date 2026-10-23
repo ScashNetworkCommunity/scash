@@ -2217,6 +2217,10 @@ Si recibes este error, debes solicitar al comerciante que te proporcione un URI 
         <translation type="unfinished">Para especificar una ubicación no predeterminada del directorio de datos, usa la opción "%1".</translation>
     </message>
     <message>
+        <source>Blocksdir</source>
+        <translation type="unfinished">Directorio de bloques</translation>
+    </message>
+    <message>
         <source>To specify a non-default location of the blocks directory use the '%1' option.</source>
         <translation type="unfinished">Para especificar una ubicación no predeterminada del directorio de bloques, usa la opción "%1".</translation>
     </message>

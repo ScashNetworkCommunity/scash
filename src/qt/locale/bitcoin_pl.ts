@@ -4321,10 +4321,6 @@ Przejdź do Plik &gt; Otwórz Portfel aby wgrać portfel.</translation>
         <translation type="unfinished">%sto bardzo dużo!  Tak duże opłaty można uiścić w ramach jednej transakcji.</translation>
     </message>
     <message>
-        <source>%s is set very high! Fees this large could be paid on a single transaction.</source>
-        <translation type="unfinished">%sto bardzo dużo!  Tak duże opłaty można uiścić w ramach jednej transakcji.</translation>
-    </message>
-    <message>
         <source>Cannot provide specific connections and have addrman find outgoing connections at the same time.</source>
         <translation type="unfinished">Nie można jednocześnie określić konkretnych połączeń oraz pozwolić procesowi addrman na wyszukiwanie wychodzących połączeń.</translation>
     </message>
@@ -4577,18 +4573,6 @@ Nie można przywrócić kopii zapasowej portfela</translation>
         <translation type="unfinished">Błąd: Otrzymana wartość nie jest szestnastkowa%s</translation>
     </message>
     <message>
-        <source>Error: Failed to create new watchonly wallet</source>
-        <translation type="unfinished">Błąd: Utworzenie portfela tylko do odczytu nie powiodło się</translation>
-    </message>
-    <message>
-        <source>Error: Got key that was not hex: %s</source>
-        <translation type="unfinished">Błąd: Otrzymana wartość nie jest szestnastkowa%s</translation>
-    </message>
-    <message>
-        <source>Error: Got value that was not hex: %s</source>
-        <translation type="unfinished">Błąd: Otrzymana wartość nie jest szestnastkowa%s</translation>
-    </message>
-    <message>
         <source>Error: Keypool ran out, please call keypoolrefill first</source>
         <translation type="unfinished">Błąd: Pula kluczy jest pusta, odwołaj się do puli kluczy.</translation>
     </message>
@@ -4819,10 +4803,6 @@ Nie można przywrócić kopii zapasowej portfela</translation>
     <message>
         <source>Only direction was set, no permissions: '%s'</source>
         <translation type="unfinished">Tylko kierunek został ustalony, brak uprawnień: `%s`</translation>
-    </message>
-    <message>
-        <source>Not found pre-selected input %s</source>
-        <translation type="unfinished">Nie znaleziono wstępnie wybranego wejścia %s</translation>
     </message>
     <message>
         <source>Prune cannot be configured with a negative value.</source>
@@ -5087,14 +5067,6 @@ Nie można przywrócić kopii zapasowej portfela</translation>
     <message>
         <source>Not enough file descriptors available. %d available, %d required.</source>
         <translation type="unfinished">Zbyt mało dostępnych deskryptorów plików. %d dostępnych, %d wymaganych. </translation>
-    </message>
-    <message>
-        <source>Error: Could not add watchonly tx %s to watchonly wallet</source>
-        <translation type="unfinished">Błąd: Nie można dodać tx %s tylko do odczytu do portfela tylko do odczytu</translation>
-    </message>
-    <message>
-        <source>Error: Could not delete watchonly transactions. </source>
-        <translation type="unfinished">Błąd: Nie można usunąć transakcji tylko do odczytu.</translation>
     </message>
     <message>
         <source>User Agent comment (%s) contains unsafe characters.</source>

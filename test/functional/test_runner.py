@@ -273,7 +273,6 @@ BASE_SCRIPTS = [
     'p2p_invalid_tx.py --v2transport',
     'p2p_v2_transport.py',
     'p2p_v2_encrypted.py',
-    'p2p_v2_misbehaving.py',
     'p2p_v2_earlykeyresponse.py',
     # !SCASH
     'p2p_invalid_block_pow.py',

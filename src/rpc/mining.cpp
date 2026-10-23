@@ -137,18 +137,10 @@ static bool GenerateBlock(ChainstateManager& chainman, CBlock&& block, uint64_t&
     block_out.reset();
     block.hashMerkleRoot = BlockMerkleRoot(block);
 
-    // !SCASH
-    uint256 rxHash;
-    rxHash.SetNull();
-    while (max_tries > 0 &&
-           block.nNonce < std::numeric_limits<uint32_t>::max() &&
-           !CheckProofOfWorkRandomX(block, chainman.GetConsensus(), POW_VERIFY_MINING, &rxHash)) {
+    while (max_tries > 0 && block.nNonce < std::numeric_limits<uint32_t>::max() && !CheckProofOfWork(block.GetHash(), block.nBits, chainman.GetConsensus()) && !chainman.m_interrupt) {
         ++block.nNonce;
         --max_tries;
     }
-    block.hashRandomX = rxHash;
-    // !SCASH END
-
     if (max_tries == 0 || chainman.m_interrupt) {
         return false;
     }
@@ -160,7 +152,7 @@ static bool GenerateBlock(ChainstateManager& chainman, CBlock&& block, uint64_t&
 
     if (!process_new_block) return true;
 
-    if (!miner.processNewBlock(block_out, nullptr)) {
+    if (!chainman.ProcessNewBlock(block_out, /*force_processing=*/true, /*min_pow_checked=*/true, nullptr)) {
         throw JSONRPCError(RPC_INTERNAL_ERROR, "ProcessNewBlock, block not accepted");
     }
 
@@ -229,9 +221,7 @@ static RPCHelpMan generatetodescriptor()
         "Mine to a specified descriptor and return the block hashes.",
         {
             {"num_blocks", RPCArg::Type::NUM, RPCArg::Optional::NO, "How many blocks are generated."},
-            // !SCASH
             {"descriptor", RPCArg::Type::STR, RPCArg::Optional::NO, "The descriptor to send the newly generated Scash to."},
-            // !SCASH END
             {"maxtries", RPCArg::Type::NUM, RPCArg::Default{DEFAULT_MAX_TRIES}, "How many iterations to try."},
         },
         RPCResult{
@@ -275,9 +265,7 @@ static RPCHelpMan generatetoaddress()
         "Mine to a specified address and return the block hashes.",
          {
              {"nblocks", RPCArg::Type::NUM, RPCArg::Optional::NO, "How many blocks are generated."},
-             // !SCASH
              {"address", RPCArg::Type::STR, RPCArg::Optional::NO, "The address to send the newly generated Scash to."},
-             // !SCASH END
              {"maxtries", RPCArg::Type::NUM, RPCArg::Default{DEFAULT_MAX_TRIES}, "How many iterations to try."},
          },
          RPCResult{
@@ -288,9 +276,7 @@ static RPCHelpMan generatetoaddress()
          RPCExamples{
             "\nGenerate 11 blocks to myaddress\n"
             + HelpExampleCli("generatetoaddress", "11 \"myaddress\"")
-            // !SCASH
-            + "If you are using the " PACKAGE_NAME " wallet, you can get a new address to send the newly generated Scash to with:\n"
-            // !SCASH END
+            + "If you are using the " CLIENT_NAME " wallet, you can get a new address to send the newly generated Scash to with:\n"
             + HelpExampleCli("getnewaddress", "")
                 },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
@@ -319,9 +305,7 @@ static RPCHelpMan generateblock()
     return RPCHelpMan{"generateblock",
         "Mine a set of ordered transactions to a specified address or descriptor and return the block hash.",
         {
-            // !SCASH
             {"output", RPCArg::Type::STR, RPCArg::Optional::NO, "The address or descriptor to send the newly generated Scash to."},
-            // !SCASH END
             {"transactions", RPCArg::Type::ARR, RPCArg::Optional::NO, "An array of hex strings which are either txids or raw transactions.\n"
                 "Txids must reference transactions currently in the mempool.\n"
                 "All transactions must be valid and in valid order, otherwise the block will be rejected.",
@@ -435,7 +419,6 @@ static RPCHelpMan getmininginfo()
                 RPCResult{
                     RPCResult::Type::OBJ, "", "",
                     {
-                    {RPCResult::Type::STR, "pow_algo", "The proof-of-work algorithm name (randomx)"},
                         {RPCResult::Type::NUM, "blocks", "The current block"},
                         {RPCResult::Type::NUM, "currentblockweight", /*optional=*/true, "The block weight (including reserved weight for block header, txs count and coinbase tx) of the last assembled block (only present if a block was ever assembled)"},
                         {RPCResult::Type::NUM, "currentblocktx", /*optional=*/true, "The number of block transactions (excluding coinbase) of the last assembled block (only present if a block was ever assembled)"},
@@ -453,7 +436,7 @@ static RPCHelpMan getmininginfo()
                             {RPCResult::Type::NUM, "difficulty", "The next difficulty"},
                             {RPCResult::Type::STR_HEX, "target", "The next target"}
                         }},
-                        (IsDeprecatedRPCEnabled("warnings") ?
+                        ((node.args->GetArgs("-deprecatedrpc").empty() || IsDeprecatedRPCEnabled("warnings")) ?
                             RPCResult{RPCResult::Type::STR, "warnings", "any network and blockchain warnings (DEPRECATED)"} :
                             RPCResult{RPCResult::Type::ARR, "warnings", "any network and blockchain warnings (run with `-deprecatedrpc=warnings` to return the latest warning as a single string)",
                             {
@@ -484,8 +467,10 @@ static RPCHelpMan getmininginfo()
     obj.pushKV("target", GetTarget(tip, chainman.GetConsensus().powLimit).GetHex());
     obj.pushKV("networkhashps",    getnetworkhashps().HandleRequest(request));
     obj.pushKV("pooledtx",         (uint64_t)mempool.size());
-    obj.pushKV("pow_algo", "randomx");
     obj.pushKV("chain", chainman.GetParams().GetChainTypeString());
+            // !SCASH
+            obj.pushKV("pow_algo", "randomx");
+            // !SCASH END
 
     UniValue next(UniValue::VOBJ);
     CBlockIndex next_index;
@@ -502,7 +487,7 @@ static RPCHelpMan getmininginfo()
             chainman.GetConsensus().signet_challenge;
         obj.pushKV("signet_challenge", HexStr(signet_challenge));
     }
-    obj.pushKV("warnings", node::GetWarningsForRpc(*CHECK_NONFATAL(node.warnings), IsDeprecatedRPCEnabled("warnings")));
+    obj.pushKV("warnings", node::GetWarningsForRpc(*CHECK_NONFATAL(node.warnings), (node.args->GetArgs("-deprecatedrpc").empty() || IsDeprecatedRPCEnabled("warnings"))));
     return obj;
 },
     };
@@ -707,10 +692,6 @@ static RPCHelpMan getblocktemplate()
                 {RPCResult::Type::NUM, "height", "The height of the next block"},
                 {RPCResult::Type::STR_HEX, "signet_challenge", /*optional=*/true, "Only on signet"},
                 {RPCResult::Type::STR_HEX, "default_witness_commitment", /*optional=*/true, "a valid witness commitment for the unmodified block template"},
-
-                // !SCASH
-                {RPCResult::Type::NUM, "rx_epoch_duration", "seconds"},
-                // !SCASH END
             }},
         },
         RPCExamples{
@@ -795,6 +776,7 @@ static RPCHelpMan getblocktemplate()
     }
 
     static unsigned int nTransactionsUpdatedLast;
+    const CTxMemPool& mempool = EnsureMemPool(node);
 
     if (!lpval.isNull())
     {
@@ -1000,6 +982,9 @@ static RPCHelpMan getblocktemplate()
     result.pushKV("longpollid", tip.GetHex() + ToString(nTransactionsUpdatedLast));
     result.pushKV("target", hashTarget.GetHex());
     result.pushKV("mintime", GetMinimumTime(pindexPrev, consensusParams.DifficultyAdjustmentInterval()));
+    // !SCASH
+    result.pushKV("rx_epoch_duration", consensusParams.nRandomXEpochDuration);
+    // !SCASH END
     result.pushKV("mutable", std::move(aMutable));
     result.pushKV("noncerange", "00000000ffffffff");
     int64_t nSigOpLimit = MAX_BLOCK_SIGOPS_COST;
@@ -1026,10 +1011,6 @@ static RPCHelpMan getblocktemplate()
     if (!block_template->getCoinbaseCommitment().empty()) {
         result.pushKV("default_witness_commitment", HexStr(block_template->getCoinbaseCommitment()));
     }
-
-    // !SCASH
-    result.pushKV("rx_epoch_duration", consensusParams.nRandomXEpochDuration);
-    // !SCASH END
 
     return result;
 },
@@ -1088,9 +1069,6 @@ static RPCHelpMan submitblock()
             chainman.UpdateUncommittedBlockStructures(block, pindex);
         }
     }
-
-    NodeContext& node = EnsureAnyNodeContext(request.context);
-    Mining& miner = EnsureMining(node);
 
     bool new_block;
     auto sc = std::make_shared<submitblock_StateCatcher>(block.GetHash());

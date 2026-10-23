@@ -747,8 +747,8 @@ fs::path GetDefaultDataDir()
 #ifdef WIN32
     // Windows
     // !SCASH
-    fs::path legacy_path = GetSpecialFolderPath(CSIDL_APPDATA) / "Scash";
-    if (fs::exists(legacy_path)) return legacy_path;
+    fs::path legacy_dir = GetSpecialFolderPath(CSIDL_APPDATA) / "Scash";
+    if (fs::exists(legacy_dir)) return legacy_dir;
     return GetSpecialFolderPath(CSIDL_LOCAL_APPDATA) / "Scash";
     // !SCASH END
 #else
@@ -833,8 +833,6 @@ std::variant<ChainType, std::string> ArgsManager::GetChainArg() const
     if (fRegTest) return ChainType::REGTEST;
     if (fSigNet) return ChainType::SIGNET;
     if (fTestNet) return ChainType::TESTNET;
-    if (fTestNet4) return ChainType::TESTNET4;
-
 
     // !SCASH
     const bool fScashMain = get_net("-scash");

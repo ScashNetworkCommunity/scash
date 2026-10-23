@@ -83,6 +83,19 @@ static void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& 
     }
 }
 
+static std::vector<RPCResult> ScriptPubKeyDoc() {
+    return
+         {
+             {RPCResult::Type::STR, "asm", "Disassembly of the public key script"},
+             {RPCResult::Type::STR, "desc", "Inferred descriptor for the output"},
+             {RPCResult::Type::STR_HEX, "hex", "The raw public key script bytes, hex-encoded"},
+             // !SCASH
+             {RPCResult::Type::STR, "address", /*optional=*/true, "The Scash address (only if a well-defined address exists)"},
+             // !SCASH END
+             {RPCResult::Type::STR, "type", "The type (one of: " + GetAllOutputTypes() + ")"},
+         };
+}
+
 static std::vector<RPCResult> DecodeTxDoc(const std::string& txid_field_doc)
 {
     return {
@@ -515,10 +528,12 @@ static RPCHelpMan decodescript()
                 {RPCResult::Type::OBJ, "segwit", /*optional=*/true,
                  "Result of a witness output script wrapping this redeem script (not returned for types that should not be wrapped)",
                  {
-                     {RPCResult::Type::STR, "asm", "Disassembly of the output script"},
-                     {RPCResult::Type::STR_HEX, "hex", "The raw output script bytes, hex-encoded"},
-                     {RPCResult::Type::STR, "type", "The type of the output script (e.g. witness_v0_keyhash or witness_v0_scripthash)"},
-                     {RPCResult::Type::STR, "address", /*optional=*/true, "The Bitcoin address (only if a well-defined address exists)"},
+                     {RPCResult::Type::STR, "asm", "String representation of the script public key"},
+                     {RPCResult::Type::STR_HEX, "hex", "Hex string of the script public key"},
+                     {RPCResult::Type::STR, "type", "The type of the script public key (e.g. witness_v0_keyhash or witness_v0_scripthash)"},
+                     // !SCASH
+                     {RPCResult::Type::STR, "address", /*optional=*/true, "The Scash address (only if a well-defined address exists)"},
+                     // !SCASH END
                      {RPCResult::Type::STR, "desc", "Inferred descriptor for the script"},
                      {RPCResult::Type::STR, "p2sh-segwit", "address of the P2SH script wrapping this witness redeem script"},
                  }},

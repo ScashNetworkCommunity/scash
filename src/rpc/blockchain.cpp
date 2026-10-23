@@ -1,6 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2022 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -61,10 +60,6 @@
 #include <mutex>
 #include <optional>
 #include <vector>
-
-// !SCASH
-#include <pow.h>
-// !SCASH END
 
 using kernel::CCoinsStats;
 using kernel::CoinStatsHashType;
@@ -176,7 +171,7 @@ UniValue blockheaderToJSON(const CBlockIndex& tip, const CBlockIndex& blockindex
 
     if (blockindex.pprev)
         result.pushKV("previousblockhash", blockindex.pprev->GetBlockHash().GetHex());
-    if (pnext)
+        if (pnext)
         result.pushKV("nextblockhash", pnext->GetBlockHash().GetHex());
 
     // !SCASH
@@ -186,7 +181,6 @@ UniValue blockheaderToJSON(const CBlockIndex& tip, const CBlockIndex& blockindex
         result.pushKV("rx_cm", GetRandomXCommitment(blockindex.GetBlockHeader()).GetHex());
     }
     // !SCASH END
-
     return result;
 }
 
@@ -575,12 +569,6 @@ static RPCHelpMan getblockheader()
                             {RPCResult::Type::NUM, "nTx", "The number of transactions in the block"},
                             {RPCResult::Type::STR_HEX, "previousblockhash", /*optional=*/true, "The hash of the previous block (if available)"},
                             {RPCResult::Type::STR_HEX, "nextblockhash", /*optional=*/true, "The hash of the next block (if available)"},
-
-                            // !SCASH
-                            {RPCResult::Type::STR_HEX, "rx_cm", /*optional=*/true, "The RandomX commitment"},
-                            {RPCResult::Type::STR_HEX, "rx_hash", /*optional=*/true, "The RandomX hash"},
-                            {RPCResult::Type::NUM, "rx_epoch", /*optional=*/true, "The RandomX epoch"},
-                            // !SCASH END
                         }},
                     RPCResult{"for verbose=false",
                         RPCResult::Type::STR_HEX, "", "A string that is serialized, hex-encoded data for block 'hash'"},
@@ -1335,7 +1323,7 @@ RPCHelpMan getblockchaininfo()
                 {RPCResult::Type::BOOL, "automatic_pruning", /*optional=*/true, "whether automatic pruning is enabled (only present if pruning is enabled)"},
                 {RPCResult::Type::NUM, "prune_target_size", /*optional=*/true, "the target size used by pruning (only present if automatic pruning is enabled)"},
                 {RPCResult::Type::STR_HEX, "signet_challenge", /*optional=*/true, "the block challenge (aka. block script), in hexadecimal (only present if the current network is a signet)"},
-                (IsDeprecatedRPCEnabled("warnings") ?
+                ((node.args->GetArgs("-deprecatedrpc").empty() || IsDeprecatedRPCEnabled("warnings")) ?
                     RPCResult{RPCResult::Type::STR, "warnings", "any network and blockchain warnings (DEPRECATED)"} :
                     RPCResult{RPCResult::Type::ARR, "warnings", "any network and blockchain warnings (run with `-deprecatedrpc=warnings` to return the latest warning as a single string)",
                     {
@@ -1388,7 +1376,7 @@ RPCHelpMan getblockchaininfo()
     }
 
     NodeContext& node = EnsureAnyNodeContext(request.context);
-    obj.pushKV("warnings", node::GetWarningsForRpc(*CHECK_NONFATAL(node.warnings), IsDeprecatedRPCEnabled("warnings")));
+    obj.pushKV("warnings", node::GetWarningsForRpc(*CHECK_NONFATAL(node.warnings), (node.args->GetArgs("-deprecatedrpc").empty() || IsDeprecatedRPCEnabled("warnings"))));
     return obj;
 },
     };

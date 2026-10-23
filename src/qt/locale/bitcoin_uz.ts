@@ -2323,7 +2323,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Amount</source>
-        <translation type="unfinished">Миқдори</translation>
+        <translation type="unfinished">Miqdor</translation>
     </message>
     <message>
         <source>true</source>

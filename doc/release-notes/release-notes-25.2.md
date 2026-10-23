@@ -1,18 +1,9 @@
-<<<<<<<< HEAD:doc/release-notes/release-notes-25.2.md
 25.2 Release Notes
 ==================
 
 Bitcoin Core version 25.2 is now available from:
 
   <https://bitcoincore.org/bin/bitcoin-core-25.2>
-========
-27.2 Release Notes
-=====================
-
-Bitcoin Core version 27.2 is now available from:
-
-  <https://bitcoincore.org/bin/bitcoin-core-27.2/>
->>>>>>>> v29.3:doc/release-notes/release-notes-27.2.md
 
 This release includes various bug fixes and performance
 improvements, as well as updated translations.
@@ -49,7 +40,6 @@ unsupported systems.
 Notable changes
 ===============
 
-<<<<<<<< HEAD:doc/release-notes/release-notes-25.2.md
 ### Gui
 
 - gui#774 Fix crash on selecting "Mask values" in transaction view
@@ -67,64 +57,18 @@ Notable changes
 
 - #29412 p2p: Don't process mutated blocks
 - #29524 p2p: Don't consider blocks mutated if they don't connect to known prev block
-========
-### P2P
-
-- #30394 net: fix race condition in self-connect detection
-
-### Init
-
-- #30435 init: change shutdown order of load block thread and scheduler
-
-### RPC
-
-- #30357 Fix cases of calls to FillPSBT errantly returning complete=true
-
-### PSBT
-
-- #29855 psbt: Check non witness utxo outpoint early
-
-### Test
-
-- #30552 test: fix constructor of msg_tx
-
-### Doc
-
-- #30504 doc: use proper doxygen formatting for CTxMemPool::cs
-
-### Build
-
-- #30283 upnp: fix build with miniupnpc 2.2.8
-- #30633 Fixes for GCC 15 compatibility
-
-### CI
-
-- #30193 ci: move ASan job to GitHub Actions from Cirrus CI
-- #30299 ci: remove unused bcc variable from workflow
->>>>>>>> v29.3:doc/release-notes/release-notes-27.2.md
 
 Credits
 =======
 
 Thanks to everyone who directly contributed to this release:
 
-<<<<<<<< HEAD:doc/release-notes/release-notes-25.2.md
 - Martin Zumsande
 - Sebastian Falbesoner
 - MarcoFalke
 - UdjinM6
 - dergoegge
 - Greg Sanders
-========
-- Ava Chow
-- Cory Fields
-- Martin Zumsande
-- Matt Whitlock
-- Max Edwards
-- Sebastian Falbesoner
-- Vasil Dimov
-- willcl-ark
->>>>>>>> v29.3:doc/release-notes/release-notes-27.2.md
 
 As well as to everyone that helped with translations on
 [Transifex](https://www.transifex.com/bitcoin/bitcoin/).

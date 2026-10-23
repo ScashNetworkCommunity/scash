@@ -4582,10 +4582,6 @@ A tárca biztonsági mentésének visszaállítása sikertelen.</translation>
         <translation type="unfinished">A tárca-adatbázisból a következő rekord beolvasása sikertelen.</translation>
     </message>
     <message>
-        <source>Error starting db txn for wallet transactions removal</source>
-        <translation type="unfinished">Hiba a tárca tranzakciókat eltávolító adatbázis tranzakció indítása közben</translation>
-    </message>
-    <message>
         <source>Error: Cannot extract destination from the generated scriptpubkey</source>
         <translation type="unfinished">Hiba: Nem lehet kinyerni a célt az előállított scriptpubkey-ből</translation>
     </message>

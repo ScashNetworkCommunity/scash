@@ -90,7 +90,7 @@ Tanda tangan hanya bisa digunakan dengan tipe alamat 'warisan'</translation>
     <name>AddressTableModel</name>
     <message>
         <source>Address</source>
-        <translation type="unfinished">0x5a52E96BAcdaBb82fd05763E25335261B270Efcb</translation>
+        <translation type="unfinished">Alamat</translation>
     </message>
     <message>
         <source>(no label)</source>
@@ -1567,10 +1567,6 @@ Proses migrasi akan mencadangkan dompet sebelum melakukan pemindahan. Fail cadan
         <translation type="unfinished">Dompet berhasil dimuat. Tipe dompet lama akan ditinggalkan dan dukungan untuk membuat dan membuka dompet ini akan dihapus di masa depan. Dompet lama dapat dimigrasikan ke dompet deskriptor dengan migratewallet.</translation>
     </message>
     <message>
-        <source>Cannot write to data directory '%s'; check permissions.</source>
-        <translation type="unfinished">Tidak dapat menulis ke direktori data '%s'; periksa izinnya.</translation>
-    </message>
-    <message>
         <source>%s is set very high! Fees this large could be paid on a single transaction.</source>
         <translation type="unfinished">%s ditetapkan sangat tinggi! Biaya sebesar ini dapat dibayarkan dalam satu transaksi.</translation>
     </message>
@@ -1707,10 +1703,6 @@ Tidak dapat memulihkan cadangan dompet..</translation>
     <message>
         <source>Error reading configuration file: %s</source>
         <translation type="unfinished">Kesalahan membaca file konfigurasi: %s</translation>
-    </message>
-    <message>
-        <source>Error starting db txn for wallet transactions removal</source>
-        <translation type="unfinished">Kesalahan memulai db txn untuk penghapusan transaksi dompet</translation>
     </message>
     <message>
         <source>Error: Cannot extract destination from the generated scriptpubkey</source>

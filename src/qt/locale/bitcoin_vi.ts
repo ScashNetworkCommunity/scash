@@ -1271,10 +1271,6 @@
         <translation type="unfinished">Không thể đặt -forcednsseed thành true khi đặt -dnsseed thành false.</translation>
     </message>
     <message>
-        <source>Cannot write to data directory '%s'; check permissions.</source>
-        <translation type="unfinished">Không thể ghi vào thư mục dữ liệu  '%s'; kiểm tra lại quyền.</translation>
-    </message>
-    <message>
         <source>Cannot provide specific connections and have addrman find outgoing connections at the same time.</source>
         <translation type="unfinished">Không thể cung cấp các kết nối cụ thể và yêu cầu addrman tìm các kết nối gửi đi cùng một lúc.</translation>
     </message>

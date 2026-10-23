@@ -3394,10 +3394,6 @@ Go to File &gt; Open Wallet to load a wallet.
         <translation type="unfinished">%s משובש. נסו להשתמש בכלי הארנק bitcoin-wallet כדי להציל או לשחזר מגיבוי..</translation>
     </message>
     <message>
-        <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
-        <translation type="unfinished">לא ניתן לנעול את תיקיית הנתונים %s‏. %s כנראה כבר רץ.</translation>
-    </message>
-    <message>
         <source>Distributed under the MIT software license, see the accompanying file %s or %s</source>
         <translation type="unfinished">מופץ תחת רשיון התוכנה של MIT, ראה קובץ מלווה  %s או %s</translation>
     </message>

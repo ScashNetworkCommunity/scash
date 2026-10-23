@@ -2792,10 +2792,6 @@ Taşıma işlemi, taşıma işleminden önce cüzdanın bir yedeğini oluşturac
         <translation type="unfinished">İşlem ücreti</translation>
     </message>
     <message>
-        <source>Total Amount</source>
-        <translation type="unfinished">Toplam Tutar</translation>
-    </message>
-    <message>
         <source>Unsigned Transaction</source>
         <comment>PSBT copied</comment>
         <extracomment>Caption of "PSBT has been copied" messagebox</extracomment>
@@ -3848,10 +3844,6 @@ Cüzdan yedeği geri yüklenemiyor.</translation>
         <translation type="unfinished">Veritabanı okuma hatası, program kapatılıyor.</translation>
     </message>
     <message>
-        <source>Error starting db txn for wallet transactions removal</source>
-        <translation type="unfinished">Cüzdan verileriniz silinirken hata. Veri tabanı başlatılamadı</translation>
-    </message>
-    <message>
         <source>Error: Failed to create new watchonly wallet</source>
         <translation type="unfinished">Hata: Yeni  sadece izlenebilir (watchonly) cüzdanı oluşturulamadı</translation>
     </message>
@@ -3994,10 +3986,6 @@ Cüzdan yedeği geri yüklenemiyor.</translation>
     <message>
         <source>No addresses available</source>
         <translation type="unfinished">Erişilebilir adres yok</translation>
-    </message>
-    <message>
-        <source>Only direction was set, no permissions: '%s'</source>
-        <translation type="unfinished">'%s' için izin yok. Sadece hedef ayarlandı.</translation>
     </message>
     <message>
         <source>Only direction was set, no permissions: '%s'</source>

@@ -9,7 +9,6 @@ to a hash that has been compiled into bitcoind.
 The assumeutxo value generated and used here is committed to in
 `CRegTestParams::m_assumeutxo_data` in `src/kernel/chainparams.cpp`.
 """
-import time
 from shutil import rmtree
 
 from dataclasses import dataclass

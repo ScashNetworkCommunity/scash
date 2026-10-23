@@ -2153,11 +2153,11 @@ If you are receiving this error you should request the merchant provide a BIP21 
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished">網路</translation>
+        <translation type="unfinished">网络</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">名稱</translation>
+        <translation type="unfinished">名称</translation>
     </message>
     <message>
         <source>Number of connections</source>

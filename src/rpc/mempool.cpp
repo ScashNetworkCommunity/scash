@@ -980,7 +980,7 @@ static RPCHelpMan submitpackage()
             const UniValue raw_transactions = request.params[0].get_array();
             if (raw_transactions.empty() || raw_transactions.size() > MAX_PACKAGE_COUNT) {
                 throw JSONRPCError(RPC_INVALID_PARAMETER,
-                                   "Array must contain between 2 and " + ToString(MAX_PACKAGE_COUNT) + " transactions.");
+                                   "Array must contain between 1 and " + ToString(MAX_PACKAGE_COUNT) + " transactions.");
             }
 
             // Fee check needs to be run with chainstate and package context

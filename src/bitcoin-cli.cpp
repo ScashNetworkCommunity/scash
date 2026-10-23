@@ -446,8 +446,6 @@ private:
     std::string ChainToString() const
     {
         switch (gArgs.GetChainType()) {
-        case ChainType::TESTNET4:
-            return " testnet4";
         // !SCASH
         case ChainType::TESTNET:
             return " btctestnet";

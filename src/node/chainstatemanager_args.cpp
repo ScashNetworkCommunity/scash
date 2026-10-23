@@ -71,16 +71,6 @@ util::Result<void> ApplyArgsManOptions(const ArgsManager& args, ChainstateManage
         opts.signature_cache_bytes = clamped_size_each;
     }
 
-    if (auto max_size = args.GetIntArg("-maxsigcachesize")) {
-        // 1. When supplied with a max_size of 0, both the signature cache and
-        //    script execution cache create the minimum possible cache (2
-        //    elements). Therefore, we can use 0 as a floor here.
-        // 2. Multiply first, divide after to avoid integer truncation.
-        size_t clamped_size_each = std::max<int64_t>(*max_size, 0) * (1 << 20) / 2;
-        opts.script_execution_cache_bytes = clamped_size_each;
-        opts.signature_cache_bytes = clamped_size_each;
-    }
-
     return {};
 }
 } // namespace node

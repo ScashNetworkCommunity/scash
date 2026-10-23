@@ -1993,14 +1993,6 @@ Hvis du får denne feilen burde du be forretningsdrivende om å tilby en BIP21 k
         <translation type="unfinished">Datamappe</translation>
     </message>
     <message>
-        <source>To specify a non-default location of the data directory use the '%1' option.</source>
-        <translation type="unfinished">For å spesifisere en ikke-standardplassering av datakatalogen, bruk alternativet '%1'.</translation>
-    </message>
-    <message>
-        <source>To specify a non-default location of the blocks directory use the '%1' option.</source>
-        <translation type="unfinished">For å spesifisere en ikke-standardplassering for blokkeringsmappen bruker du alternativet '%1'.</translation>
-    </message>
-    <message>
         <source>Startup time</source>
         <translation type="unfinished">Oppstartstidspunkt</translation>
     </message>

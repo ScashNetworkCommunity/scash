@@ -41,8 +41,6 @@ class ToolWalletTest(BitcoinTestFramework):
         # !SCASH
         self.extra_args = [["-walletrbf=1"]]  # Scash sets default to false, test assumes true
         # !SCASH END
-        if self.options.swap_bdb_endian:
-            self.extra_args = [["-swapbdbendian"]]
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()

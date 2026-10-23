@@ -1,7 +1,3 @@
-
-find_library(RANDOMX_LIBRARY NAMES randomx HINTS "${CMAKE_PREFIX_PATH}/lib" "${PROJECT_SOURCE_DIR}/depends/x86_64-pc-linux-gnu/lib" "${PROJECT_SOURCE_DIR}/depends/x86_64-w64-mingw32/lib")
-find_path(RANDOMX_INCLUDE_DIR NAMES randomx.h HINTS "${CMAKE_PREFIX_PATH}/include" "${PROJECT_SOURCE_DIR}/depends/x86_64-pc-linux-gnu/include" "${PROJECT_SOURCE_DIR}/depends/x86_64-w64-mingw32/include")
-include_directories(${RANDOMX_INCLUDE_DIR})
 # Copyright (c) 2023-present The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit/.
@@ -183,6 +179,8 @@ add_library(bitcoin_common STATIC EXCLUDE_FROM_ALL
   script/solver.cpp
 )
 target_link_libraries(bitcoin_common
+  PUBLIC
+    ${RANDOMX_LIB}
   PRIVATE
     core_interface
     bitcoin_consensus
@@ -470,19 +468,3 @@ endif()
 if(BUILD_FUZZ_BINARY)
   add_subdirectory(test/fuzz)
 endif()
-
-if(TARGET core_interface)
-  target_include_directories(core_interface INTERFACE ${RANDOMX_INCLUDE_DIR})
-  target_link_libraries(core_interface INTERFACE ${RANDOMX_LIBRARY})
-endif()
-foreach(_lib bitcoin_consensus bitcoin_common bitcoin_node)
-  if(TARGET ${_lib})
-    target_link_libraries(${_lib} PUBLIC ${RANDOMX_LIBRARY})
-  endif()
-endforeach()
-foreach(_tgt bitcoind bitcoin-cli bitcoin-tx bitcoin-util bitcoin-wallet bitcoin-node bitcoin-chainstate bitcoin-qt)
-  if(TARGET ${_tgt})
-    string(REPLACE "bitcoin" "scash" _sn "${_tgt}")
-    set_target_properties(${_tgt} PROPERTIES OUTPUT_NAME "${_sn}")
-  endif()
-endforeach()

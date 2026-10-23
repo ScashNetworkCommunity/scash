@@ -1823,7 +1823,7 @@ The migration process will create a backup of the wallet before migrating. This 
       </trans-unit>
       <trans-unit id="_msg403">
         <source xml:space="preserve">none</source>
-        <context-group purpose="location"><context context-type="linenumber">239</context></context-group>
+        <context-group purpose="location"><context context-type="linenumber">238</context></context-group>
       </trans-unit>
       <trans-unit id="_msg404">
         <source xml:space="preserve">Confirm options reset</source>
@@ -2951,100 +2951,6 @@ If you are receiving this error you should request the merchant provide a BIP21 
       <trans-unit id="_msg634">
         <source xml:space="preserve">1 &amp;year</source>
         <context-group purpose="location"><context context-type="linenumber">718</context></context-group>
-      </trans-unit>
-      <trans-unit id="_msg615">
-        <source xml:space="preserve">Inbound: initiated by peer</source>
-        <context-group purpose="location"><context context-type="linenumber">497</context></context-group>
-        <note annotates="source" from="developer">Explanatory text for an inbound peer connection.</note>
-      </trans-unit>
-      <trans-unit id="_msg616">
-        <source xml:space="preserve">Outbound Full Relay: default</source>
-        <context-group purpose="location"><context context-type="linenumber">501</context></context-group>
-        <note annotates="source" from="developer">Explanatory text for an outbound peer connection that relays all network information. This is the default behavior for outbound connections.</note>
-      </trans-unit>
-      <trans-unit id="_msg617">
-        <source xml:space="preserve">Outbound Block Relay: does not relay transactions or addresses</source>
-        <context-group purpose="location"><context context-type="linenumber">504</context></context-group>
-        <note annotates="source" from="developer">Explanatory text for an outbound peer connection that relays network information about blocks and not transactions or addresses.</note>
-      </trans-unit>
-      <trans-unit id="_msg618">
-        <source xml:space="preserve">Outbound Manual: added using RPC %1 or %2/%3 configuration options</source>
-        <context-group purpose="location"><context context-type="linenumber">509</context></context-group>
-        <note annotates="source" from="developer">Explanatory text for an outbound peer connection that was established manually through one of several methods. The numbered arguments are stand-ins for the methods available to establish manual connections.</note>
-      </trans-unit>
-      <trans-unit id="_msg619">
-        <source xml:space="preserve">Outbound Feeler: short-lived, for testing addresses</source>
-        <context-group purpose="location"><context context-type="linenumber">515</context></context-group>
-        <note annotates="source" from="developer">Explanatory text for a short-lived outbound peer connection that is used to test the aliveness of known addresses.</note>
-      </trans-unit>
-      <trans-unit id="_msg620">
-        <source xml:space="preserve">Outbound Address Fetch: short-lived, for soliciting addresses</source>
-        <context-group purpose="location"><context context-type="linenumber">518</context></context-group>
-        <note annotates="source" from="developer">Explanatory text for a short-lived outbound peer connection that is used to request addresses from a peer.</note>
-      </trans-unit>
-      <trans-unit id="_msg621">
-        <source xml:space="preserve">detecting: peer could be v1 or v2</source>
-        <context-group purpose="location"><context context-type="linenumber">523</context></context-group>
-        <note annotates="source" from="developer">Explanatory text for &quot;detecting&quot; transport type.</note>
-      </trans-unit>
-      <trans-unit id="_msg622">
-        <source xml:space="preserve">v1: unencrypted, plaintext transport protocol</source>
-        <context-group purpose="location"><context context-type="linenumber">525</context></context-group>
-        <note annotates="source" from="developer">Explanatory text for v1 transport type.</note>
-      </trans-unit>
-      <trans-unit id="_msg623">
-        <source xml:space="preserve">v2: BIP324 encrypted transport protocol</source>
-        <context-group purpose="location"><context context-type="linenumber">527</context></context-group>
-        <note annotates="source" from="developer">Explanatory text for v2 transport type.</note>
-      </trans-unit>
-      <trans-unit id="_msg624">
-        <source xml:space="preserve">we selected the peer for high bandwidth relay</source>
-        <context-group purpose="location"><context context-type="linenumber">531</context></context-group>
-      </trans-unit>
-      <trans-unit id="_msg625">
-        <source xml:space="preserve">the peer selected us for high bandwidth relay</source>
-        <context-group purpose="location"><context context-type="linenumber">532</context></context-group>
-      </trans-unit>
-      <trans-unit id="_msg626">
-        <source xml:space="preserve">no high bandwidth relay selected</source>
-        <context-group purpose="location"><context context-type="linenumber">533</context></context-group>
-      </trans-unit>
-      <trans-unit id="_msg627">
-        <source xml:space="preserve">Ctrl++</source>
-        <context-group purpose="location"><context context-type="linenumber">546</context></context-group>
-        <note annotates="source" from="developer">Main shortcut to increase the RPC console font size.</note>
-      </trans-unit>
-      <trans-unit id="_msg628">
-        <source xml:space="preserve">Ctrl+=</source>
-        <context-group purpose="location"><context context-type="linenumber">548</context></context-group>
-        <note annotates="source" from="developer">Secondary shortcut to increase the RPC console font size.</note>
-      </trans-unit>
-      <trans-unit id="_msg629">
-        <source xml:space="preserve">Ctrl+-</source>
-        <context-group purpose="location"><context context-type="linenumber">552</context></context-group>
-        <note annotates="source" from="developer">Main shortcut to decrease the RPC console font size.</note>
-      </trans-unit>
-      <trans-unit id="_msg630">
-        <source xml:space="preserve">Ctrl+_</source>
-        <context-group purpose="location"><context context-type="linenumber">554</context></context-group>
-        <note annotates="source" from="developer">Secondary shortcut to decrease the RPC console font size.</note>
-      </trans-unit>
-      <trans-unit id="_msg631">
-        <source xml:space="preserve">&amp;Copy address</source>
-        <context-group purpose="location"><context context-type="linenumber">708</context></context-group>
-        <note annotates="source" from="developer">Context menu action to copy the address of a peer.</note>
-      </trans-unit>
-      <trans-unit id="_msg632">
-        <source xml:space="preserve">&amp;Disconnect</source>
-        <context-group purpose="location"><context context-type="linenumber">712</context></context-group>
-      </trans-unit>
-      <trans-unit id="_msg633">
-        <source xml:space="preserve">1 &amp;hour</source>
-        <context-group purpose="location"><context context-type="linenumber">713</context></context-group>
-      </trans-unit>
-      <trans-unit id="_msg634">
-        <source xml:space="preserve">1 d&amp;ay</source>
-        <context-group purpose="location"><context context-type="linenumber">714</context></context-group>
       </trans-unit>
       <trans-unit id="_msg635">
         <source xml:space="preserve">&amp;Copy IP/Netmask</source>
@@ -4849,14 +4755,6 @@ Go to File &gt; Open Wallet to load a wallet.
       <trans-unit id="_msg1041">
         <source xml:space="preserve">-maxmempool must be at least %d MB</source>
         <context-group purpose="location"><context context-type="linenumber">285</context></context-group>
-      </trans-unit>
-      <trans-unit id="_msg1040">
-        <source xml:space="preserve">%s is set very high!</source>
-        <context-group purpose="location"><context context-type="linenumber">270</context></context-group>
-      </trans-unit>
-      <trans-unit id="_msg1041">
-        <source xml:space="preserve">-maxmempool must be at least %d MB</source>
-        <context-group purpose="location"><context context-type="linenumber">271</context></context-group>
       </trans-unit>
       <trans-unit id="_msg1042">
         <source xml:space="preserve">Cannot obtain a lock on directory %s. %s is probably already running.</source>

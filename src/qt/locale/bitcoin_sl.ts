@@ -4136,10 +4136,6 @@ Za odpiranje denarnice kliknite Datoteka &gt; Odpri denarnico
         <translation type="unfinished">Nastavitev -peerblockfilters ni veljavna brez nastavitve -blockfilterindex.</translation>
     </message>
     <message>
-        <source>Cannot write to data directory '%s'; check permissions.</source>
-        <translation type="unfinished">Nimam dostopa za pisanje v podatkovni mapi '%s'; preveri dovoljenja.</translation>
-    </message>
-    <message>
         <source>Cannot provide specific connections and have addrman find outgoing connections at the same time.</source>
         <translation type="unfinished">Nezdružljivi nastavitvi: navedene so specifične povezave in hkrati se uporablja addrman za iskanje izhodnih povezav.</translation>
     </message>

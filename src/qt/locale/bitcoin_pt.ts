@@ -35,7 +35,7 @@
     </message>
     <message>
         <source>Export the data in the current tab to a file</source>
-        <translation type="unfinished">Exportar os dados na aba atual para um ficheiro</translation>
+        <translation type="unfinished">Exportar os dados no separador atual para um ficheiro</translation>
     </message>
     <message>
         <source>&amp;Export</source>
@@ -3073,7 +3073,7 @@ Nota: como a taxa é calculada por byte, uma taxa de "100 satoshis por kvB" para
     </message>
     <message>
         <source>Copy amount</source>
-        <translation type="unfinished">Copiar quantia</translation>
+        <translation type="unfinished">Copiar valor</translation>
     </message>
     <message>
         <source>Copy fee</source>
@@ -4053,7 +4053,7 @@ Vá ao menu Ficheiro &gt; Abrir carteira para carregar uma carteira
     </message>
     <message>
         <source>Export the data in the current tab to a file</source>
-        <translation type="unfinished">Exportar os dados na aba atual para um ficheiro</translation>
+        <translation type="unfinished">Exportar os dados no separador atual para um ficheiro</translation>
     </message>
     <message>
         <source>Backup Wallet</source>
@@ -4306,10 +4306,6 @@ Vá ao menu Ficheiro &gt; Abrir carteira para carregar uma carteira
     <message>
         <source>Cannot set -peerblockfilters without -blockfilterindex.</source>
         <translation type="unfinished">Não é possível definir -peerblockfilters sem -blockfilterindex.</translation>
-    </message>
-    <message>
-        <source>%s is set very high! Fees this large could be paid on a single transaction.</source>
-        <translation type="unfinished">%s é muito elevado! As taxas tão elevadas como esta poderiam ser pagas numa única transação.</translation>
     </message>
     <message>
         <source>%s is set very high! Fees this large could be paid on a single transaction.</source>

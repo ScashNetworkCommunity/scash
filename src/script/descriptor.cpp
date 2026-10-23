@@ -338,14 +338,6 @@ public:
     {
         return std::make_unique<ConstPubkeyProvider>(m_expr_index, m_pubkey, m_xonly);
     }
-    std::optional<CPubKey> GetRootPubKey() const override
-    {
-        return m_pubkey;
-    }
-    std::optional<CExtPubKey> GetRootExtPubKey() const override
-    {
-        return std::nullopt;
-    }
 };
 
 enum class DeriveType {

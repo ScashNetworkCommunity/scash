@@ -209,7 +209,3 @@ endfunction()
 add_all_test_targets()
 
 install_binary_component(test_bitcoin)
-
-if(TARGET test_bitcoin)
-  set_target_properties(test_bitcoin PROPERTIES OUTPUT_NAME "test_scash")
-endif()

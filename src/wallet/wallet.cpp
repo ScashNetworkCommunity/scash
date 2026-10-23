@@ -4526,8 +4526,6 @@ util::Result<MigrationResult> MigrateLegacyToDescriptor(std::shared_ptr<CWallet>
 
     // Helper to reload as normal for some of our exit scenarios
     const auto& reload_wallet = [&](std::shared_ptr<CWallet>& to_reload) {
-        // Reset options.require_format as wallets of any format may be reloaded.
-        options.require_format = std::nullopt;
         assert(to_reload.use_count() == 1);
         std::string name = to_reload->GetName();
         to_reload.reset();

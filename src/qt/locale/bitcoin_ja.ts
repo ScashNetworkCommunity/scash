@@ -4594,10 +4594,6 @@ Unable to restore backup of wallet.</source>
         <translation type="unfinished">ウォレットデータベースから次のレコードの読み取りでエラー</translation>
     </message>
     <message>
-        <source>Error starting db txn for wallet transactions removal</source>
-        <translation type="unfinished">ウォレットトランザクションの削除のためのdb txnの開始でエラーが発生しました</translation>
-    </message>
-    <message>
         <source>Error: Cannot extract destination from the generated scriptpubkey</source>
         <translation type="unfinished">エラー: 生成されたscriptpubkeyから宛先を抽出できません</translation>
     </message>

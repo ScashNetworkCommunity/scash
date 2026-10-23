@@ -1,6 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2022 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -91,11 +90,10 @@
 #include <util/translation.h>
 #include <validation.h>
 #include <validationinterface.h>
-#include <walletinitinterface.h>
-
 // !SCASH
 #include <pow.h>
 // !SCASH END
+#include <walletinitinterface.h>
 
 #include <algorithm>
 #include <condition_variable>
@@ -464,8 +462,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     const auto testnetChainParams = CreateChainParams(argsman, ChainType::TESTNET);
     const auto testnet4ChainParams = CreateChainParams(argsman, ChainType::TESTNET4);
     const auto signetChainParams = CreateChainParams(argsman, ChainType::SIGNET);
-    const auto regtestChainParams = CreateChainParams(argsman, ChainType::REGTEST);
-
+        const auto regtestChainParams = CreateChainParams(argsman, ChainType::REGTEST);
     // !SCASH
     const auto scashRegtestBaseParams = CreateBaseChainParams(ChainType::SCASHREGTEST);
     const auto scashTestnetBaseParams = CreateBaseChainParams(ChainType::SCASHTESTNET);
@@ -477,7 +474,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
 
     // Hidden Options
     std::vector<std::string> hidden_args = {
-        "-dbcrashratio", "-forcecompactdb",
+        "-dbcrashratio", "-mempoolfullrbf", "-forcecompactdb",
         // GUI args. These will be overwritten by SetupUIArgs for the GUI
         "-choosedatadir", "-lang=<lang>", "-min", "-resetguisettings", "-splash", "-uiplatform"};
 
@@ -536,19 +533,17 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
                  strprintf("Maintain an index of compact filters by block (default: %s, values: %s).", DEFAULT_BLOCKFILTERINDEX, ListBlockFilterTypes()) +
                  " If <type> is not supplied or if <type> = 1, indexes for all known types are enabled.",
                  ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
-// !SCASH
+
+        // !SCASH
     argsman.AddArg("-randomxfastmode", strprintf("Enable fast mode for RandomX VM, but with greatly increased memory usage. Use 1 to enable. (default: %u)", DEFAULT_RANDOMX_FAST_MODE), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-randomxvmcachesize=<n>", strprintf("Cache RandomX VMs used for each epoch, but this greatly increases memory usage. (minimum: 1, default: %d).", DEFAULT_RANDOMX_VM_CACHE_SIZE), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-suspiciousreorgdepth=<n>", strprintf("Reorg depth considered suspicious by node. Upon detection, node shuts down. Use 0 to disable. (minimum: 2, default: %d blocks)", DEFAULT_SUSPICIOUS_REORG_DEPTH), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-adddnsseed=<ip>", "Add address of DNS seed to query for addresses of nodes via DNS lookup. This option can be specified multiple times to connect to multiple DNS seeds.", ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
-// !SCASH END
-
+    // !SCASH END
     argsman.AddArg("-addnode=<ip>", strprintf("Add a node to connect to and attempt to keep the connection open (see the addnode RPC help for more info). This option can be specified multiple times to add multiple nodes; connections are limited to %u at a time and are counted separately from the -maxconnections limit.", MAX_ADDNODE_CONNECTIONS), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
     argsman.AddArg("-asmap=<file>", strprintf("Specify asn mapping used for bucketing of the peers (default: %s). Relative paths will be prefixed by the net-specific datadir location.", DEFAULT_ASMAP_FILENAME), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-bantime=<n>", strprintf("Default duration (in seconds) of manually configured bans (default: %u)", DEFAULT_MISBEHAVING_BANTIME), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
-// !SCASH
-    argsman.AddArg("-bind=<addr>[:<port>][=onion]", strprintf("Bind to given address and always listen on it (default: 0.0.0.0). Use [host]:port notation for IPv6. Append =onion to tag any incoming connections to that address and port as incoming Tor connections (default: 127.0.0.1:%u=onion, testnet: 127.0.0.1:%u=onion, regtest: 127.0.0.1:%u=onion)", scashMainChainParams->GetDefaultPort() + 1, scashTestnetChainParams->GetDefaultPort() + 1, scashRegtestChainParams->GetDefaultPort() + 1), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
-// !SCASH END
+    argsman.AddArg("-bind=<addr>[:<port>][=onion]", strprintf("Bind to given address and always listen on it (default: 0.0.0.0). Use [host]:port notation for IPv6. Append =onion to tag any incoming connections to that address and port as incoming Tor connections (default: 127.0.0.1:%u=onion, testnet3: 127.0.0.1:%u=onion, testnet4: 127.0.0.1:%u=onion, signet: 127.0.0.1:%u=onion, regtest: 127.0.0.1:%u=onion)", defaultChainParams->GetDefaultPort() + 1, testnetChainParams->GetDefaultPort() + 1, testnet4ChainParams->GetDefaultPort() + 1, signetChainParams->GetDefaultPort() + 1, regtestChainParams->GetDefaultPort() + 1), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
     argsman.AddArg("-cjdnsreachable", "If set, then this host is configured for CJDNS (connecting to fc00::/8 addresses would lead us to the CJDNS network, see doc/cjdns.md) (default: 0)", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-connect=<ip>", "Connect only to the specified node; -noconnect disables automatic connections (the rules for this peer are the same as for -addnode). This option can be specified multiple times to connect to multiple nodes.", ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
     argsman.AddArg("-discover", "Discover own IP addresses (default: 1 when listening and no -externalip or -proxy)", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
@@ -575,11 +570,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     argsman.AddArg("-peerbloomfilters", strprintf("Support filtering of blocks and transaction with bloom filters (default: %u)", DEFAULT_PEERBLOOMFILTERS), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-peerblockfilters", strprintf("Serve compact block filters to peers per BIP 157 (default: %u)", DEFAULT_PEERBLOCKFILTERS), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-txreconciliation", strprintf("Enable transaction reconciliations per BIP 330 (default: %d)", DEFAULT_TXRECONCILIATION_ENABLE), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::CONNECTION);
-    // TODO: remove the sentence "Nodes not using ... incoming connections." once the changes from
-    // https://github.com/bitcoin/bitcoin/pull/23542 have become widespread.
-// !SCASH
-    argsman.AddArg("-port=<port>", strprintf("Listen for connections on <port>. Nodes not using the default ports (default: %u, testnet: %u, regtest: %u) are unlikely to get incoming connections. Not relevant for I2P (see doc/i2p.md).", scashMainChainParams->GetDefaultPort(), scashTestnetChainParams->GetDefaultPort(), scashRegtestChainParams->GetDefaultPort()), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
-// !SCASH END
+    argsman.AddArg("-port=<port>", strprintf("Listen for connections on <port> (default: %u, testnet3: %u, testnet4: %u, signet: %u, regtest: %u). Not relevant for I2P (see doc/i2p.md). If set to a value x, the default onion listening port will be set to x+1.", defaultChainParams->GetDefaultPort(), testnetChainParams->GetDefaultPort(), testnet4ChainParams->GetDefaultPort(), signetChainParams->GetDefaultPort(), regtestChainParams->GetDefaultPort()), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
 #ifdef HAVE_SOCKADDR_UN
     argsman.AddArg("-proxy=<ip:port|path>", "Connect through SOCKS5 proxy, set -noproxy to disable (default: disabled). May be a local file path prefixed with 'unix:' if the proxy supports it.", ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_ELISION, OptionsCategory::CONNECTION);
 #else
@@ -689,9 +680,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     argsman.AddArg("-rpccookiefile=<loc>", "Location of the auth cookie. Relative paths will be prefixed by a net-specific datadir location. (default: data dir)", ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
     argsman.AddArg("-rpccookieperms=<readable-by>", strprintf("Set permissions on the RPC auth cookie file so that it is readable by [owner|group|all] (default: owner [via umask 0077])"), ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
     argsman.AddArg("-rpcpassword=<pw>", "Password for JSON-RPC connections", ArgsManager::ALLOW_ANY | ArgsManager::SENSITIVE, OptionsCategory::RPC);
-// !SCASH
-    argsman.AddArg("-rpcport=<port>", strprintf("Listen for JSON-RPC connections on <port> (default: %u, testnet: %u, regtest: %u)", scashMainBaseParams->RPCPort(), scashTestnetBaseParams->RPCPort(), scashRegtestBaseParams->RPCPort()), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::RPC);
-// !SCASH END
+    argsman.AddArg("-rpcport=<port>", strprintf("Listen for JSON-RPC connections on <port> (default: %u, testnet3: %u, testnet4: %u, signet: %u, regtest: %u)", defaultBaseParams->RPCPort(), testnetBaseParams->RPCPort(), testnet4BaseParams->RPCPort(), signetBaseParams->RPCPort(), regtestBaseParams->RPCPort()), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::RPC);
     argsman.AddArg("-rpcservertimeout=<n>", strprintf("Timeout during HTTP requests (default: %d)", DEFAULT_HTTP_SERVER_TIMEOUT), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::RPC);
     argsman.AddArg("-rpcthreads=<n>", strprintf("Set the number of threads to service RPC calls (default: %d)", DEFAULT_HTTP_THREADS), ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
     argsman.AddArg("-rpcuser=<user>", "Username for JSON-RPC connections", ArgsManager::ALLOW_ANY | ArgsManager::SENSITIVE, OptionsCategory::RPC);
@@ -925,7 +914,37 @@ bool AppInitBasicSetup(const ArgsManager& args, std::atomic<int>& exit_status)
 
 bool AppInitParameterInteraction(const ArgsManager& args)
 {
-    const CChainParams& chainparams = Params();
+        const CChainParams& chainparams = Params();
+    // !SCASH
+    if (chainparams.GetConsensus().fPowRandomX) {
+        g_isRandomX = true;
+        LogPrintf("%s: Scash RandomX proof-of-work active\n", __func__);
+        randomx_flags flags = randomx_get_flags();
+        if (flags & RANDOMX_FLAG_ARGON2_AVX2) {
+            LogPrintf("- Argon2 implementation: AVX2\n");
+        } else if (flags & RANDOMX_FLAG_ARGON2_SSSE3) {
+            LogPrintf("- Argon2 implementation: SSSE3\n");
+        } else {
+            LogPrintf("- Argon2 implementation: reference\n");
+        }
+        if (flags & RANDOMX_FLAG_JIT) {
+            LogPrintf("- JIT compiler: enabled\n");
+        } else {
+            LogPrintf("- JIT compiler: disabled\n");
+        }
+        if (flags & RANDOMX_FLAG_HARD_AES) {
+            LogPrintf("- Hardware AES: enabled\n");
+        } else {
+            LogPrintf("- Hardware AES: disabled\n");
+        }
+        if (flags & RANDOMX_FLAG_LARGE_PAGES) {
+            LogPrintf("- Large pages: enabled\n");
+        } else {
+            LogPrintf("- Large pages: disabled\n");
+        }
+        RandomXVM_SetCacheSize(args.GetIntArg("-randomxvmcachesize", DEFAULT_RANDOMX_VM_CACHE_SIZE));
+    }
+    // !SCASH END
     // ********************************************************* Step 2: parameter interactions
 
     // also see: InitParameterInteraction()
@@ -1111,22 +1130,6 @@ bool AppInitParameterInteraction(const ArgsManager& args)
         }
     }
 
-    if (args.IsArgSet("-test")) {
-        if (chainparams.GetChainType() != ChainType::REGTEST) {
-            return InitError(Untranslated("-test=<option> can only be used with regtest"));
-        }
-        const std::vector<std::string> options = args.GetArgs("-test");
-        for (const std::string& option : options) {
-            auto it = std::find_if(TEST_OPTIONS_DOC.begin(), TEST_OPTIONS_DOC.end(), [&option](const std::string& doc_option) {
-                size_t pos = doc_option.find(" (");
-                return (pos != std::string::npos) && (doc_option.substr(0, pos) == option);
-            });
-            if (it == TEST_OPTIONS_DOC.end()) {
-                InitWarning(strprintf(_("Unrecognised option \"%s\" provided in -test=<option>."), option));
-            }
-        }
-    }
-
     // Also report errors from parsing before daemonization
     {
         kernel::Notifications notifications{};
@@ -1158,24 +1161,6 @@ bool AppInitParameterInteraction(const ArgsManager& args)
             return InitError(util::ErrorString(mempool_result));
         }
     }
-
-    // !SCASH
-    if (chain == ChainType::SCASHMAIN || chain == ChainType::SCASHREGTEST || chain == ChainType::SCASHTESTNET) {
-        if (args.GetBoolArg("-mempoolfullrbf", DEFAULT_MEMPOOL_FULL_RBF)) {
-            return InitError(Untranslated("RBF is not supported."));
-        }
-        if (args.GetBoolArg("-datacarrier", DEFAULT_ACCEPT_DATACARRIER)) {
-            return InitError(Untranslated("Data carrier is not supported."));
-        }
-        if (args.GetIntArg("-randomxvmcachesize", DEFAULT_RANDOMX_VM_CACHE_SIZE) <= 0) {
-            return InitError(Untranslated("randomxvmcachesize must be a positive integer."));
-        }
-        int nDepth = args.GetIntArg("-suspiciousreorgdepth", DEFAULT_SUSPICIOUS_REORG_DEPTH);
-        if (nDepth < 2 && nDepth != 0) {
-            return InitError(Untranslated("suspiciousreorgdepth must be a positive integer, 2 or greater (use 0 to disable)."));
-        }
-    }
-    // !SCASH END
 
     return true;
 }
@@ -1398,36 +1383,6 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 {
     const ArgsManager& args = *Assert(node.args);
     const CChainParams& chainparams = Params();
-
-    // !SCASH
-    if (chainparams.GetConsensus().fPowRandomX) {
-        g_isRandomX = true;
-        LogPrintf("%s: Scash RandomX proof-of-work active\n", __func__);
-        randomx_flags flags = randomx_get_flags();
-        if (flags & RANDOMX_FLAG_ARGON2_AVX2) {
-            LogPrintf("- Argon2 implementation: AVX2\n");
-        } else if (flags & RANDOMX_FLAG_ARGON2_SSSE3) {
-            LogPrintf("- Argon2 implementation: SSSE3\n");
-        } else {
-            LogPrintf("- Argon2 implementation: reference\n");
-        }
-        if (flags & RANDOMX_FLAG_JIT) {
-            LogPrintf("- JIT compiled mode %s\n", (flags & RANDOMX_FLAG_SECURE) ? "(secure)" : "");
-        } else {
-            LogPrintf("- interpreted mode\n");
-        }
-        if (flags & RANDOMX_FLAG_HARD_AES) {
-            LogPrintf("- hardware AES mode\n");
-        } else {
-            LogPrintf("- software AES mode\n");
-        }
-        if (gArgs.GetBoolArg("-randomxfastmode", DEFAULT_RANDOMX_FAST_MODE)) {
-            LogPrintf("- full memory mode (2080 MiB)\n");
-        } else {
-            LogPrintf("- light memory mode (256 MiB)\n");
-        }
-    }
-    // !SCASH END
 
     auto opt_max_upload = ParseByteUnits(args.GetArg("-maxuploadtarget", DEFAULT_MAX_UPLOAD_TARGET), ByteUnit::M);
     if (!opt_max_upload) {

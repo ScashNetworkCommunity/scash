@@ -520,7 +520,7 @@ Solo es posible firmar con direcciones de tipo «heredero».</translation>
     </message>
     <message>
         <source>&amp;Backup Wallet…</source>
-        <translation type="unfinished">&amp;Copia de seguridad del monedero</translation>
+        <translation type="unfinished">&amp;Respaldar monedero…</translation>
     </message>
     <message>
         <source>&amp;Change Passphrase…</source>
@@ -563,8 +563,20 @@ Solo es posible firmar con direcciones de tipo «heredero».</translation>
         <translation type="unfinished">Cerrar todos los monederos...</translation>
     </message>
     <message>
+        <source>&amp;File</source>
+        <translation type="unfinished">&amp;Archivo</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation type="unfinished">&amp;Parámetros</translation>
+    </message>
+    <message>
         <source>&amp;Help</source>
         <translation type="unfinished">Ay&amp;uda</translation>
+    </message>
+    <message>
+        <source>Tabs toolbar</source>
+        <translation type="unfinished">Barra de pestañas</translation>
     </message>
     <message>
         <source>Syncing Headers (%1%)…</source>
@@ -927,11 +939,11 @@ Solo es posible firmar con direcciones de tipo «heredero».</translation>
     </message>
     <message>
         <source>Received with label</source>
-        <translation type="unfinished">Recibido con dirección</translation>
+        <translation type="unfinished">Recibido con etiqueta</translation>
     </message>
     <message>
         <source>Received with address</source>
-        <translation type="unfinished">Recibido con etiqueta</translation>
+        <translation type="unfinished">Recibido con dirección</translation>
     </message>
     <message>
         <source>Date</source>
@@ -983,7 +995,7 @@ Solo es posible firmar con direcciones de tipo «heredero».</translation>
     </message>
     <message>
         <source>Copy after fee</source>
-        <translation type="unfinished">Copiar después de la comisión</translation>
+        <translation type="unfinished">Copiar tras comisión</translation>
     </message>
     <message>
         <source>Copy bytes</source>
@@ -2214,6 +2226,10 @@ Si recibes este error, debes solicitar al comerciante que te proporcione un URI 
         <translation type="unfinished">Para especificar un lugar personalizado del directorio de datos, utiliza la opción «%1».</translation>
     </message>
     <message>
+        <source>Blocksdir</source>
+        <translation type="unfinished">Directorio de bloques</translation>
+    </message>
+    <message>
         <source>To specify a non-default location of the blocks directory use the '%1' option.</source>
         <translation type="unfinished">Para especificar una localización personalizada del directorio de bloques, usa la opción "%1". </translation>
     </message>
@@ -2406,10 +2422,6 @@ Si recibes este error, debes solicitar al comerciante que te proporcione un URI 
     <message>
         <source>Direction/Type</source>
         <translation type="unfinished">Dirección/Tipo</translation>
-    </message>
-    <message>
-        <source>The BIP324 session ID string in hex.</source>
-        <translation type="unfinished">La cadena del identificador de sesión BIP324 en formato hexadecimal.</translation>
     </message>
     <message>
         <source>The BIP324 session ID string in hex.</source>
@@ -3043,7 +3055,7 @@ Nota: Dado que la comisión se calcula por byte, una tasa de «100 satoshis por 
     </message>
     <message>
         <source>Copy after fee</source>
-        <translation type="unfinished">Copiar después de la comisión</translation>
+        <translation type="unfinished">Copiar tras comisión</translation>
     </message>
     <message>
         <source>Copy bytes</source>
@@ -3876,10 +3888,6 @@ Nota: Dado que la comisión se calcula por byte, una tasa de «100 satoshis por 
         <translation type="unfinished">Dirección</translation>
     </message>
     <message>
-        <source>ID</source>
-        <translation type="unfinished">Identificador</translation>
-    </message>
-    <message>
         <source>Exporting Failed</source>
         <translation type="unfinished">Exportación incorrecta</translation>
     </message>
@@ -4324,14 +4332,6 @@ Ve a Archivo &gt; Abrir monedero para cargar uno.
         <translation type="unfinished">Ha fallado el vaciado del archivo para deshacer al disco. Es probable que se deba a un error de E/S.</translation>
     </message>
     <message>
-        <source>Flushing block file to disk failed. This is likely the result of an I/O error.</source>
-        <translation type="unfinished">Ha fallado el vaciado del archivo de bloques al disco. Es probable que se deba a un error de E/S.</translation>
-    </message>
-    <message>
-        <source>Flushing undo file to disk failed. This is likely the result of an I/O error.</source>
-        <translation type="unfinished">Ha fallado el vaciado del archivo para deshacer al disco. Es probable que se deba a un error de E/S.</translation>
-    </message>
-    <message>
         <source>Incompatible options: -dnsseed=1 was explicitly specified, but -onlynet forbids connections to IPv4/IPv6</source>
         <translation type="unfinished">Opciones incompatibles: -dnsseed=1 se especificó explícitamente, pero -onlynet prohíbe conexiones a IPv4/IPv6.</translation>
     </message>
@@ -4346,14 +4346,6 @@ Ve a Archivo &gt; Abrir monedero para cargar uno.
     <message>
         <source>Maximum transaction weight is too low, can not accommodate change output</source>
         <translation type="unfinished">La ponderación máxima de la transacción es demasiado bajo, por lo que no puede incluir la salida de cambio.</translation>
-    </message>
-    <message>
-        <source>Maximum transaction weight is less than transaction weight without inputs</source>
-        <translation type="unfinished">El peso máximo de la transacción es menor que el peso de la transacción sin entradas.</translation>
-    </message>
-    <message>
-        <source>Maximum transaction weight is too low, can not accommodate change output</source>
-        <translation type="unfinished">El peso máximo de la transacción es demasiado bajo, por lo que no puede incluir la salida de cambio.</translation>
     </message>
     <message>
         <source>Outbound connections restricted to CJDNS (-onlynet=cjdns) but -cjdnsreachable is not provided</source>
@@ -4464,10 +4456,6 @@ No se puede restaurar el respaldo del monedero.</translation>
     <message>
         <source>Copyright (C) %i-%i</source>
         <translation type="unfinished">© %i-%i</translation>
-    </message>
-    <message>
-        <source>Corrupt block found indicating potential hardware failure.</source>
-        <translation type="unfinished">Se ha encontrado un bloque corrupto que indica un posible fallo del hardware.</translation>
     </message>
     <message>
         <source>Corrupt block found indicating potential hardware failure.</source>

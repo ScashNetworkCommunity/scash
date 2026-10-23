@@ -158,7 +158,7 @@ template <unsigned int BITS>
 void base_uint<BITS>::SetHex(const char* psz)
 {
     base_blob<BITS> b;
-    b.SetHex(psz);
+    b.SetHexDeprecated(psz);
     for (int x = 0; x < this->WIDTH; ++x) {
         this->pn[x] = ReadLE32(b.begin() + x*4);
     }

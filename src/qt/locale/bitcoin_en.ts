@@ -2778,7 +2778,7 @@ If you are receiving this error you should request the merchant provide a BIP21 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../optionsdialog.cpp" line="-391"/>
+        <location filename="../optionsdialog.cpp" line="-389"/>
         <source>Embedded &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>

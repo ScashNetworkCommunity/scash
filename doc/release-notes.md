@@ -37,18 +37,6 @@ unsupported systems.
 Notable changes
 ===============
 
-### Wallet
-
-- #34156 wallet: fix unnamed legacy wallet migration failure
-- #34215 wallettool: fix unnamed createfromdump failure walletsdir deletion
-- #34226 wallet: test: Relative wallet failed migration cleanup
-- #34370 Fix #34222 backport bugs
-
-### P2P
-
-- #33723 chainparams: remove dnsseed.bitcoin.dashjr-list-of-p2p-nodes.us
-
-=======
 ### P2P
 
 - #33050 net, validation: don't punish peers for consensus-invalid txs

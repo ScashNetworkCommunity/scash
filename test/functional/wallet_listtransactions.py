@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-present The Bitcoin Core developers
+# Copyright (c) 2014-2022 The Bitcoin Core developers
+# Copyright (c) 2024 The Scash developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the listtransactions API."""
@@ -30,9 +31,6 @@ class ListTransactionsTest(BitcoinTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 3
-        # whitelist peers to speed up tx relay / mempool sync
-        self.noban_tx_relay = True
-        self.extra_args = [["-walletrbf=0"]] * self.num_nodes
         # This test isn't testing txn relay/timing, so set whitelist on the
         # peers for instant txn relay. This speeds up the test run time 2-3x.
         self.extra_args = [["-whitelist=noban@127.0.0.1", "-walletrbf=0"]] * self.num_nodes

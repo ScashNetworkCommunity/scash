@@ -48,8 +48,6 @@ const std::function<std::string()> G_TEST_GET_FULL_NAME = []() {
     return g_running_benchmark_name;
 };
 
-const std::function<std::string()> G_TEST_GET_FULL_NAME{};
-
 namespace {
 
 void GenerateTemplateResults(const std::vector<ankerl::nanobench::Result>& benchmarkResults, const fs::path& file, const char* tpl)

@@ -63,7 +63,6 @@ class MempoolAcceptanceTest(BitcoinTestFramework):
             # !SCASH
             "-datacarrier=1",
             # !SCASH END
-            '-mempoolfullrbf=0',
         ]] * self.num_nodes
         self.supports_cli = False
 

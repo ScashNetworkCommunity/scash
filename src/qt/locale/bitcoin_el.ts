@@ -2226,10 +2226,6 @@ If you are receiving this error you should request the merchant provide a BIP21 
         <translation type="unfinished">Κατάλογος Δεδομένων</translation>
     </message>
     <message>
-        <source>To specify a non-default location of the data directory use the '%1' option.</source>
-        <translation type="unfinished">Για να καθορίσετε μια μη προεπιλεγμένη θέση του καταλόγου δεδομένων, χρησιμοποιήστε την επιλογή '%1'.</translation>
-    </message>
-    <message>
         <source>Blocksdir</source>
         <translation type="unfinished">Κατάλογος των Μπλοκς</translation>
     </message>

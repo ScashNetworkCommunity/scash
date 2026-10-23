@@ -192,14 +192,6 @@ Il n’est possible de signer qu’avec les adresses de type « legacy ».</tr
         <translation type="unfinished">Retour</translation>
     </message>
     <message>
-        <source>Continue</source>
-        <translation type="unfinished">Poursuivre</translation>
-    </message>
-    <message>
-        <source>Back</source>
-        <translation type="unfinished">Retour</translation>
-    </message>
-    <message>
         <source>Remember that encrypting your wallet cannot fully protect your bitcoins from being stolen by malware infecting your computer.</source>
         <translation type="unfinished">N’oubliez pas que le chiffrement de votre portemonnaie ne peut pas protéger entièrement vos bitcoins contre le vol par des programmes malveillants qui infecteraient votre ordinateur.</translation>
     </message>
@@ -583,7 +575,7 @@ Il n’est possible de signer qu’avec les adresses de type « legacy ».</tr
     </message>
     <message>
         <source>&amp;Load PSBT from file…</source>
-        <translation type="unfinished">&amp;Charger une TBSP d’un fichier…</translation>
+        <translation type="unfinished">&amp;Charger la TBSP d’un fichier…</translation>
     </message>
     <message>
         <source>Open &amp;URI…</source>
@@ -2822,10 +2814,6 @@ Pour plus de précisions sur cette console, tapez %6.
         <translation type="unfinished">Base58 (ancien)</translation>
     </message>
     <message>
-        <source>Base58 (Legacy)</source>
-        <translation type="unfinished">Base58 (ancien)</translation>
-    </message>
-    <message>
         <source>Not recommended due to higher fees and less protection against typos.</source>
         <translation type="unfinished">Non recommandé en raison de frais élevés et d’une protection moindre contre les fautes de frappe.</translation>
     </message>
@@ -4466,18 +4454,6 @@ Impossible de restaurer la sauvegarde du portemonnaie</translation>
         <translation type="unfinished">Les données Assumeutxo sont introuvables pour l’empreinte de bloc « %s » donnée.</translation>
     </message>
     <message>
-        <source>whitebind may only be used for incoming connections ("out" was passed)</source>
-        <translation type="unfinished">« whitebind » ne peut être utilisé que pour les connexions entrantes (« out » a été passé)</translation>
-    </message>
-    <message>
-        <source>A fatal internal error occurred, see debug.log for details: </source>
-        <translation type="unfinished">Une erreur interne fatale est survenue. Pour plus de précisions, consultez debug.log :</translation>
-    </message>
-    <message>
-        <source>Assumeutxo data not found for the given blockhash '%s'.</source>
-        <translation type="unfinished">Les données Assumeutxo sont introuvables pour l’empreinte de bloc « %s » donnée.</translation>
-    </message>
-    <message>
         <source>Block verification was interrupted</source>
         <translation type="unfinished">La confirmation des blocs a été interrompue</translation>
     </message>
@@ -4682,14 +4658,6 @@ Impossible de restaurer la sauvegarde du portemonnaie</translation>
         <translation type="unfinished">Échec de déconnexion du bloc.</translation>
     </message>
     <message>
-        <source>Failed to connect best block (%s).</source>
-        <translation type="unfinished">Échec de connexion du meilleur bloc (%s).</translation>
-    </message>
-    <message>
-        <source>Failed to disconnect block.</source>
-        <translation type="unfinished">Échec de déconnexion du bloc.</translation>
-    </message>
-    <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
         <translation type="unfinished">Échec d’écoute sur tous les ports. Si cela est voulu, utiliser -listen=0.</translation>
     </message>
@@ -4708,22 +4676,6 @@ Impossible de restaurer la sauvegarde du portemonnaie</translation>
     <message>
         <source>Failed to verify database</source>
         <translation type="unfinished">Échec de confirmation de la base de données</translation>
-    </message>
-    <message>
-        <source>Failed to write block.</source>
-        <translation type="unfinished">Échec d’écriture du bloc.</translation>
-    </message>
-    <message>
-        <source>Failed to write to block index database.</source>
-        <translation type="unfinished">Échec d’écriture dans la base de données d’index des blocs.</translation>
-    </message>
-    <message>
-        <source>Failed to write to coin database.</source>
-        <translation type="unfinished">Échec d’écriture dans la base de données des pièces.</translation>
-    </message>
-    <message>
-        <source>Failed to write undo data.</source>
-        <translation type="unfinished">Échec d’écriture des données d’annulation.</translation>
     </message>
     <message>
         <source>Failed to write block.</source>
@@ -4836,10 +4788,6 @@ Impossible de restaurer la sauvegarde du portemonnaie</translation>
     <message>
         <source>Loading wallet…</source>
         <translation type="unfinished">Chargement du portemonnaie…</translation>
-    </message>
-    <message>
-        <source>Maximum transaction weight must be between %d and %d</source>
-        <translation type="unfinished">Le poids maximal de la transaction doit être compris entre %d et %d</translation>
     </message>
     <message>
         <source>Maximum transaction weight must be between %d and %d</source>
@@ -4988,10 +4936,6 @@ Impossible de restaurer la sauvegarde du portemonnaie</translation>
     <message>
         <source>The wallet will avoid paying less than the minimum relay fee.</source>
         <translation type="unfinished">Le portemonnaie évitera de payer moins que les frais minimaux de relais.</translation>
-    </message>
-    <message>
-        <source>There is no ScriptPubKeyManager for this address</source>
-        <translation type="unfinished">Il n’y a pas de « ScriptPubKeyManager » pour cette adresse.</translation>
     </message>
     <message>
         <source>There is no ScriptPubKeyManager for this address</source>

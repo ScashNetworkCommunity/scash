@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-# Copyright (c) 2020-present The Bitcoin Core developers
+# Copyright (c) 2020-2022 The Bitcoin Core developers
+# Copyright (c) 2024 The Scash developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test Migrating a wallet from legacy to descriptor."""
@@ -1504,29 +1505,6 @@ class WalletMigrationTest(BitcoinTestFramework):
         self.clear_default_wallet(backup_path)
 
 
-    def unsynced_wallet_on_pruned_node_fails(self):
-        self.log.info("Test migration of an unsynced wallet on a pruned node fails gracefully")
-        shutil.rmtree(self.nodes[0].wallets_path / "database", ignore_errors=True)
-        wallet = self.create_legacy_wallet("", load_on_startup=False)
-        last_wallet_synced_block = wallet.getwalletinfo()['lastprocessedblock']['height']
-
-        # Generate blocks just so the wallet best block is pruned
-        self.restart_node(0, ["-fastprune", "-prune=1", "-nowallet"])
-        self.generate(self.nodes[0], 450, sync_fun=self.no_op)
-        self.nodes[0].pruneblockchain(250)
-        # Ensure next block to sync is unavailable
-        assert_raises_rpc_error(-1, "Block not available (pruned data)", self.nodes[0].getblock, self.nodes[0].getblockhash(last_wallet_synced_block + 1))
-
-        # Check migration failure
-        mocked_time = int(time.time())
-        self.nodes[0].setmocktime(mocked_time)
-        assert_raises_rpc_error(-4, "last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)\nUnable to restore backup of wallet.", self.nodes[0].migratewallet, wallet_name="")
-        self.nodes[0].setmocktime(0)
-
-        # The wallet will not have been restored, and the backup will be in the wallets directory.
-        backup_path = self.nodes[0].wallets_path / f"default_wallet_{mocked_time}.legacy.bak"
-        assert backup_path.exists()
-
     def run_test(self):
         self.master_node = self.nodes[0]
         self.old_node = self.nodes[1]
@@ -1572,9 +1550,6 @@ class WalletMigrationTest(BitcoinTestFramework):
         self.test_solvable_no_privs()
 
         # Note: After this test the first 250 blocks of 'master_node' are pruned
-        self.unsynced_wallet_on_pruned_node_fails()
-
-        # Note: After this test the first 250 blocks of 'nodes[0]' are pruned
         self.unsynced_wallet_on_pruned_node_fails()
 
 if __name__ == '__main__':

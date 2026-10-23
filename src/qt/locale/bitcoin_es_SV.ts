@@ -1644,10 +1644,6 @@ El proceso de migración creará una copia de seguridad de la billetera antes de
         <translation type="unfinished">Aceptar conexiones externas.</translation>
     </message>
     <message>
-        <source>Accept connections from outside.</source>
-        <translation type="unfinished">Aceptar conexiones externas.</translation>
-    </message>
-    <message>
         <source>Allow incomin&amp;g connections</source>
         <translation type="unfinished">&amp;Permitir conexiones entrantes</translation>
     </message>
@@ -2990,7 +2986,7 @@ Nota: Dado que la comisión se calcula por byte, una tasa de "100 satoshis por k
     </message>
     <message>
         <source>Copy amount</source>
-        <translation type="unfinished">Copiar importe</translation>
+        <translation type="unfinished">Copiar cantidad</translation>
     </message>
     <message>
         <source>Copy fee</source>
@@ -4025,10 +4021,6 @@ Ir a "Archivo &gt; Abrir billetera" para cargar una.
         <translation type="unfinished">No se puede pasar de la versión %i a la versión anterior %i.  La versión de la billetera no tiene cambios.</translation>
     </message>
     <message>
-        <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
-        <translation type="unfinished">No se puede bloquear el directorio de datos %s. %s probablemente ya se está ejecutando.</translation>
-    </message>
-    <message>
         <source>Cannot upgrade a non HD split wallet from version %i to version %i without upgrading to support pre-split keypool. Please use version %i or no version specified.</source>
         <translation type="unfinished">No se puede actualizar una billetera dividida no HD de la versión %i a la versión %i sin actualizar para admitir el pool de claves anterior a la división. Usa la versión %i o no especifiques la versión.</translation>
     </message>
@@ -4747,10 +4739,6 @@ No se puede restaurar la copia de seguridad de la billetera.</translation>
     <message>
         <source>No addresses available</source>
         <translation type="unfinished">No hay direcciones disponibles</translation>
-    </message>
-    <message>
-        <source>Not enough file descriptors available.</source>
-        <translation type="unfinished">No hay suficientes descriptores de archivo disponibles.</translation>
     </message>
     <message>
         <source>Not found pre-selected input %s</source>
