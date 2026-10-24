@@ -462,15 +462,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     const auto testnetChainParams = CreateChainParams(argsman, ChainType::TESTNET);
     const auto testnet4ChainParams = CreateChainParams(argsman, ChainType::TESTNET4);
     const auto signetChainParams = CreateChainParams(argsman, ChainType::SIGNET);
-        const auto regtestChainParams = CreateChainParams(argsman, ChainType::REGTEST);
-    // !SCASH
-    const auto scashRegtestBaseParams = CreateBaseChainParams(ChainType::SCASHREGTEST);
-    const auto scashTestnetBaseParams = CreateBaseChainParams(ChainType::SCASHTESTNET);
-    const auto scashMainBaseParams = CreateBaseChainParams(ChainType::SCASHMAIN);
-    const auto scashRegtestChainParams = CreateChainParams(argsman, ChainType::SCASHREGTEST);
-    const auto scashTestnetChainParams = CreateChainParams(argsman, ChainType::SCASHTESTNET);
-    const auto scashMainChainParams = CreateChainParams(argsman, ChainType::SCASHMAIN);
-    // !SCASH END
+    const auto regtestChainParams = CreateChainParams(argsman, ChainType::REGTEST);
 
     // Hidden Options
     std::vector<std::string> hidden_args = {
@@ -928,21 +920,20 @@ bool AppInitParameterInteraction(const ArgsManager& args)
             LogPrintf("- Argon2 implementation: reference\n");
         }
         if (flags & RANDOMX_FLAG_JIT) {
-            LogPrintf("- JIT compiler: enabled\n");
+            LogPrintf("- JIT compiled mode %s\n", (flags & RANDOMX_FLAG_SECURE) ? "(secure)" : "");
         } else {
-            LogPrintf("- JIT compiler: disabled\n");
+            LogPrintf("- interpreted mode\n");
         }
         if (flags & RANDOMX_FLAG_HARD_AES) {
-            LogPrintf("- Hardware AES: enabled\n");
+            LogPrintf("- hardware AES mode\n");
         } else {
-            LogPrintf("- Hardware AES: disabled\n");
+            LogPrintf("- software AES mode\n");
         }
-        if (flags & RANDOMX_FLAG_LARGE_PAGES) {
-            LogPrintf("- Large pages: enabled\n");
+        if (args.GetBoolArg("-randomxfastmode", DEFAULT_RANDOMX_FAST_MODE)) {
+            LogPrintf("- full memory mode (2080 MiB)\n");
         } else {
-            LogPrintf("- Large pages: disabled\n");
+            LogPrintf("- light memory mode (256 MiB)\n");
         }
-        RandomXVM_SetCacheSize(args.GetIntArg("-randomxvmcachesize", DEFAULT_RANDOMX_VM_CACHE_SIZE));
     }
     // !SCASH END
     // ********************************************************* Step 2: parameter interactions

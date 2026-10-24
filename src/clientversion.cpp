@@ -32,7 +32,7 @@ using util::Join;
  * target servers or GUI users specifically.
  */
 // !SCASH
-const std::string CLIENT_NAME("Scash");
+const std::string UA_NAME("Scash");
 // !SCASH END
 
 #include <bitcoin-build-info.h>

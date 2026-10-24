@@ -62,7 +62,7 @@ static std::optional<int> WalletAppInit(ArgsManager& args, int argc, char* argv[
     const bool missing_args{argc < 2};
     if (missing_args || HelpRequested(args) || args.IsArgSet("-version")) {
         // !SCASH
-        std::string strUsage = strprintf("%s scash-wallet version", PACKAGE_NAME) + " " + FormatFullVersion() + "\n";
+        std::string strUsage = strprintf("%s scash-wallet version", CLIENT_NAME) + " " + FormatFullVersion() + "\n";
         // !SCASH END
 
         if (args.GetBoolArg("-version", false)) {
@@ -70,7 +70,7 @@ static std::optional<int> WalletAppInit(ArgsManager& args, int argc, char* argv[
         } else {
             strUsage += "\n"
                         // !SCASH
-                        "scash-wallet is an offline tool for creating and interacting with " PACKAGE_NAME " wallet files.\n"
+                        "scash-wallet is an offline tool for creating and interacting with " CLIENT_NAME " wallet files.\n"
                         "By default scash-wallet will act on wallets in the default mainnet wallet directory in the datadir.\n"
                         "To change the target wallet, use the -datadir, -wallet and -regtest/-signet/-testnet arguments.\n\n"
                         "Usage:\n"

@@ -66,7 +66,6 @@
 // !SCASH
 #include <common/args.h>
 #include <node/interface_ui.h>
-#include <shutdown.h>
 // !SCASH END
 
 #include <algorithm>
@@ -824,13 +823,12 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
     {
         const CTransaction* ptxConflicting = m_pool.GetConflictTx(txin.prevout);
         if (ptxConflicting) {
-            // !SCASH
-            // First-seen rule to reject conflicting transactions (legacy behaviour disables RBF).
-            if (g_isRandomX) {
-                return state.Invalid(TxValidationResult::TX_MEMPOOL_POLICY, "txn-mempool-conflict");
-            }
-            // !SCASH END
-
+                // !SCASH
+                // First-seen rule to reject conflicting transactions (legacy behaviour disables RBF).
+                if (g_isRandomX) {
+                    return state.Invalid(TxValidationResult::TX_MEMPOOL_POLICY, "txn-mempool-conflict");
+                }
+                // !SCASH END
             if (!args.m_allow_replacement) {
                 // Transaction conflicts with a mempool tx, but we're not allowing replacements in this context.
                 return state.Invalid(TxValidationResult::TX_MEMPOOL_POLICY, "bip125-replacement-disallowed");
@@ -1246,7 +1244,7 @@ bool MemPoolAccept::PolicyScriptChecks(const ATMPArgs& args, Workspace& ws)
     TxValidationState& state = ws.m_state;
 
     // !SCASH
-    const unsigned int scriptVerifyFlags = STANDARD_SCRIPT_VERIFY_FLAGS | (g_isRandomX ? SCRIPT_VERIFY_DISCOURAGE_ORDINALS : 0);
+    const unsigned int scriptVerifyFlags = STANDARD_SCRIPT_VERIFY_FLAGS | (g_isRandomX ? static_cast<unsigned int>(SCRIPT_VERIFY_DISCOURAGE_ORDINALS) : 0U);
     // !SCASH END
 
     // Check input scripts and signatures.
@@ -2438,28 +2436,6 @@ bool Chainstate::ConnectBlock(const CBlock& block, BlockValidationState& state, 
                                CCoinsViewCache& view, bool fJustCheck)
 {
     AssertLockHeld(cs_main);
-
-    // !SCASH
-    int nSuspiciousReorgDepth = gArgs.GetIntArg("-suspiciousreorgdepth", DEFAULT_SUSPICIOUS_REORG_DEPTH);
-    if (nSuspiciousReorgDepth && g_isIBDFinished) {
-        int nDisconnect = 0;
-        int nConnect = 0;
-        for (const CBlockIndex* pindexIter = pindex; pindexIter && pindexIter != m_chain.Tip(); pindexIter = pindexIter->pprev) {
-            if (m_chain.Contains(pindexIter)) {
-                break;
-            }
-            nConnect++;
-        }
-        nDisconnect = m_chain.Height() - (pindex->nHeight - nConnect);
-        if (nDisconnect >= nSuspiciousReorgDepth) {
-            LogPrintf("*** Suspicious reorg depth detected (%d blocks, limit %d)! Shutting down node...
-", nDisconnect, nSuspiciousReorgDepth);
-            StartShutdown();
-            return false;
-        }
-    }
-    // !SCASH END
-
     assert(pindex);
 
     uint256 block_hash{block.GetHash()};
@@ -3374,7 +3350,26 @@ bool Chainstate::ActivateBestChainStep(BlockValidationState& state, CBlockIndex*
     if (m_mempool) AssertLockHeld(m_mempool->cs);
 
     const CBlockIndex* pindexOldTip = m_chain.Tip();
-    const CBlockIndex* pindexFork = m_chain.FindFork(pindexMostWork);
+        const CBlockIndex* pindexFork = m_chain.FindFork(pindexMostWork);
+    // !SCASH
+    // If reorg length is suspicious, don't activate best chain, just log error and shut down. Let human operator decide what to do.
+    if (g_isRandomX && pindexOldTip && pindexFork) {
+        int suspiciousDepth = gArgs.GetIntArg("-suspiciousreorgdepth", DEFAULT_SUSPICIOUS_REORG_DEPTH);
+        if (suspiciousDepth > 0) {
+            auto reorgLength = pindexOldTip->nHeight - pindexFork->nHeight;
+            if (reorgLength >= suspiciousDepth) {
+                const auto strMessage = strprintf("Detected suspicious reorg of %d blocks, local policy allows %d blocks.\n", reorgLength, suspiciousDepth-1) +
+                                        strprintf("** current tip @ height %d (%s)\n", pindexOldTip->nHeight, pindexOldTip->phashBlock->GetHex()) +
+                                        strprintf("**  reorg tip @ height %d (%s)\n", pindexMostWork->nHeight, pindexMostWork->phashBlock->GetHex()) +
+                                        strprintf("**  fork point @ height %d (%s)\n", pindexFork->nHeight, pindexFork->phashBlock->GetHex());
+                LogPrintf("%s", strMessage);
+                uiInterface.ThreadSafeMessageBox(Untranslated(strMessage), "", CClientUIInterface::MSG_ERROR);
+                FatalError(m_chainman.GetNotifications(), state, Untranslated(strMessage));
+                return false;
+            }
+        }
+    }
+    // !SCASH END
 
     // Disconnect active blocks which are no longer in the best chain.
     bool fBlocksDisconnected = false;
@@ -4393,6 +4388,15 @@ bool ChainstateManager::AcceptBlockHeader(const CBlockHeader& block, BlockValida
             LogDebug(BCLog::VALIDATION, "%s: Consensus::ContextualCheckBlockHeader: %s, %s\n", __func__, hash.ToString(), state.ToString());
             return false;
         }
+
+        // !SCASH
+        // Verify timestamp (and thus the epoch) in contextual check above, before performing full pow verification.
+        // This ordering help prevents resource denial when -randomxfastmode=1, as VM creation is based on epoch.
+        if (g_isRandomX && !CheckBlockHeader(block, state, GetConsensus())) {
+            LogDebug(BCLog::VALIDATION, "%s: Consensus::ContextualCheckBlockHeader: %s, %s\n", __func__, hash.ToString(), state.ToString());
+            return false;
+        }
+        // !SCASH END
 
         /* Determine if this block descends from any block which has been found
          * invalid (m_failed_blocks), then mark pindexPrev and any blocks between

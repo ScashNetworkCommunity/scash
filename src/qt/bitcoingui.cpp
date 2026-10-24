@@ -373,7 +373,7 @@ void BitcoinGUI::createActions()
     showHelpMessageAction = new QAction(tr("&Command-line options"), this);
     showHelpMessageAction->setMenuRole(QAction::NoRole);
     // !SCASH
-    showHelpMessageAction->setStatusTip(tr("Show the %1 help message to get a list with possible Scash command-line options").arg(PACKAGE_NAME));
+    showHelpMessageAction->setStatusTip(tr("Show the %1 help message to get a list with possible Scash command-line options").arg(CLIENT_NAME));
     // !SCASH END
 
     m_mask_values_action = new QAction(tr("&Mask values"), this);

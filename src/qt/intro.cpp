@@ -392,7 +392,7 @@ void Intro::UpdatePruneLabels(bool prune_checked)
         tr("(sufficient to restore backups %n day(s) old)", "", expected_backup_days));
     ui->sizeWarningLabel->setText(
         // !SCASH
-        tr("%1 will download and store a copy of the Scash block chain.").arg(PACKAGE_NAME) + " " +
+        tr("%1 will download and store a copy of the Scash block chain.").arg(CLIENT_NAME) + " " +
         // !SCASH END
         storageRequiresMsg.arg(m_required_space_gb) + " " +
         tr("The wallet will also be stored in this directory.")

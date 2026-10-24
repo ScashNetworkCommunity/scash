@@ -449,6 +449,8 @@ private:
         // !SCASH
         case ChainType::TESTNET:
             return " btctestnet";
+        case ChainType::TESTNET4:
+            return " btctestnet4";
         case ChainType::SIGNET:
             return " btcsignet";
         case ChainType::REGTEST:

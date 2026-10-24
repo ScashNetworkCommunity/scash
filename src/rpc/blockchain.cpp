@@ -4,6 +4,9 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <rpc/blockchain.h>
+// !SCASH
+#include <pow.h>
+// !SCASH END
 
 #include <blockfilter.h>
 #include <chain.h>
