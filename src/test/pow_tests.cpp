@@ -263,10 +263,10 @@ BOOST_AUTO_TEST_CASE(Check_RandomX_Key_Generation)
     // RandomX key is sha256d of seed string where the epoch number changes
     // "Scash/RandomX/Epoch/1"
     uint256 hash = GetSeedHash(1);
-    BOOST_CHECK_EQUAL(hash, uint256S("ccbde830c787b2061cbd9515d9c83d411fcf04cc6e1e47dcc3903c0dee4b1536"));
+    BOOST_CHECK_EQUAL(hash, uint256{"ccbde830c787b2061cbd9515d9c83d411fcf04cc6e1e47dcc3903c0dee4b1536"});
     // "Scash/RandomX/Epoch/999"
     hash = GetSeedHash(999);
-    BOOST_CHECK_EQUAL(hash, uint256S("b8ea6d0f30d6f7250bd8f2f62c9d83a61e1391e14cff95888db3a89bbdd183d5"));
+    BOOST_CHECK_EQUAL(hash, uint256{"b8ea6d0f30d6f7250bd8f2f62c9d83a61e1391e14cff95888db3a89bbdd183d5"});
 }
 
 BOOST_AUTO_TEST_CASE(Check_RandomX_BlockHeader)
@@ -339,7 +339,7 @@ BOOST_AUTO_TEST_CASE(Check_RandomX_BlockHeader)
     // rx = 0a4a15246bd06225436f4bbfa9f8c8e1c027435edd4dd6854295f877176b6607
     // cm = 000023da558c59d4cadbb3dd60078a55be1c2e10ed9b3e43628cf609561d2392
     block = chainParams->GenesisBlock().GetBlockHeader();
-    block.hashRandomX = uint256S("0a4a15246bd06225436f4bbfa9f8c8e1c027435edd4dd6854295f877176b6607");
+    block.hashRandomX = uint256{"0a4a15246bd06225436f4bbfa9f8c8e1c027435edd4dd6854295f877176b6607"};
     assert(CheckProofOfWorkRandomX(block, consensus, POW_VERIFY_COMMITMENT_ONLY));
     assert(!CheckProofOfWorkRandomX(block, consensus, POW_VERIFY_FULL));
 
@@ -352,20 +352,20 @@ BOOST_AUTO_TEST_CASE(Check_RandomX_BlockHeader)
 	char rx_cm[RANDOMX_HASH_SIZE];
     randomx_calculate_commitment(&block, sizeof(block), rx_hash.data(), rx_cm);
     assert(memcmp(rx_cm, rx_cm_bad, sizeof(rx_cm)) != 0);
-    BOOST_CHECK_EQUAL(uint256(std::vector<unsigned char>(rx_cm, rx_cm + sizeof(rx_cm))), uint256S("0000388a6a0aa5eaa14ce3aa066106e1d3f82a05b4a8fc6c6c7b128924a24868"));
+    BOOST_CHECK_EQUAL(uint256(std::vector<unsigned char>(rx_cm, rx_cm + sizeof(rx_cm))), uint256{"0000388a6a0aa5eaa14ce3aa066106e1d3f82a05b4a8fc6c6c7b128924a24868"});
 
     // Basic tests of GetRandomXCommitment()
     block = chainParams->GenesisBlock();
     uint256 cm = GetRandomXCommitment(chainParams->GenesisBlock());
-    BOOST_CHECK_EQUAL(cm, uint256S("0000388a6a0aa5eaa14ce3aa066106e1d3f82a05b4a8fc6c6c7b128924a24868"));
+    BOOST_CHECK_EQUAL(cm, uint256{"0000388a6a0aa5eaa14ce3aa066106e1d3f82a05b4a8fc6c6c7b128924a24868"});
     cm = GetRandomXCommitment(chainParams->GenesisBlock(), NULL);
-    BOOST_CHECK_EQUAL(cm, uint256S("0000388a6a0aa5eaa14ce3aa066106e1d3f82a05b4a8fc6c6c7b128924a24868"));
+    BOOST_CHECK_EQUAL(cm, uint256{"0000388a6a0aa5eaa14ce3aa066106e1d3f82a05b4a8fc6c6c7b128924a24868"});
     // set inHash parameter
     cm = GetRandomXCommitment(chainParams->GenesisBlock(), &block.hashRandomX);
-    BOOST_CHECK_EQUAL(cm, uint256S("0000388a6a0aa5eaa14ce3aa066106e1d3f82a05b4a8fc6c6c7b128924a24868"));
+    BOOST_CHECK_EQUAL(cm, uint256{"0000388a6a0aa5eaa14ce3aa066106e1d3f82a05b4a8fc6c6c7b128924a24868"});
     rx_hash = uint256(123);
     cm = GetRandomXCommitment(chainParams->GenesisBlock(), &rx_hash);
-    BOOST_CHECK_NE(cm, uint256S("0000388a6a0aa5eaa14ce3aa066106e1d3f82a05b4a8fc6c6c7b128924a24868"));
+    BOOST_CHECK_NE(cm, uint256{"0000388a6a0aa5eaa14ce3aa066106e1d3f82a05b4a8fc6c6c7b128924a24868"});
 }
 
 // !SCASH END
@@ -423,7 +423,7 @@ BOOST_AUTO_TEST_CASE(asert_difficulty_test) {
     // !SCASH
     // Use BCH powLimit to replicate BCH tests
     Consensus::Params mutableParams = CreateChainParams(*m_node.args, ChainType::SCASHMAIN)->GetConsensus();
-    mutableParams.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    mutableParams.powLimit = uint256{"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
     std::vector<CBlockIndexPtr> blocks(3000 + 2*24*3600);
     // !SCASH END
     mutableParams.asertAnchorParams.reset();  // clear hard-coded anchor block so that we may perform these below tests
@@ -666,7 +666,7 @@ BOOST_AUTO_TEST_CASE(calculate_asert_test) {
     // !SCASH
     // Use BCH powLimit to replicate BCH tests
     Consensus::Params params = CreateChainParams(*m_node.args, ChainType::SCASHMAIN)->GetConsensus();
-    params.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    params.powLimit = uint256{"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
     // !SCASH END
     const int64_t nHalfLife = params.nASERTHalfLife;
 

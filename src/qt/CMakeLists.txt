@@ -329,3 +329,7 @@ else()
     VERBATIM
   )
 endif()
+
+if(TARGET bitcoin-qt)
+  set_target_properties(bitcoin-qt PROPERTIES OUTPUT_NAME "scash-qt")
+endif()

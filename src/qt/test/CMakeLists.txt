@@ -46,3 +46,7 @@ if(WIN32 AND VCPKG_TARGET_TRIPLET)
 endif()
 
 install_binary_component(test_bitcoin-qt)
+
+if(TARGET test_bitcoin-qt)
+  set_target_properties(test_bitcoin-qt PROPERTIES OUTPUT_NAME "test_scash-qt")
+endif()

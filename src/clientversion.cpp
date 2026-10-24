@@ -3,7 +3,17 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <bitcoin-build-config.h> // IWYU pragma: keep
+#include <bitcoin-build-config.h>
+#ifndef SCASH_CLIENT_VERSION_MAJOR
+#define SCASH_CLIENT_VERSION_MAJOR 2
+#define SCASH_CLIENT_VERSION_MINOR 2
+#define SCASH_CLIENT_VERSION_BUILD 0
+#define SCASH_CLIENT_VERSION_IS_RELEASE true
+#endif
+#ifndef SCASH_RELEASE_NAME
+#define SCASH_RELEASE_NAME "fillory"
+#endif
+ // IWYU pragma: keep
 
 #include <clientversion.h>
 #include <util/string.h>

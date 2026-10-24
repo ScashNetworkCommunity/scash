@@ -26,12 +26,17 @@ get_directory_property(precious_variables CACHE_VARIABLES)
 #=============================
 # Project / Package metadata
 #=============================
-set(CLIENT_NAME "Bitcoin Core")
+set(CLIENT_NAME "Scash")
 set(CLIENT_VERSION_MAJOR 29)
 set(CLIENT_VERSION_MINOR 3)
 set(CLIENT_VERSION_BUILD 0)
 set(CLIENT_VERSION_RC 0)
 set(CLIENT_VERSION_IS_RELEASE "true")
+set(SCASH_CLIENT_VERSION_MAJOR 2)
+set(SCASH_CLIENT_VERSION_MINOR 2)
+set(SCASH_CLIENT_VERSION_BUILD 0)
+set(SCASH_CLIENT_VERSION_IS_RELEASE "true")
+set(SCASH_RELEASE_NAME "fillory")
 set(COPYRIGHT_YEAR "2025")
 
 # During the enabling of the CXX and CXXOBJ languages, we modify

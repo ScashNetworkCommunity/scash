@@ -12,6 +12,7 @@
 enum class ChainType {
     MAIN,
     TESTNET,
+    TESTNET4,
     SIGNET,
     REGTEST,
     // !SCASH

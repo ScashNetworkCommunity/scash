@@ -1,3 +1,30 @@
+
+# Scash RandomX library and header resolution (supports depends & native builds)
+find_path(RANDOMX_INCLUDE_DIR NAMES randomx.h
+  HINTS
+    "${CMAKE_PREFIX_PATH}/include"
+    "${PROJECT_SOURCE_DIR}/depends/x86_64-pc-linux-gnu/include"
+    "${PROJECT_SOURCE_DIR}/depends/x86_64-w64-mingw32/include"
+    "/usr/local/include"
+    "/usr/include"
+  NO_CMAKE_FIND_ROOT_PATH
+  REQUIRED
+)
+find_library(RANDOMX_LIB NAMES randomx librandomx.a
+  HINTS
+    "${CMAKE_PREFIX_PATH}/lib"
+    "${PROJECT_SOURCE_DIR}/depends/x86_64-pc-linux-gnu/lib"
+    "${PROJECT_SOURCE_DIR}/depends/x86_64-w64-mingw32/lib"
+    "/usr/local/lib"
+    "/usr/lib"
+  NO_CMAKE_FIND_ROOT_PATH
+  REQUIRED
+)
+message(STATUS "Found RandomX header: ${RANDOMX_INCLUDE_DIR}")
+message(STATUS "Found RandomX library: ${RANDOMX_LIB}")
+target_include_directories(core_interface INTERFACE "${RANDOMX_INCLUDE_DIR}")
+target_link_libraries(core_interface INTERFACE "${RANDOMX_LIB}")
+
 # Copyright (c) 2023-present The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit/.
@@ -179,8 +206,6 @@ add_library(bitcoin_common STATIC EXCLUDE_FROM_ALL
   script/solver.cpp
 )
 target_link_libraries(bitcoin_common
-  PUBLIC
-    ${RANDOMX_LIB}
   PRIVATE
     core_interface
     bitcoin_consensus
@@ -426,6 +451,14 @@ if(BUILD_UTIL)
 endif()
 
 
+
+foreach(_scash_lib bitcoin_consensus bitcoin_common bitcoin_node)
+  if(TARGET ${_scash_lib})
+    target_include_directories(${_scash_lib} PUBLIC "${RANDOMX_INCLUDE_DIR}")
+    target_link_libraries(${_scash_lib} PUBLIC "${RANDOMX_LIB}")
+  endif()
+endforeach()
+
 if(BUILD_GUI)
   add_subdirectory(qt)
 endif()
@@ -468,3 +501,11 @@ endif()
 if(BUILD_FUZZ_BINARY)
   add_subdirectory(test/fuzz)
 endif()
+
+
+foreach(_scash_tgt bitcoind bitcoin-cli bitcoin-tx bitcoin-util bitcoin-wallet bitcoin-node bitcoin-chainstate)
+  if(TARGET ${_scash_tgt})
+    string(REPLACE "bitcoin" "scash" _scash_out "${_scash_tgt}")
+    set_target_properties(${_scash_tgt} PROPERTIES OUTPUT_NAME "${_scash_out}")
+  endif()
+endforeach()

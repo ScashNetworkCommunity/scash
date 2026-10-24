@@ -83,3 +83,7 @@ add_test(NAME bench_sanity_check_high_priority
 )
 
 install_binary_component(bench_bitcoin)
+
+if(TARGET bench_bitcoin)
+  set_target_properties(bench_bitcoin PROPERTIES OUTPUT_NAME "bench_scash")
+endif()

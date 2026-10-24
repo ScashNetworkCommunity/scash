@@ -51,6 +51,8 @@ std::unique_ptr<CBaseChainParams> CreateBaseChainParams(const ChainType chain)
         return std::make_unique<CBaseChainParams>("btc", 8332, 8334);
     case ChainType::TESTNET:
         return std::make_unique<CBaseChainParams>("btctestnet3", 18332, 18334);
+    case ChainType::TESTNET4:
+        return std::make_unique<CBaseChainParams>("btctestnet4", 48332, 48334);
     case ChainType::SIGNET:
         return std::make_unique<CBaseChainParams>("btcsignet", 38332, 38334);
     case ChainType::REGTEST:
