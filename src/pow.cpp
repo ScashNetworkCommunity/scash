@@ -5,6 +5,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <pow.h>
+#include <test/fuzz/fuzz.h>
 
 #include <arith_uint256.h>
 #include <chain.h>
@@ -377,6 +378,11 @@ unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nF
 bool PermittedDifficultyTransition(const Consensus::Params& params, int64_t height, uint32_t old_nbits, uint32_t new_nbits)
 {
     if (params.fPowAllowMinDifficultyBlocks) return true;
+    // !SCASH
+    if (params.fPowRandomX) {
+        return DeriveTarget(new_nbits, params.powLimit).has_value();
+    }
+    // !SCASH END
 
     if (height % params.DifficultyAdjustmentInterval() == 0) {
         int64_t smallest_timespan = params.nPowTargetTimespan/4;

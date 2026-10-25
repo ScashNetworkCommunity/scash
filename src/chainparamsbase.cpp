@@ -48,21 +48,21 @@ std::unique_ptr<CBaseChainParams> CreateBaseChainParams(const ChainType chain)
     switch (chain) {
     // !SCASH
     case ChainType::MAIN:
-        return std::make_unique<CBaseChainParams>("btc", 8332, 8334);
+        return std::make_unique<CBaseChainParams>("btc", 8332);
     case ChainType::TESTNET:
-        return std::make_unique<CBaseChainParams>("btctestnet3", 18332, 18334);
+        return std::make_unique<CBaseChainParams>("btctestnet3", 18332);
     case ChainType::TESTNET4:
-        return std::make_unique<CBaseChainParams>("btctestnet4", 48332, 48334);
+        return std::make_unique<CBaseChainParams>("btctestnet4", 48332);
     case ChainType::SIGNET:
-        return std::make_unique<CBaseChainParams>("btcsignet", 38332, 38334);
+        return std::make_unique<CBaseChainParams>("btcsignet", 38332);
     case ChainType::REGTEST:
-        return std::make_unique<CBaseChainParams>("btcregtest", 18443, 18445);
+        return std::make_unique<CBaseChainParams>("btcregtest", 18443);
     case ChainType::SCASHMAIN:
-        return std::make_unique<CBaseChainParams>("scash", 8342, 8344);
+        return std::make_unique<CBaseChainParams>("scash", 8342);
     case ChainType::SCASHTESTNET:
-        return std::make_unique<CBaseChainParams>("scashtestnet", 18342, 18344);
+        return std::make_unique<CBaseChainParams>("scashtestnet", 18342);
     case ChainType::SCASHREGTEST:
-        return std::make_unique<CBaseChainParams>("scashregtest", 18453, 18455);
+        return std::make_unique<CBaseChainParams>("scashregtest", 18453);
     // !SCASH END
     }
     assert(false);

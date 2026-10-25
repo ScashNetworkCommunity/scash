@@ -26,6 +26,8 @@ public:
     CBaseChainParams() = delete;
     CBaseChainParams(const std::string& data_dir, uint16_t rpc_port)
         : m_rpc_port(rpc_port), strDataDir(data_dir) {}
+    CBaseChainParams(const std::string& data_dir, uint16_t rpc_port, uint16_t onion_port)
+        : m_rpc_port(rpc_port), strDataDir(data_dir) { (void)onion_port; }
 
 private:
     const uint16_t m_rpc_port;

@@ -2280,7 +2280,7 @@ void CConnman::ThreadDNSAddressSeed()
     seeds.insert(seeds.end(), added_dns_seeds.begin(), added_dns_seeds.end());
     // !SCASH END
 
-    Shuffle(seeds.begin(), seeds.end(), rng);
+    std::shuffle(seeds.begin(), seeds.end(), rng);
     int seeds_right_now = 0; // Number of seeds left before testing if we have enough connections
 
     if (gArgs.GetBoolArg("-forcednsseed", DEFAULT_FORCEDNSSEED)) {

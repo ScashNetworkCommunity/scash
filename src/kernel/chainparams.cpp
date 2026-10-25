@@ -1026,3 +1026,39 @@ std::unique_ptr<const CChainParams> CChainParams::ScashMain()
 }
 
 // !SCASH END
+
+std::unique_ptr<const CChainParams> CChainParams::TestNet4()
+{
+    return std::make_unique<const CTestNet4Params>();
+}
+
+std::optional<ChainType> GetNetworkForMagic(const MessageStartChars& message)
+{
+    const auto mainnet_msg = CChainParams::Main()->MessageStart();
+    const auto testnet_msg = CChainParams::TestNet()->MessageStart();
+    const auto testnet4_msg = CChainParams::TestNet4()->MessageStart();
+    const auto regtest_msg = CChainParams::RegTest({})->MessageStart();
+    const auto signet_msg = CChainParams::SigNet({})->MessageStart();
+    const auto scashmain_msg = CChainParams::ScashMain()->MessageStart();
+    const auto scashtestnet_msg = CChainParams::ScashTestNet()->MessageStart();
+    const auto scashregtest_msg = CChainParams::ScashRegTest({})->MessageStart();
+
+    if (std::ranges::equal(message, scashmain_msg)) {
+        return ChainType::SCASHMAIN;
+    } else if (std::ranges::equal(message, scashtestnet_msg)) {
+        return ChainType::SCASHTESTNET;
+    } else if (std::ranges::equal(message, scashregtest_msg)) {
+        return ChainType::SCASHREGTEST;
+    } else if (std::ranges::equal(message, mainnet_msg)) {
+        return ChainType::MAIN;
+    } else if (std::ranges::equal(message, testnet_msg)) {
+        return ChainType::TESTNET;
+    } else if (std::ranges::equal(message, testnet4_msg)) {
+        return ChainType::TESTNET4;
+    } else if (std::ranges::equal(message, regtest_msg)) {
+        return ChainType::REGTEST;
+    } else if (std::ranges::equal(message, signet_msg)) {
+        return ChainType::SIGNET;
+    }
+    return std::nullopt;
+}
