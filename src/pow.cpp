@@ -474,7 +474,7 @@ bool CheckProofOfWorkImpl(uint256 hash, unsigned int nBits, const Consensus::Par
 // !SCASH
 
 // Seed string contains an epoch integer and is sha256d hashed to derive the seed hash (RandomX key).
-static const char *RANDOMX_EPOCH_SEED_STRING = "Scash/RandomX/Epoch/%d";
+static constexpr const char *RANDOMX_EPOCH_SEED_STRING = "Scash/RandomX/Epoch/%d";
 
 // Epoch is Unix time stamp in seconds divided by epoch duration in seconds.
 uint32_t GetEpoch(uint32_t nTimestamp, uint32_t nDuration) {

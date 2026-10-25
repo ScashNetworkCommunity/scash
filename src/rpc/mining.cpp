@@ -436,7 +436,7 @@ static RPCHelpMan getmininginfo()
                             {RPCResult::Type::NUM, "difficulty", "The next difficulty"},
                             {RPCResult::Type::STR_HEX, "target", "The next target"}
                         }},
-                        ((node.args->GetArgs("-deprecatedrpc").empty() || IsDeprecatedRPCEnabled("warnings")) ?
+                        (IsDeprecatedRPCEnabled("warnings") ?
                             RPCResult{RPCResult::Type::STR, "warnings", "any network and blockchain warnings (DEPRECATED)"} :
                             RPCResult{RPCResult::Type::ARR, "warnings", "any network and blockchain warnings (run with `-deprecatedrpc=warnings` to return the latest warning as a single string)",
                             {
