@@ -20,6 +20,7 @@
 #include <interfaces/mining.h>
 #include <key_io.h>
 #include <net.h>
+#include <common/args.h>
 #include <node/context.h>
 #include <node/miner.h>
 #include <node/warnings.h>
