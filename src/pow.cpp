@@ -354,9 +354,6 @@ unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nF
         bnNew.SetCompact(pindexLast->nBits);
     }
 
-    bnNew *= nActualTimespan;
-    bnNew /= params.nPowTargetTimespan;
-
     // !SCASH
     // Intermediate computation uses 512 bit integers to avoid potential overflow from chain parameters.
     // No overflow with default Bitcoin chain parameters so behaviour remains the same.

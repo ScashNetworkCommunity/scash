@@ -2,9 +2,9 @@
 
 Scash (s/atoshi/cash) is a fork of Bitcoin Core which adds a new chain option to restore home computer mining.
 
-Technical details are documented in the [Scash Protocol spec](https://github.com/scash-project/sips/blob/main/scash-protocol-spec.md).
+Technical details are documented in the [Scash Protocol spec](https://github.com/ScashNetworkCommunity/sips/blob/main/scash-protocol-spec.md).
 
-Building Scash follows the same instructions as building Bitcoin. The Scash network shares the same features and rules as Bitcoin mainnet, as specified in Bitcoin Core v26.0.
+Building Scash follows the same instructions as building Bitcoin. The Scash network shares the same features and rules as Bitcoin mainnet, as specified in Bitcoin Core v29.3.
 
 The Linux version of the node `scashd` and GUI app `scash-qt` are both supported, with Windows binaries also  available (cross-compiled on Linux). MacOS is not yet supported. Note that Windows users can build from source by following the Linux instructions when building in Ubuntu on [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/about).
 
@@ -42,7 +42,7 @@ Exit WSL and then restart WSL.
 Download the latest version of Scash and checkout the version you intend to build. If you want to build a specific version, you can replace `scash_master` with the version tag.
 
 ```bash
-git clone https://github.com/scash-project/scash.git
+git clone https://github.com/ScashNetworkCommunity/scash.git
 cd scash
 git checkout scash_master
 ```
@@ -58,11 +58,9 @@ When calling `make` use `-j N` for N parallel jobs.
 To build just the node software `scashd` and not the QT GUI app:
 
 ```bash
-./autogen.sh
-make -C depends NO_QT=1
-./configure --without-gui --prefix=$PWD/depends/x86_64-pc-linux-gnu --program-transform-name='s/bitcoin/scash/g'
-make
-make install
+make -C depends NO_QT=1 -j$(nproc)
+cmake -B build --toolchain depends/x86_64-pc-linux-gnu/toolchain.cmake -DBUILD_GUI=OFF
+cmake --build build -j$(nproc)
 ```
 
 ### Node software with the GUI
@@ -70,11 +68,9 @@ make install
 To build both the node software `scashd` and the QT GUI app `scashd-qt`
 
 ```bash
-./autogen.sh
-make -C depends
-./configure --prefix=$PWD/depends/x86_64-pc-linux-gnu --program-transform-name='s/bitcoin/scash/g'
-make
-make install
+make -C depends -j$(nproc)
+cmake -B build --toolchain depends/x86_64-pc-linux-gnu/toolchain.cmake -DBUILD_GUI=ON
+cmake --build build -j$(nproc)
 ```
 
 ### Executables
@@ -90,10 +86,8 @@ sudo apt install g++-mingw-w64-x86-64-posix
 cd depends/
 make HOST=x86_64-w64-mingw32
 cd ..
-./autogen.sh
-./configure --prefix=$PWD/depends/x86_64-w64-mingw32 --program-transform-name='s/bitcoin/scash/g'
-make
-make install
+cmake -B build-win --toolchain depends/x86_64-w64-mingw32/toolchain.cmake -DBUILD_GUI=ON
+cmake --build build-win -j$(nproc)
 ```
 
 The windows executables will be found in `depends/x86_64-w64-mingw32/bin/`.
@@ -200,7 +194,7 @@ randomxfastmode=1
 
 ### Main network and Testnet chain
 
-Mining takes place inside [cpuminer-scash](https://github.com/scash-project/cpuminer-scash) which is dedicated mining software that connects to the Scash node and retrieves mining jobs via RPC `getblocktemplate`. The 'randomxfastmode' configuration option is not required for the Scash node, since mining occurs inside `cpuminer-scash` which always runs in fast mode.
+Mining takes place inside [cpuminer-scash](https://github.com/ScashNetworkCommunity/cpuminer-scash) which is dedicated mining software that connects to the Scash node and retrieves mining jobs via RPC `getblocktemplate`. The 'randomxfastmode' configuration option is not required for the Scash node, since mining occurs inside `cpuminer-scash` which always runs in fast mode.
 
 ### Mining Pools
 
