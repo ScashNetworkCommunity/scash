@@ -1,113 +1,138 @@
-# SCASH BUILD NOTES
+SCASH BUILD NOTES
 
 Scash (s/atoshi/cash) is a fork of Bitcoin Core which adds a new chain option to restore home computer mining.
 
-Technical details are documented in the [Scash Protocol spec](https://github.com/ScashNetworkCommunity/sips/blob/main/scash-protocol-spec.md).
+Technical details are documented in the Scash Protocol spec.
 
-Building Scash follows the same instructions as building Bitcoin. The Scash network shares the same features and rules as Bitcoin mainnet, as specified in Bitcoin Core v29.3.
+Building Scash follows the same instructions as building Bitcoin Core. Starting in Scash v2.2.0 ("Fillory"), Scash is based on Bitcoin Core v29.3 and uses the CMake build system (cmake -B build) instead of Autotools (./autogen.sh / ./configure).
 
-The Linux version of the node `scashd` and GUI app `scash-qt` are both supported, with Windows binaries also  available (cross-compiled on Linux). MacOS is not yet supported. Note that Windows users can build from source by following the Linux instructions when building in Ubuntu on [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/about).
+The Linux version of the node scashd and GUI app scash-qt are both supported, with Windows 64-bit binaries also available (cross-compiled on Linux). macOS is not yet officially supported. Windows users can also build from source by following the Linux instructions inside Ubuntu on Windows Subsystem for Linux (WSL).
 
-For more specific instructions on building, see [`build-unix.md`](build-unix.md) in this directory.
+For more specific upstream instructions on building, see build-unix.md and build-windows.md in this directory.
 
-Also see the latest [Scash release notes](release-notes/scash/).
+Also see the latest Scash release notes.
 
-## Getting started 
+Getting started
 
-Update your system and install the following tools required to build software.
+Update your system and install the required build tools and dependencies (Ubuntu 22.04 / 24.04 or Debian 12):
 
-```bash
 sudo apt update
 sudo apt upgrade
-sudo apt install build-essential libtool autotools-dev automake pkg-config bsdmainutils curl git cmake bison
-```
+sudo apt install build-essential libtool autotools-dev automake pkg-config bsdmainutils python3 curl git cmake ninja-build bison flex gperf xz-utils libxcb-xinerama0-dev
 
-## WSL for Windows
 
-Ignore this step if building on native Linux. The following only applies when building in WSL for Windows.
+WSL for Windows
+
+Ignore this step if building on native Linux. The following only applies when building in WSL for Windows (so Windows PATH entries containing spaces do not interfere with the depends build).
 
 Open the WSL configuration file:
-```bash
+
 sudo nano /etc/wsl.conf
-```
+
+
 Add the following lines to the file:
-```
+
 [interop]
 appendWindowsPath=false
-```
-Exit WSL and then restart WSL.
 
-## Downloading the code
 
-Download the latest version of Scash and checkout the version you intend to build. If you want to build a specific version, you can replace `scash_master` with the version tag.
+Exit WSL and then restart WSL (wsl --shutdown in PowerShell).
 
-```bash
+Downloading the code
+
+Download the latest version of Scash and checkout the branch or release tag you intend to build:
+
 git clone https://github.com/ScashNetworkCommunity/scash.git
 cd scash
 git checkout scash_master
-```
 
-## Building for Linux
 
-Scash requires building with the depends system.
+Building for Linux
 
-When calling `make` use `-j N` for N parallel jobs.
+Scash requires building its bundled dependencies (including RandomX) with the depends system first.
 
-### Node software without the GUI
+Node software without the GUI
 
-To build just the node software `scashd` and not the QT GUI app:
+To build only the headless node and CLI utilities (scashd, scash-cli, scash-tx, scash-wallet, scash-util) without the Qt GUI app:
 
-```bash
-make -C depends NO_QT=1 -j$(nproc)
-cmake -B build --toolchain depends/x86_64-pc-linux-gnu/toolchain.cmake -DBUILD_GUI=OFF
+make -C depends NO_QT=1 NO_ZMQ=1 NO_USDT=1 NO_IPC=1 -j$(nproc)
+cmake -B build --toolchain depends/x86_64-pc-linux-gnu/toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_GUI=OFF
 cmake --build build -j$(nproc)
-```
 
-### Node software with the GUI
 
-To build both the node software `scashd` and the QT GUI app `scashd-qt`
+Node software with the GUI
 
-```bash
-make -C depends -j$(nproc)
-cmake -B build --toolchain depends/x86_64-pc-linux-gnu/toolchain.cmake -DBUILD_GUI=ON
+To build both the node software scashd and the Qt desktop GUI app scash-qt:
+
+make -C depends NO_ZMQ=1 NO_USDT=1 NO_IPC=1 -j$(nproc)
+cmake -B build --toolchain depends/x86_64-pc-linux-gnu/toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_GUI=ON
 cmake --build build -j$(nproc)
-```
-
-### Executables
-The compiled executables will be found in `depends/x86_64-pc-linux-gnu/bin/` and can be copied to a folder on your path, typically `/usr/local/bin/` or `$HOME/.local/bin/`.
 
 
-## Building for Windows (by cross-compiling on Linux)
+Running unit tests
 
-Build on Linux and generate executables which run on Windows.
+To run the Scash unit test suite after building:
 
-```
-sudo apt install g++-mingw-w64-x86-64-posix 
-cd depends/
-make HOST=x86_64-w64-mingw32
-cd ..
-cmake -B build-win --toolchain depends/x86_64-w64-mingw32/toolchain.cmake -DBUILD_GUI=ON
+./build/bin/test_scash
+
+
+Executables
+
+The compiled Linux executables are placed in build/bin/:
+
+build/bin/scashd — Scash headless daemon
+
+build/bin/scash-qt — Scash desktop GUI wallet (when built with -DBUILD_GUI=ON)
+
+build/bin/scash-cli — RPC command-line client
+
+build/bin/scash-tx — Raw transaction utility
+
+build/bin/scash-wallet — Offline wallet tool
+
+build/bin/scash-util — Utility tool
+
+build/bin/test_scash — Unit test runner
+
+You can copy the binaries in build/bin/ to a folder on your PATH (such as /usr/local/bin/ or $HOME/.local/bin/), or install them system-wide with:
+
+sudo cmake --install build
+
+
+Building for Windows (by cross-compiling on Linux)
+
+To cross-compile 64-bit Windows executables (.exe) on Ubuntu/Debian Linux:
+
+sudo apt install g++-mingw-w64-x86-64-posix nsis zip
+sudo update-alternatives --set x86_64-w64-mingw32-gcc /usr/bin/x86_64-w64-mingw32-gcc-posix
+sudo update-alternatives --set x86_64-w64-mingw32-g++ /usr/bin/x86_64-w64-mingw32-g++-posix
+
+make -C depends HOST=x86_64-w64-mingw32 NO_ZMQ=1 NO_USDT=1 NO_IPC=1 -j$(nproc)
+cmake -B build-win --toolchain depends/x86_64-w64-mingw32/toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_GUI=ON
 cmake --build build-win -j$(nproc)
-```
 
-The windows executables will be found in `depends/x86_64-w64-mingw32/bin/`.
 
-To generate a Windows installer:
+The compiled Windows executables (scashd.exe, scash-qt.exe, scash-cli.exe, scash-tx.exe, scash-wallet.exe, scash-util.exe, test_scash.exe) will be found in build-win/bin/.
 
-```
-sudo apt install nsis
-make deploy
-```
+To strip debug symbols from the Windows executables (recommended to reduce file size):
 
-## Config file
+x86_64-w64-mingw32-strip build-win/bin/*.exe
 
-The Scash configuration file is the same as bitcoin.conf.
 
-By default, Scash looks for a configuration file here:
-`$HOME/.scash/scash.conf`
+Config file
 
-The following is a sample `scash.conf`.
-```
+The Scash configuration file (scash.conf) uses the same options as bitcoin.conf.
+
+By default, Scash looks for scash.conf in the default data directory:
+
+Linux: $HOME/.scash/scash.conf
+
+Windows (fresh install on Scash 2.1.0+): %LOCALAPPDATA%\Scash\scash.conf (C:\Users\USERNAME\AppData\Local\Scash\scash.conf)
+
+Windows (upgrading with an existing Roaming folder): %APPDATA%\Scash\scash.conf (C:\Users\USERNAME\AppData\Roaming\Scash\scash.conf)
+
+The following is a sample scash.conf:
+
 rpcuser=user
 rpcpassword=password
 chain=scash
@@ -120,88 +145,88 @@ adddnsseed=seed.scash.one
 
 [scashtestnet]
 adddnsseed=testnet.seed.scash.one
-```
 
-### Connecting to the network
 
-To help find other nodes on the network, a [DNS seed](https://bitcoin.stackexchange.com/questions/14371/what-is-a-dns-seed-node-vs-a-seed-node) has been specified. The DNS seed shown above is for testing purposes and may not always be online. Users are advised to ask the community for a list of [reliable DNS seeds](https://github.com/bitcoin/bitcoin/blob/master/doc/dnsseed-policy.md) to use, as well as the IP addresses of stable nodes on the network which can be used with the `-addnode` and `-seednode` RPC calls.
+Connecting to the network
+
+Mainnet DNS seed seed.scash.one, testnet DNS seed testnet.seed.scash.one, and fallback fixed seed nodes are built into Scash Core by default, so fresh installations connect automatically without requiring a custom scash.conf. Additional peer addresses can also be added using -addnode or -seednode.
 
 If you intend to use the same configuration file with multiple networks, the config sections are named as follows:
-```
+
 [btc]
 [btctestnet3]
+[btctestnet4]
 [btcsignet]
 [btcregtest]
 [scash]
 [scashregtest]
 [scashtestnet]
-```
 
-## Running a node
+
+Running a node
 
 To run the Scash node:
-```bash
+
 scashd
-```
+
 
 To send commands to the Scash node:
-```
+
 scash-cli [COMMAND] [PARAMETERS]
-```
+
 
 To run the desktop GUI app:
-```bash
+
 scash-qt
-```
 
-On WSL for Windows, launching `scash-qt` may require installing the following dependencies. Also see [WSL gui apps](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps).
-```bash
+
+On WSL for Windows, launching scash-qt may require installing the following dependencies. Also see WSL GUI apps.
+
 sudo apt install libxcb-* libxkbcommon-x11-0
-```
 
-Also note that in WSL for Windows, by default only half of the memory is available to WSL. You can [configure the memory limit](https://learn.microsoft.com/en-us/windows/wsl/wsl-config#main-wsl-settings) by creating `.wslconfig` file in your user folder.
-```
+
+Also note that in WSL for Windows, by default only half of system memory is available to WSL. You can configure the memory limit by creating a .wslconfig file in your Windows user folder:
+
 [wsl2]
 memory=16GB
-```
 
-## Connecting to different chains
 
-When running executables with the name `bitcoin...` if no chain is configured, the default chain will be Bitcoin mainnet.
+Connecting to different chains
 
-When running executables with the name `scash...` if no chain is configured, the default chain will be Scash mainnet.
+When running executables with the name scash... (scashd, scash-qt, scash-cli), if no chain is configured, the default chain is Scash mainnet (scash).
 
-Option `-chain=` accepts the following values: `scash` `scashtestnet` `scashregtest` and for Bitcoin networks: `main` `test` `signet` `regtest`
+Option -chain= accepts the following values:
 
-## Mining Scash
+Scash networks: scash, scashtestnet, scashregtest
+
+Bitcoin networks: main, test, testnet4, signet, regtest
+
+Mining Scash
 
 There are a few ways to mine Scash.
 
-### Testnet and Regtest chain
+Testnet and Regtest chain
 
-Mining takes place inside the Scash node, using the RPC `generatetoaddress` which is single-threaded. For example:
-```bash
+Mining can take place directly inside the Scash node using the generatetoaddress RPC (single-threaded). For example:
+
 scash-cli createwallet myfirstwallet
 scash-cli getnewaddress
 scash-cli generatetoaddress 1 newminingaddress 10000
-```
 
-To speed up mining in the Scash node, at the expense of using more memory (at least 2GB more), enable the option `randomxfastmode` by adding to the `scash.conf` configuration file:
 
-```
+To speed up internal RPC mining in the Scash node at the expense of using more memory (at least 2 GB more), enable randomxfastmode in scash.conf:
+
 randomxfastmode=1
-```
 
-### Main network and Testnet chain
 
-Mining takes place inside [cpuminer-scash](https://github.com/ScashNetworkCommunity/cpuminer-scash) which is dedicated mining software that connects to the Scash node and retrieves mining jobs via RPC `getblocktemplate`. The 'randomxfastmode' configuration option is not required for the Scash node, since mining occurs inside `cpuminer-scash` which always runs in fast mode.
+Main network and Testnet chain
 
-### Mining Pools
+Mining on mainnet takes place using cpuminer-scash, dedicated CPU mining software that connects to the Scash node and retrieves mining jobs via the getblocktemplate RPC. The randomxfastmode option is not required on the Scash node when using cpuminer-scash, since mining occurs inside cpuminer-scash (which runs in fast mode).
+
+Mining Pools
 
 Third-party software exists for mining at pools.
 
-
 Getting Help
----------------------
 
-Please file a Github issue if build problems are not resolved after reviewing the available Scash and Bitcoin documentation.
+Please file a GitHub issue if build problems are not resolved after reviewing the available Scash and Bitcoin Core documentation.
