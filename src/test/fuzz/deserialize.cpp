@@ -1,4 +1,4 @@
-// Copyright (c) 2009-2021 The Bitcoin Core developers
+// Copyright (c) 2009-present The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -29,25 +29,20 @@
 #include <test/util/setup_common.h>
 #include <undo.h>
 
+#include <cstdint>
 #include <exception>
 #include <optional>
 #include <stdexcept>
-#include <stdint.h>
 
 using node::SnapshotMetadata;
-
-namespace {
-const BasicTestingSetup* g_setup;
-} // namespace
 
 void initialize_deserialize()
 {
     static const auto testing_setup = MakeNoLogFileContext<>();
-    g_setup = testing_setup.get();
 }
 
 #define FUZZ_TARGET_DESERIALIZE(name, code)                \
-    FUZZ_TARGET(name, .init = initialize_deserialize)         \
+    FUZZ_TARGET(name, .init = initialize_deserialize)      \
     {                                                      \
         try {                                              \
             code                                           \
@@ -61,31 +56,11 @@ struct invalid_fuzzing_input_exception : public std::exception {
 };
 
 template <typename T, typename P>
-DataStream Serialize(const T& obj, const P& params)
-{
-    DataStream ds{};
-    ds << params(obj);
-    return ds;
-}
-
-template <typename T, typename P>
 T Deserialize(DataStream&& ds, const P& params)
 {
     T obj;
     ds >> params(obj);
     return obj;
-}
-
-template <typename T, typename P>
-void DeserializeFromFuzzingInput(FuzzBufferType buffer, T&& obj, const P& params)
-{
-    DataStream ds{buffer};
-    try {
-        ds >> params(obj);
-    } catch (const std::ios_base::failure&) {
-        throw invalid_fuzzing_input_exception();
-    }
-    assert(buffer.empty() || !Serialize(obj, params).empty());
 }
 
 template <typename T>
@@ -119,7 +94,7 @@ void DeserializeFromFuzzingInput(FuzzBufferType buffer, T&& obj)
 template <typename T, typename P>
 void AssertEqualAfterSerializeDeserialize(const T& obj, const P& params)
 {
-    assert(Deserialize<T>(Serialize(obj, params), params) == obj);
+    assert(Deserialize<T>(Serialize(params(obj)), params) == obj);
 }
 template <typename T>
 void AssertEqualAfterSerializeDeserialize(const T& obj)

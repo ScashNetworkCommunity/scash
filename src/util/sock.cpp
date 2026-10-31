@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2022 The Bitcoin Core developers
+// Copyright (c) 2020-present The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -210,12 +210,14 @@ bool Sock::WaitMany(std::chrono::milliseconds timeout, EventsPerSock& events_per
         const auto& s = sock->m_socket;
         if (events.requested & RECV) {
             FD_SET(s, &recv);
+            FD_SET(s, &err);
         }
         if (events.requested & SEND) {
             FD_SET(s, &send);
         }
-        FD_SET(s, &err);
-        socket_max = std::max(socket_max, s);
+        if (events.requested & (RECV | SEND)) {
+            socket_max = std::max(socket_max, s);
+        }
     }
 
     timeval tv = MillisToTimeval(timeout);
@@ -242,7 +244,7 @@ bool Sock::WaitMany(std::chrono::milliseconds timeout, EventsPerSock& events_per
 #endif /* USE_POLL */
 }
 
-void Sock::SendComplete(Span<const unsigned char> data,
+void Sock::SendComplete(std::span<const unsigned char> data,
                         std::chrono::milliseconds timeout,
                         CThreadInterrupt& interrupt) const
 {
@@ -283,7 +285,7 @@ void Sock::SendComplete(Span<const unsigned char> data,
     }
 }
 
-void Sock::SendComplete(Span<const char> data,
+void Sock::SendComplete(std::span<const char> data,
                         std::chrono::milliseconds timeout,
                         CThreadInterrupt& interrupt) const
 {

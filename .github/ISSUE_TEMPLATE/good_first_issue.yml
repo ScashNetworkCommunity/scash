@@ -28,7 +28,11 @@ body:
     id: useful-skills
     attributes:
       label: Useful Skills
+<<<<<<< HEAD
       description: For example, “`std::thread`”, “basic understanding of mining and the RPC interface”.
+=======
+      description: For example, “`std::thread`”, “Qt6 GUI and async GUI design” or “basic understanding of Bitcoin mining and the Bitcoin Core RPC interface”.
+>>>>>>> v30.4
       value: |
         * Compiling Scash from source
         * Running the C++ unit tests and the Python functional tests

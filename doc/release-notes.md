@@ -1,6 +1,9 @@
-Bitcoin Core version 29.3 is now available from:
+v30.4 Release Notes
+===================
 
-  <https://bitcoincore.org/bin/bitcoin-core-29.3/>
+Bitcoin Core version v30.4 is now available from:
+
+  <https://bitcoincore.org/bin/bitcoin-core-30.4/>
 
 This release includes various bug fixes and performance
 improvements, as well as updated translations.
@@ -19,7 +22,7 @@ How to Upgrade
 If you are running an older version, shut it down. Wait until it has completely
 shut down (which might take a few minutes in some cases), then run the
 installer (on Windows) or just copy over `/Applications/Bitcoin-Qt` (on macOS)
-or `bitcoind`/`bitcoin-qt` (on Linux).
+or `bin/` and `libexec/` (on Linux).
 
 Upgrading directly from a version of Bitcoin Core that has reached its EOL is
 possible, but it might take some time if the data directory needs to be migrated. Old
@@ -37,69 +40,54 @@ unsupported systems.
 Notable changes
 ===============
 
+- BIP 9 bits 5 to 28 inclusive are now ignored for soft fork signaling, as per
+  BIP 323. We won't warn about unknown deployments when receiving blocks that
+  set any of those bits in their version. (#34779)
+
+### Versionbits
+
+- #34779 BIP 323: reserve version bits 5-28 as extra nonce space
+
 ### P2P
 
-- #33050 net, validation: don't punish peers for consensus-invalid txs
-- #33723 chainparams: remove dnsseed.bitcoin.dashjr-list-of-p2p-nodes.us
+- #35691 chainparams: delete my DNS seed
+- #35766 p2p: Assume v2transport for addresses from seeds
 
-### Validation
+### Net
 
-- #32473 Introduce per-txin sighash midstate cache for legacy/p2sh/segwitv0 scripts
-- #33105 validation: detect witness stripping without re-running Script checks
+- #36665 sock: align exception monitoring between poll() and select() backends
+- #36667 net: enforce timeout interval for paused send peers
 
-### Wallet
+### Util
 
-- #33268 wallet: Identify transactions spending 0-value outputs, and add tests for anchor outputs in a wallet
-- #34156 wallet: fix unnamed legacy wallet migration failure
-- #34226 wallet: test: Relative wallet failed migration cleanup
-- #34123 wallet: migration, avoid creating spendable wallet from a watch-only legacy wallet
-- #34215 wallettool: fix unnamed createfromdump failure walletsdir deletion
-- #34370 wallet: Additional cleanups for migration, and fixes for createfromdump with BDB
-
-### Mining
-
-- #33475 bugfix: miner: fix `addPackageTxs` unsigned integer overflow
+- #36669 refactor: store positions as a 64 bits integer in flatfiles
 
 ### Build
 
-- #34227 guix: Fix `osslsigncode` tests
+- #36218 build: avoid pipe2 on Darwin (for now)
 
-### Documentation
+### Fuzz
 
-- #33623 doc: document capnproto and libmultiprocess deps in 29.x
+- #35679 fuzz: Remove unused DeserializeFromFuzzingInput params overload
 
-### Test
+### Doc
 
-- #33612 test: change log rate limit version gate
-
-### Misc
-
-- #32513 ci: remove 3rd party js from windows dll gha job
-- #33508 ci: fix buildx gha cache authentication on forks
-- #33581 ci: Properly include $FILE_ENV in DEPENDS_HASH
-- #34344 ci: update GitHub Actions versions
+- #36377 doc: add 461 (Deterministic ECDSA signatures with low-R grinding) to bips.md
+- #36441 doc: fix How to Upgrade section for bitcoin wrapper and libexec
 
 Credits
 =======
 
 Thanks to everyone who directly contributed to this release:
 
-- Anthony Towns
-- Antoine Poinsot
-- Ava Chow
-- David Gumberg
-- Eugene Siegel
+- ajtowns
+- darosior
 - fanquake
-- furszy
 - Hennadii Stepanov
-- ismaelsadeeq
-- luke-jr
-- m3dwards
-- Padraic Slattery
-- Pieter Wuille
-- SatsAndSports
-- sedited
-- willcl-ark
+- Martin Zumsande
+- Sebastian Falbesoner
+- sipa
+- spidey279
 
 As well as to everyone that helped with translations on
 [Transifex](https://explore.transifex.com/bitcoin/bitcoin/).

@@ -110,7 +110,7 @@ mkdir -p "$DISTSRC"
 
             # Apply detached codesignatures (in-place)
             signapple apply dist/Bitcoin-Qt.app codesignatures/osx/"${HOST}"/dist/Bitcoin-Qt.app
-            find "${DISTNAME}" -wholename "*/bin/*" -type f | while read -r bin
+            find "${DISTNAME}" \( -wholename "*/bin/*" -o -wholename "*/libexec/*" \) -type f | while read -r bin
             do
                 signapple apply "${bin}" "codesignatures/osx/${HOST}/${bin}.${ARCH}sign"
             done
@@ -141,6 +141,7 @@ mv --no-target-directory "$OUTDIR" "$ACTUAL_OUTDIR" \
     || ( rm -rf "$ACTUAL_OUTDIR" && exit 1 )
 
 (
+    tmp="$(mktemp)"
     cd /outdir-base
     {
         echo "$CODESIGNING_TARBALL"
@@ -149,5 +150,6 @@ mv --no-target-directory "$OUTDIR" "$ACTUAL_OUTDIR" \
     } | xargs realpath --relative-base="$PWD" \
         | xargs sha256sum \
         | sort -k2 \
-        | sponge "$ACTUAL_OUTDIR"/SHA256SUMS.part
+        > "$tmp";
+    mv "$tmp" "$ACTUAL_OUTDIR"/SHA256SUMS.part
 )

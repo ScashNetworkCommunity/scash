@@ -18,10 +18,10 @@ Otherwise, you may choose from one of the following options to install Guix:
    - Works on nearly all Linux distributions
    - Installs any release
    - Binary installation only, requires high level of trust
-3. Using fanquake's **Docker image** [↗︎ external instructions][install-fanquake-docker]
+3. Using fanquake's **container image** [↗︎ external instructions][install-fanquake-container]
    - Maintained by fanquake
    - Easy (automatically performs *some* setup)
-   - Works wherever Docker images work
+   - Works wherever container images work (Docker/Podman)
    - Installs any release
    - Binary installation only, requires high level of trust
 4. Using a **distribution-maintained package** [⤓ skip to section][install-distro-pkg]
@@ -57,7 +57,7 @@ Regardless of which installation option you chose, the changes to
 `/etc/profile.d` will not take effect until the next shell or desktop session,
 so you should log out and log back in.
 
-## Option 3: Using fanquake's Docker image
+## Option 3: Using fanquake's container image
 
 Please refer to fanquake's instructions
 [here](https://github.com/fanquake/core-review/tree/master/guix).
@@ -71,13 +71,13 @@ https://repology.org/project/guix/versions
 
 ### Debian / Ubuntu
 
-Guix is available as a distribution package in [Debian
-](https://packages.debian.org/search?keywords=guix) and [Ubuntu
-](https://packages.ubuntu.com/search?keywords=guix).
+Currently, the `guix` package is no longer present in recent Debian or Ubuntu
+repositories. Any other installation option mentioned in this document may be
+used.
 
-To install:
+If you previously installed `guix` via `apt`, you can remove it with:
 ```sh
-sudo apt install guix
+sudo apt purge guix
 ```
 
 ### Arch Linux
@@ -415,7 +415,7 @@ make it "what Guix intended", then read the next few subsections.
 
 This section definitely does not apply to you if you installed Guix using:
 1. The shell installer script
-2. fanquake's Docker image
+2. fanquake's container image
 3. Debian's `guix` package
 
 #### Background
@@ -766,7 +766,7 @@ Please see the following links for more details:
 
 [install-script]: #options-1-and-2-using-the-official-shell-installer-script-or-binary-tarball
 [install-bin-tarball]: #options-1-and-2-using-the-official-shell-installer-script-or-binary-tarball
-[install-fanquake-docker]: #option-3-using-fanquakes-docker-image
+[install-fanquake-container]: #option-3-using-fanquakes-container-image
 [install-distro-pkg]: #option-4-using-a-distribution-maintained-package
 [install-source]: #option-5-building-from-source
 

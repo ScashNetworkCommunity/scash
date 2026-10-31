@@ -14,6 +14,23 @@
 #include <limits>
 #include <optional>
 
+#ifdef __APPLE__
+enum class FSType {
+    EXFAT,
+    OTHER,
+    ERROR
+};
+
+/**
+ * Detect filesystem type for a given path.
+ * Currently identifies exFAT filesystems which cause issues on macOS.
+ *
+ * @param[in] path The directory path to check
+ * @return FSType enum indicating the filesystem type
+ */
+FSType GetFilesystemType(const fs::path& path);
+#endif
+
 /**
  * Ensure file contents are fully committed to disk, using a platform-specific
  * feature analogous to fsync().
@@ -26,9 +43,40 @@ bool FileCommit(FILE* file);
  */
 void DirectoryCommit(const fs::path& dirname);
 
-bool TruncateFile(FILE* file, unsigned int length);
+bool TruncateFile(FILE* file, uint64_t length);
+
+/**
+ * 64-bit-clean file positioning.
+ *
+ * The wrapper is necessary for Windows, because `long` is only 32 bits there,
+ * even in 64-bit builds (LLP64).
+ */
+inline int FileSeek64(FILE* file, int64_t offset, int origin)
+{
+#if defined(WIN32)
+    return _fseeki64(file, offset, origin);
+#else
+    return std::fseek(file, offset, origin);
+#endif
+}
+
+/**
+ * 64-bit-clean file positioning.
+ *
+ * The wrapper is necessary for Windows, because `long` is only 32 bits there,
+ * even in 64-bit builds (LLP64).
+ */
+inline int64_t FileTell64(FILE* file)
+{
+#if defined(WIN32)
+    return _ftelli64(file);
+#else
+    return std::ftell(file);
+#endif
+}
+
 int RaiseFileDescriptorLimit(int nMinFD);
-void AllocateFileRange(FILE* file, unsigned int offset, unsigned int length);
+void AllocateFileRange(FILE* file, uint64_t offset, unsigned int length);
 
 /**
  * Rename src to dest.

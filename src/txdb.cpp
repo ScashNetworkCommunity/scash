@@ -12,10 +12,14 @@
 #include <random.h>
 #include <serialize.h>
 #include <uint256.h>
+#include <util/threadnames.h>
 #include <util/vector.h>
 
 #include <cassert>
+#include <chrono>
 #include <cstdlib>
+#include <exception>
+#include <future>
 #include <iterator>
 #include <utility>
 
@@ -51,11 +55,22 @@ CCoinsViewDB::CCoinsViewDB(DBParams db_params, CoinsViewOptions options) :
     m_options{std::move(options)},
     m_db{std::make_unique<CDBWrapper>(m_db_params)} { }
 
+CCoinsViewDB::~CCoinsViewDB()
+{
+    if (m_compaction.valid()) {
+        if (m_compaction.wait_for(std::chrono::seconds{0}) != std::future_status::ready) {
+            LogInfo("Waiting for background chainstate compaction of %s", fs::PathToString(m_db_params.path));
+        }
+        m_compaction.wait();
+    }
+}
+
 void CCoinsViewDB::ResizeCache(size_t new_cache_size)
 {
     // We can't do this operation with an in-memory DB since we'll lose all the coins upon
     // reset.
     if (!m_db_params.memory_only) {
+        LOCK(m_db_mutex);
         // Have to do a reset first to get the original `m_db` state to release its
         // filesystem lock.
         m_db.reset();
@@ -119,16 +134,19 @@ bool CCoinsViewDB::BatchWrite(CoinsViewCacheCursor& cursor, const uint256 &hashB
     for (auto it{cursor.Begin()}; it != cursor.End();) {
         if (it->second.IsDirty()) {
             CoinEntry entry(&it->first);
-            if (it->second.coin.IsSpent())
+            if (it->second.coin.IsSpent()) {
                 batch.Erase(entry);
-            else
+            } else {
                 batch.Write(entry, it->second.coin);
+            }
+
             changed++;
         }
         count++;
         it = cursor.NextAndMaybeErase(*it);
-        if (batch.SizeEstimate() > m_options.batch_write_bytes) {
-            LogDebug(BCLog::COINDB, "Writing partial batch of %.2f MiB\n", batch.SizeEstimate() * (1.0 / 1048576.0));
+        if (batch.ApproximateSize() > m_options.batch_write_bytes) {
+            LogDebug(BCLog::COINDB, "Writing partial batch of %.2f MiB\n", batch.ApproximateSize() * (1.0 / 1048576.0));
+
             m_db->WriteBatch(batch);
             batch.Clear();
             if (m_options.simulate_crash_ratio) {
@@ -145,7 +163,7 @@ bool CCoinsViewDB::BatchWrite(CoinsViewCacheCursor& cursor, const uint256 &hashB
     batch.Erase(DB_HEAD_BLOCKS);
     batch.Write(DB_BEST_BLOCK, hashBlock);
 
-    LogDebug(BCLog::COINDB, "Writing final batch of %.2f MiB\n", batch.SizeEstimate() * (1.0 / 1048576.0));
+    LogDebug(BCLog::COINDB, "Writing final batch of %.2f MiB\n", batch.ApproximateSize() * (1.0 / 1048576.0));
     bool ret = m_db->WriteBatch(batch);
     LogDebug(BCLog::COINDB, "Committed %u changed transaction outputs (out of %u) to coin database...\n", (unsigned int)changed, (unsigned int)count);
     return ret;
@@ -154,6 +172,30 @@ bool CCoinsViewDB::BatchWrite(CoinsViewCacheCursor& cursor, const uint256 &hashB
 size_t CCoinsViewDB::EstimateSize() const
 {
     return m_db->EstimateSize(DB_COIN, uint8_t(DB_COIN + 1));
+}
+
+std::optional<std::string> CCoinsViewDB::GetDBProperty(const std::string& property)
+{
+    return m_db->GetProperty(property);
+}
+
+std::shared_future<void> CCoinsViewDB::CompactFull()
+{
+    AssertLockHeld(::cs_main);
+    if (m_compaction.valid() && m_compaction.wait_for(std::chrono::seconds{0}) != std::future_status::ready) return m_compaction;
+    m_compaction = std::async(std::launch::async, [this] {
+        try {
+            util::ThreadRename("utxocompact");
+            LOCK(m_db_mutex);
+
+            LogDebug(BCLog::COINDB, "Starting chainstate compaction of %s", fs::PathToString(m_db_params.path));
+            m_db->CompactFull();
+            LogDebug(BCLog::COINDB, "Finished chainstate compaction of %s", fs::PathToString(m_db_params.path));
+        } catch (const std::exception& e) {
+            LogWarning("Failed chainstate compaction (%s)", e.what());
+        }
+    }).share();
+    return m_compaction;
 }
 
 /** Specialization of CCoinsViewCursor to iterate over a CCoinsViewDB */
