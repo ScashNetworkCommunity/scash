@@ -16,14 +16,8 @@
 #include <vector>
 
 // !SCASH
-    uint32_t nRuleChangeActivationThreshold{0};
-    uint32_t nMinerConfirmationWindow{0};
-    uint32_t nRandomXV2ActivationEpoch{2970};
 #include <optional>
-// !SCASH
-    uint32_t nRuleChangeActivationThreshold{0};
-    uint32_t nMinerConfirmationWindow{0};
-    uint32_t nRandomXV2ActivationEpoch{2970}; END
+// !SCASH END
 
 namespace Consensus {
 
@@ -164,10 +158,10 @@ struct Params {
     }
 
     // !SCASH
+    bool fPowRandomX{false};
     uint32_t nRuleChangeActivationThreshold{0};
     uint32_t nMinerConfirmationWindow{0};
     uint32_t nRandomXV2ActivationEpoch{2970};
-    bool fPowRandomX{false};
     uint32_t nRandomXEpochDuration;
 
     /** Used by the ASERT DAA */
@@ -180,10 +174,7 @@ struct Params {
     };
     std::optional<ASERTAnchor> asertAnchorParams;
 
-    // !SCASH
-    uint32_t nRuleChangeActivationThreshold{0};
-    uint32_t nMinerConfirmationWindow{0};
-    uint32_t nRandomXV2ActivationEpoch{2970}; END
+    // !SCASH END
 };
 
 } // namespace Consensus
