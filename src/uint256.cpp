@@ -41,4 +41,3 @@ template std::string base_blob<512>::GetHex() const;
 template std::string base_blob<512>::ToString() const;
 // !SCASH END
 
-template void base_blob<512>::SetHexDeprecated(std::string_view);

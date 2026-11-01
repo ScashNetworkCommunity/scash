@@ -16,8 +16,14 @@
 #include <vector>
 
 // !SCASH
+    uint32_t nRuleChangeActivationThreshold{0};
+    uint32_t nMinerConfirmationWindow{0};
+    uint32_t nRandomXV2ActivationEpoch{2970};
 #include <optional>
-// !SCASH END
+// !SCASH
+    uint32_t nRuleChangeActivationThreshold{0};
+    uint32_t nMinerConfirmationWindow{0};
+    uint32_t nRandomXV2ActivationEpoch{2970}; END
 
 namespace Consensus {
 
@@ -158,6 +164,9 @@ struct Params {
     }
 
     // !SCASH
+    uint32_t nRuleChangeActivationThreshold{0};
+    uint32_t nMinerConfirmationWindow{0};
+    uint32_t nRandomXV2ActivationEpoch{2970};
     bool fPowRandomX{false};
     uint32_t nRandomXEpochDuration;
 
@@ -171,7 +180,10 @@ struct Params {
     };
     std::optional<ASERTAnchor> asertAnchorParams;
 
-    // !SCASH END
+    // !SCASH
+    uint32_t nRuleChangeActivationThreshold{0};
+    uint32_t nMinerConfirmationWindow{0};
+    uint32_t nRandomXV2ActivationEpoch{2970}; END
 };
 
 } // namespace Consensus

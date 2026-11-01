@@ -66,6 +66,15 @@ struct ChainTxData {
  * CChainParams defines various tweakable parameters of a given instance of the
  * Bitcoin system.
  */
+typedef std::map<int, uint256> MapCheckpoints;
+struct CCheckpointData {
+    MapCheckpoints mapCheckpoints;
+    int GetHeight() const {
+        const auto& final_checkpoint = mapCheckpoints.rbegin();
+        return final_checkpoint->first;
+    }
+};
+
 class CChainParams
 {
 public:
@@ -162,6 +171,7 @@ protected:
     CChainParams() = default;
 
     Consensus::Params consensus;
+    CCheckpointData checkpointData;
     MessageStartChars pchMessageStart;
     uint16_t nDefaultPort;
     uint64_t nPruneAfterHeight;

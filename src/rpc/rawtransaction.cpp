@@ -452,8 +452,6 @@ static RPCHelpMan createrawtransaction()
         throw JSONRPCError(RPC_INVALID_PARAMETER, "RBF is not supported.");
     }
     // !SCASH END
-
-    CMutableTransaction rawTx = ConstructTransaction(request.params[0], request.params[1], request.params[2], rbf);
     CMutableTransaction rawTx = ConstructTransaction(request.params[0], request.params[1], request.params[2], rbf, self.Arg<uint32_t>("version"));
 
     return EncodeHexTx(CTransaction(rawTx));

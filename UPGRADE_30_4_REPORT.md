@@ -6,11 +6,6 @@
 
 ## 1. CMake Configure Summary (exit code: 0)
 ```text
-  fuzz binary ......................... OFF
-
-Cross compiling ....................... FALSE
-C++ compiler .......................... Clang 18.1.3, /usr/lib/ccache/clang++
-CMAKE_BUILD_TYPE ...................... RelWithDebInfo
 Preprocessor defined macros ........... 
 C++ compiler flags .................... -O2 -g -std=c++20 -fPIC -fmacro-prefix-map=/home/runner/work/scash/scash/src=. -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 -Wstack-protector -fstack-protector-all -fcf-protection=full -fstack-clash-protection -Wall -Wextra -Wgnu -Wformat -Wformat-security -Wvla -Wshadow-field -Wthread-safety -Wloop-analysis -Wredundant-decls -Wunused-member-function -Wdate-time -Wconditional-uninitialized -Woverloaded-virtual -Wsuggest-override -Wimplicit-fallthrough -Wunreachable-code -Wdocumentation -Wself-assign -Wundef -Wno-unused-parameter
 Linker flags .......................... -O2 -g -fstack-protector-all -fcf-protection=full -fstack-clash-protection -Wl,-z,relro -Wl,-z,now -Wl,-z,separate-code -fPIE -pie
@@ -23,119 +18,172 @@ Treat compiler warnings as errors ..... OFF
 Use ccache for compiling .............. ON
 
 
--- Configuring done (22.8s)
--- Generating done (0.3s)
+-- Configuring done (20.5s)
+-- Generating done (0.2s)
 -- Build files have been written to: /home/runner/work/scash/scash/build
 ```
 
 ## 2. Build & Unit Test Outcome (exit code: 2)
 COMPILER / LINKER ERRORS:
 ```text
-5-[  1%] Built target generate_build_info
-6-[  2%] Building C object src/secp256k1/src/CMakeFiles/secp256k1_precomputed.dir/precomputed_ecmult_gen.c.o
-7-[  2%] Building CXX object src/univalue/CMakeFiles/univalue.dir/lib/univalue_get.cpp.o
-8:/home/runner/work/scash/scash/src/arith_uint256.cpp:161:7: error: no member named 'SetHexDeprecated' in 'base_blob<256>'
-9-  161 |     b.SetHexDeprecated(psz);
-10-      |     ~ ^
-11-/home/runner/work/scash/scash/src/arith_uint256.cpp:195:16: note: in instantiation of member function 'base_uint<256>::SetHex' requested here
-12-  195 | template class base_uint<256>;
-13-      |                ^
-14:/home/runner/work/scash/scash/src/arith_uint256.cpp:161:7: error: no member named 'SetHexDeprecated' in 'base_blob<512>'
-15-  161 |     b.SetHexDeprecated(psz);
-16-      |     ~ ^
-17-/home/runner/work/scash/scash/src/arith_uint256.cpp:259:16: note: in instantiation of member function 'base_uint<512>::SetHex' requested here
+113-In file included from /home/runner/work/scash/scash/src/addrdb.cpp:11:
+114-In file included from /home/runner/work/scash/scash/src/chainparams.h:9:
+115-In file included from /home/runner/work/scash/scash/src/kernel/chainparams.h:10:
+116:/home/runner/work/scash/scash/src/consensus/params.h:24:14: error: redefinition of 'nRuleChangeActivationThreshold'
+117-   24 |     uint32_t nRuleChangeActivationThreshold{0};
+118-      |              ^
+119-/home/runner/work/scash/scash/src/consensus/params.h:19:14: note: previous definition is here
+120-   19 |     uint32_t nRuleChangeActivationThreshold{0};
+121-      |              ^
+122:/home/runner/work/scash/scash/src/consensus/params.h:25:14: error: redefinition of 'nMinerConfirmationWindow'
+123-   25 |     uint32_t nMinerConfirmationWindow{0};
+124-      |              ^
+125-/home/runner/work/scash/scash/src/consensus/params.h:20:14: note: previous definition is here
+126-   20 |     uint32_t nMinerConfirmationWindow{0};
+127-      |              ^
+128:/home/runner/work/scash/scash/src/consensus/params.h:26:14: error: redefinition of 'nRandomXV2ActivationEpoch'
+129-   26 |     uint32_t nRandomXV2ActivationEpoch{2970}; END
+130-      |              ^
+131-/home/runner/work/scash/scash/src/consensus/params.h:21:14: note: previous definition is here
+132-   21 |     uint32_t nRandomXV2ActivationEpoch{2970};
+133-      |              ^
+134:/home/runner/work/scash/scash/src/consensus/params.h:26:47: error: unknown type name 'END'
+135-   26 |     uint32_t nRandomXV2ActivationEpoch{2970}; END
+136-      |                                               ^
+137:/home/runner/work/scash/scash/src/consensus/params.h:28:1: error: expected unqualified-id
+138-   28 | namespace Consensus {
+139-      | ^
+140:/home/runner/work/scash/scash/src/consensus/params.h:184:14: error: duplicate member 'nRuleChangeActivationThreshold'
+141-  184 |     uint32_t nRuleChangeActivationThreshold{0};
+142-      |              ^
+143-/home/runner/work/scash/scash/src/consensus/params.h:167:14: note: previous declaration is here
+144-  167 |     uint32_t nRuleChangeActivationThreshold{0};
+145-      |              ^
+146:/home/runner/work/scash/scash/src/consensus/params.h:185:14: error: duplicate member 'nMinerConfirmationWindow'
+147-  185 |     uint32_t nMinerConfirmationWindow{0};
+148-      |              ^
+149-/home/runner/work/scash/scash/src/consensus/params.h:168:14: note: previous declaration is here
+150-  168 |     uint32_t nMinerConfirmationWindow{0};
+151-      |              ^
+152:/home/runner/work/scash/scash/src/consensus/params.h:186:14: error: duplicate member 'nRandomXV2ActivationEpoch'
+153-  186 |     uint32_t nRandomXV2ActivationEpoch{2970}; END
+154-      |              ^
+155-/home/runner/work/scash/scash/src/consensus/params.h:169:14: note: previous declaration is here
+156-  169 |     uint32_t nRandomXV2ActivationEpoch{2970};
+157-      |              ^
+158:/home/runner/work/scash/scash/src/consensus/params.h:186:47: error: unknown type name 'END'
+159-  186 |     uint32_t nRandomXV2ActivationEpoch{2970}; END
+160-      |                                               ^
+161:/home/runner/work/scash/scash/src/consensus/params.h:187:1: error: expected member name or ';' after declaration specifiers
+162-  186 |     uint32_t nRandomXV2ActivationEpoch{2970}; END
+163-      |                                               ~~~
+164-  187 | };
 --
-90-[ 10%] Linking CXX static library ../../lib/libbitcoin_crypto.a
-91-[ 10%] Built target bitcoin_crypto
-92-[ 10%] Building CXX object src/CMakeFiles/minisketch.dir/minisketch/src/minisketch.cpp.o
-93:/home/runner/work/scash/scash/src/uint256.cpp:44:31: error: explicit instantiation of 'SetHexDeprecated' does not refer to a function template, variable template, member function, member class, or static data member
-94-   44 | template void base_blob<512>::SetHexDeprecated(std::string_view);
-95-      |                               ^
-96-1 error generated.
+232-In file included from /home/runner/work/scash/scash/src/bip324.cpp:7:
+233-In file included from /home/runner/work/scash/scash/src/chainparams.h:9:
+234-In file included from /home/runner/work/scash/scash/src/kernel/chainparams.h:10:
+235:/home/runner/work/scash/scash/src/consensus/params.h:24:14: error: redefinition of 'nRuleChangeActivationThreshold'
+236-   24 |     uint32_t nRuleChangeActivationThreshold{0};
+237-      |              ^
+238-/home/runner/work/scash/scash/src/consensus/params.h:19:14: note: previous definition is here
+239-   19 |     uint32_t nRuleChangeActivationThreshold{0};
+240-      |              ^
+241:/home/runner/work/scash/scash/src/consensus/params.h:25:14: error: redefinition of 'nMinerConfirmationWindow'
+242-   25 |     uint32_t nMinerConfirmationWindow{0};
+243-      |              ^
+244-/home/runner/work/scash/scash/src/consensus/params.h:20:14: note: previous definition is here
+245-   20 |     uint32_t nMinerConfirmationWindow{0};
+246-      |              ^
+247:/home/runner/work/scash/scash/src/consensus/params.h:26:14: error: redefinition of 'nRandomXV2ActivationEpoch'
+248-   26 |     uint32_t nRandomXV2ActivationEpoch{2970}; END
+249-      |              ^
+250-/home/runner/work/scash/scash/src/consensus/params.h:21:14: note: previous definition is here
+251-   21 |     uint32_t nRandomXV2ActivationEpoch{2970};
+252-      |              ^
+253:/home/runner/work/scash/scash/src/consensus/params.h:26:47: error: unknown type name 'END'
+254-   26 |     uint32_t nRandomXV2ActivationEpoch{2970}; END
+255-      |                                               ^
+256:/home/runner/work/scash/scash/src/consensus/params.h:28:1: error: expected unqualified-id
+257-   28 | namespace Consensus {
+258-      | ^
+259:/home/runner/work/scash/scash/src/consensus/params.h:184:14: error: duplicate member 'nRuleChangeActivationThreshold'
+260-  184 |     uint32_t nRuleChangeActivationThreshold{0};
+261-      |              ^
+262-/home/runner/work/scash/scash/src/consensus/params.h:167:14: note: previous declaration is here
+263-  167 |     uint32_t nRuleChangeActivationThreshold{0};
+264-      |              ^
+265:/home/runner/work/scash/scash/src/consensus/params.h:185:14: error: duplicate member 'nMinerConfirmationWindow'
+266-  185 |     uint32_t nMinerConfirmationWindow{0};
+267-      |              ^
+268-/home/runner/work/scash/scash/src/consensus/params.h:168:14: note: previous declaration is here
+269-  168 |     uint32_t nMinerConfirmationWindow{0};
+270-      |              ^
+271:/home/runner/work/scash/scash/src/consensus/params.h:186:14: error: duplicate member 'nRandomXV2ActivationEpoch'
+272-  186 |     uint32_t nRandomXV2ActivationEpoch{2970}; END
+273-      |              ^
+274-/home/runner/work/scash/scash/src/consensus/params.h:169:14: note: previous declaration is here
+275-  169 |     uint32_t nRandomXV2ActivationEpoch{2970};
+276-      |              ^
+277:/home/runner/work/scash/scash/src/consensus/params.h:186:47: error: unknown type name 'END'
+278-  186 |     uint32_t nRandomXV2ActivationEpoch{2970}; END
+279-      |                                               ^
+280:/home/runner/work/scash/scash/src/consensus/params.h:187:1: error: expected member name or ';' after declaration specifiers
+281-  186 |     uint32_t nRandomXV2ActivationEpoch{2970}; END
+282-      |                                               ~~~
+283-  187 | };
 --
-453-[ 54%] Building CXX object src/CMakeFiles/bitcoin_node.dir/node/blockstorage.cpp.o
-454-[ 54%] Building CXX object src/wallet/CMakeFiles/bitcoin_wallet.dir/rpc/backup.cpp.o
-455-[ 54%] Building CXX object src/CMakeFiles/bitcoin_common.dir/kernel/chainparams.cpp.o
-456:/home/runner/work/scash/scash/src/kernel/chainparams.cpp:699:19: error: no member named 'nRuleChangeActivationThreshold' in 'Consensus::Params'
-457-  699 |         consensus.nRuleChangeActivationThreshold = 1815; // 90% of 2016
-458-      |         ~~~~~~~~~ ^
-459:/home/runner/work/scash/scash/src/kernel/chainparams.cpp:700:19: error: no member named 'nMinerConfirmationWindow' in 'Consensus::Params'
-460-  700 |         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
-461-      |         ~~~~~~~~~ ^
-462:/home/runner/work/scash/scash/src/kernel/chainparams.cpp:765:9: error: use of undeclared identifier 'checkpointData'
-463-  765 |         checkpointData = {
-464-      |         ^
-465:/home/runner/work/scash/scash/src/kernel/chainparams.cpp:808:19: error: no member named 'nRuleChangeActivationThreshold' in 'Consensus::Params'
-466-  808 |         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
-467-      |         ~~~~~~~~~ ^
-468:/home/runner/work/scash/scash/src/kernel/chainparams.cpp:809:19: error: no member named 'nMinerConfirmationWindow' in 'Consensus::Params'
-469-  809 |         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
-470-      |         ~~~~~~~~~ ^
-471:/home/runner/work/scash/scash/src/kernel/chainparams.cpp:869:9: error: use of undeclared identifier 'checkpointData'
-472-  869 |         checkpointData = {
-473-      |         ^
-474:/home/runner/work/scash/scash/src/kernel/chainparams.cpp:908:19: error: no member named 'nRuleChangeActivationThreshold' in 'Consensus::Params'
-475-  908 |         consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
-476-      |         ~~~~~~~~~ ^
-477:/home/runner/work/scash/scash/src/kernel/chainparams.cpp:909:19: error: no member named 'nMinerConfirmationWindow' in 'Consensus::Params'
-478-  909 |         consensus.nMinerConfirmationWindow = 144; // Faster than normal for regtest (144 instead of 2016)
-479-      |         ~~~~~~~~~ ^
-480:/home/runner/work/scash/scash/src/kernel/chainparams.cpp:974:9: error: use of undeclared identifier 'checkpointData'
-481-  974 |         checkpointData = {
-482-      |         ^
-483-9 errors generated.
---
-624-[ 68%] Building CXX object src/CMakeFiles/bitcoin_node.dir/rpc/server_util.cpp.o
-625-[ 68%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/networkstyle.cpp.o
-626-[ 69%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/notificator.cpp.o
-627:/home/runner/work/scash/scash/src/rpc/rawtransaction.cpp:456:33: error: no matching function for call to 'ConstructTransaction'
-628-  456 |     CMutableTransaction rawTx = ConstructTransaction(request.params[0], request.params[1], request.params[2], rbf);
-629-      |                                 ^~~~~~~~~~~~~~~~~~~~
-630-/home/runner/work/scash/scash/src/rpc/rawtransaction_util.h:56:21: note: candidate function not viable: requires 5 arguments, but 4 were provided
-631-   56 | CMutableTransaction ConstructTransaction(const UniValue& inputs_in, const UniValue& outputs_in, const UniValue& locktime, std::optional<bool> rbf, const uint32_t version);
-632-      |                     ^                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-633:/home/runner/work/scash/scash/src/rpc/rawtransaction.cpp:457:25: error: redefinition of 'rawTx'
-634-  457 |     CMutableTransaction rawTx = ConstructTransaction(request.params[0], request.params[1], request.params[2], rbf, self.Arg<uint32_t>("version"));
-635-      |                         ^
-636-/home/runner/work/scash/scash/src/rpc/rawtransaction.cpp:456:25: note: previous definition is here
+310-[ 25%] Building CXX object src/CMakeFiles/bitcoin_node.dir/dbwrapper.cpp.o
+311-In file included from /home/runner/work/scash/scash/src/consensus/tx_verify.cpp:7:
+312-In file included from /home/runner/work/scash/scash/src/chain.h:11:
+313:/home/runner/work/scash/scash/src/consensus/params.h:24:14: error: redefinition of 'nRuleChangeActivationThreshold'
+314-   24 |     uint32_t nRuleChangeActivationThreshold{0};
+315-      |              ^
+316-/home/runner/work/scash/scash/src/consensus/params.h:19:14: note: previous definition is here
+317-   19 |     uint32_t nRuleChangeActivationThreshold{0};
+318-      |              ^
+319:/home/runner/work/scash/scash/src/consensus/params.h:25:14: error: redefinition of 'nMinerConfirmationWindow'
+320-   25 |     uint32_t nMinerConfirmationWindow{0};
+321-      |              ^
+322-/home/runner/work/scash/scash/src/consensus/params.h:20:14: note: previous definition is here
+323-   20 |     uint32_t nMinerConfirmationWindow{0};
 --- Tail of cmake_build.log ---
-[ 72%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/utilitydialog.cpp.o
-[ 72%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/addressbookpage.cpp.o
-[ 72%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/addresstablemodel.cpp.o
-[ 72%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/askpassphrasedialog.cpp.o
-[ 73%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/coincontroldialog.cpp.o
+      |              ^
+/home/runner/work/scash/scash/src/consensus/params.h:26:47: error: unknown type name 'END'
+   26 |     uint32_t nRandomXV2ActivationEpoch{2970}; END
+      |                                               ^
+/home/runner/work/scash/scash/src/consensus/params.h:28:1: error: expected unqualified-id
+   28 | namespace Consensus {
+      | ^
+/home/runner/work/scash/scash/src/consensus/params.h:184:14: error: duplicate member 'nRuleChangeActivationThreshold'
+  184 |     uint32_t nRuleChangeActivationThreshold{0};
+      |              ^
+/home/runner/work/scash/scash/src/consensus/params.h:167:14: note: previous declaration is here
+  167 |     uint32_t nRuleChangeActivationThreshold{0};
+      |              ^
+/home/runner/work/scash/scash/src/consensus/params.h:185:14: error: duplicate member 'nMinerConfirmationWindow'
+  185 |     uint32_t nMinerConfirmationWindow{0};
+      |              ^
+/home/runner/work/scash/scash/src/consensus/params.h:168:14: note: previous declaration is here
+  168 |     uint32_t nMinerConfirmationWindow{0};
+      |              ^
+/home/runner/work/scash/scash/src/consensus/params.h:186:14: error: duplicate member 'nRandomXV2ActivationEpoch'
+  186 |     uint32_t nRandomXV2ActivationEpoch{2970}; END
+      |              ^
+/home/runner/work/scash/scash/src/consensus/params.h:169:14: note: previous declaration is here
+  169 |     uint32_t nRandomXV2ActivationEpoch{2970};
+      |              ^
+/home/runner/work/scash/scash/src/consensus/params.h:186:47: error: unknown type name 'END'
+  186 |     uint32_t nRandomXV2ActivationEpoch{2970}; END
+      |                                               ^
+/home/runner/work/scash/scash/src/consensus/params.h:187:1: error: expected member name or ';' after declaration specifiers
+  186 |     uint32_t nRandomXV2ActivationEpoch{2970}; END
+      |                                               ~~~
+  187 | };
+      | ^
+10 errors generated.
+gmake[2]: *** [src/CMakeFiles/bitcoin_node.dir/build.make:1367: src/CMakeFiles/bitcoin_node.dir/wallet/init.cpp.o] Error 1
 gmake[2]: Target 'src/CMakeFiles/bitcoin_node.dir/build' not remade because of errors.
 gmake[1]: *** [CMakeFiles/Makefile2:874: src/CMakeFiles/bitcoin_node.dir/all] Error 2
-[ 73%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/coincontroltreewidget.cpp.o
-[ 73%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/createwalletdialog.cpp.o
-[ 73%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/editaddressdialog.cpp.o
-[ 73%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/openuridialog.cpp.o
-[ 73%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/overviewpage.cpp.o
-[ 73%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/paymentserver.cpp.o
-[ 73%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/psbtoperationsdialog.cpp.o
-[ 74%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/qrimagewidget.cpp.o
-[ 74%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/receivecoinsdialog.cpp.o
-[ 74%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/receiverequestdialog.cpp.o
-[ 74%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/recentrequeststablemodel.cpp.o
-[ 74%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/sendcoinsdialog.cpp.o
-[ 74%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/sendcoinsentry.cpp.o
-[ 74%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/signverifymessagedialog.cpp.o
-[ 75%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/transactiondesc.cpp.o
-[ 75%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/transactiondescdialog.cpp.o
-[ 75%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/transactionfilterproxy.cpp.o
-[ 75%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/transactionoverviewwidget.cpp.o
-[ 75%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/transactionrecord.cpp.o
-[ 75%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/transactiontablemodel.cpp.o
-[ 75%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/transactionview.cpp.o
-[ 75%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/walletcontroller.cpp.o
-[ 76%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/walletframe.cpp.o
-[ 76%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/walletmodel.cpp.o
-[ 76%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/walletmodeltransaction.cpp.o
-[ 76%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/walletview.cpp.o
-[ 76%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/bitcoinqt_autogen/EWIEGA46WW/qrc_bitcoin.cpp.o
-[ 76%] Building CXX object src/qt/CMakeFiles/bitcoinqt.dir/bitcoinqt_autogen/EJRQKI7XPS/qrc_bitcoin_locale.cpp.o
-[ 76%] Linking CXX static library ../../lib/libbitcoinqt.a
-[ 76%] Built target bitcoinqt
 gmake[1]: Target 'all' not remade because of errors.
 gmake: *** [Makefile:146: all] Error 2
 gmake: Target 'default_target' not remade because of errors.
