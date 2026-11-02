@@ -1035,17 +1035,17 @@ BOOST_AUTO_TEST_CASE(randomx_v2_mid_world_test)
     // 1. Pre-fork epoch (RandomX v1: nEpoch = 10 < 2970)
     block.nTime = 10 * chainParams->GetConsensus().nRandomXEpochDuration;
     uint256 rx_hash_v1;
-    BOOST_CHECK(CheckProofOfWorkScash(block, block.nBits, chainParams->GetConsensus(), POW_VERIFY_MINING, &rx_hash_v1));
+    BOOST_CHECK(CheckProofOfWorkRandomX(block, chainParams->GetConsensus(), POW_VERIFY_MINING, &rx_hash_v1));
     block.hashRandomX = rx_hash_v1;
-    BOOST_CHECK(CheckProofOfWorkScash(block, block.nBits, chainParams->GetConsensus(), POW_VERIFY_FULL));
+    BOOST_CHECK(CheckProofOfWorkRandomX(block, chainParams->GetConsensus(), POW_VERIFY_FULL));
 
     // 2. Post-fork epoch (RandomX v2: nEpoch = 2970 >= 2970, RANDOMX_FLAG_V2 active with 384-instruction programs & 2x AES mix)
     CBlockHeader block_v2 = block;
     block_v2.nTime = 2970ULL * chainParams->GetConsensus().nRandomXEpochDuration;
     uint256 rx_hash_v2;
-    BOOST_CHECK(CheckProofOfWorkScash(block_v2, block_v2.nBits, chainParams->GetConsensus(), POW_VERIFY_MINING, &rx_hash_v2));
+    BOOST_CHECK(CheckProofOfWorkRandomX(block_v2, chainParams->GetConsensus(), POW_VERIFY_MINING, &rx_hash_v2));
     block_v2.hashRandomX = rx_hash_v2;
-    BOOST_CHECK(CheckProofOfWorkScash(block_v2, block_v2.nBits, chainParams->GetConsensus(), POW_VERIFY_FULL));
+    BOOST_CHECK(CheckProofOfWorkRandomX(block_v2, chainParams->GetConsensus(), POW_VERIFY_FULL));
     BOOST_CHECK(rx_hash_v1 != rx_hash_v2);
 }
 
