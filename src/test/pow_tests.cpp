@@ -1022,36 +1022,4 @@ BOOST_AUTO_TEST_CASE(asert_activation_anchor_scash_test) {
 // !SCASH END
 
 // !BITCOINCASH END
-
-
-BOOST_AUTO_TEST_CASE(randomx_v2_mid_world_test)
-{
-    const auto chainParams = CreateChainParams(*m_node.args, ChainType::SCASHREGTEST);
-    CBlockHeader block;
-    block.nVersion = 1;
-    block.nBits = UintToArith256(chainParams->GetConsensus().powLimit).GetCompact();
-    block.nNonce = 0;
-
-    // 1. Pre-fork epoch (RandomX v1: nEpoch = 10 < 2970)
-    block.nTime = 10 * chainParams->GetConsensus().nRandomXEpochDuration;
-    uint256 rx_hash_v1;
-    while (!CheckProofOfWorkRandomX(block, chainParams->GetConsensus(), POW_VERIFY_MINING, &rx_hash_v1)) {
-        ++block.nNonce;
-    }
-    block.hashRandomX = rx_hash_v1;
-    BOOST_CHECK(CheckProofOfWorkRandomX(block, chainParams->GetConsensus(), POW_VERIFY_FULL));
-
-    // 2. Post-fork epoch (RandomX v2: nEpoch = 2970 >= 2970, RANDOMX_FLAG_V2 active with 384-instruction programs & 2x AES mix)
-    CBlockHeader block_v2 = block;
-    block_v2.nTime = 2970ULL * chainParams->GetConsensus().nRandomXEpochDuration;
-    block_v2.nNonce = 0;
-    uint256 rx_hash_v2;
-    while (!CheckProofOfWorkRandomX(block_v2, chainParams->GetConsensus(), POW_VERIFY_MINING, &rx_hash_v2)) {
-        ++block_v2.nNonce;
-    }
-    block_v2.hashRandomX = rx_hash_v2;
-    BOOST_CHECK(CheckProofOfWorkRandomX(block_v2, chainParams->GetConsensus(), POW_VERIFY_FULL));
-    BOOST_CHECK(rx_hash_v1 != rx_hash_v2);
-}
-
 BOOST_AUTO_TEST_SUITE_END()

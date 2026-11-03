@@ -40,6 +40,9 @@ static RPCHelpMan getwalletinfo()
                     {
                         {
                         {RPCResult::Type::STR, "walletname", "the wallet name"},
+                    {RPCResult::Type::NUM, "balance", "the total confirmed balance of the wallet in " + CURRENCY_UNIT},
+                    {RPCResult::Type::NUM, "unconfirmed_balance", "the total unconfirmed balance of the wallet in " + CURRENCY_UNIT},
+                    {RPCResult::Type::NUM, "immature_balance", "the total immature balance of the wallet in " + CURRENCY_UNIT},
                         {RPCResult::Type::NUM, "walletversion", "(DEPRECATED) only related to unsupported legacy wallet, returns the latest version 169900 for backwards compatibility"},
                         {RPCResult::Type::STR, "format", "the database format (only sqlite)"},
                         {RPCResult::Type::NUM, "txcount", "the total number of transactions in the wallet"},
@@ -86,6 +89,10 @@ static RPCHelpMan getwalletinfo()
 
     size_t kpExternalSize = pwallet->KeypoolCountExternalKeys();
     obj.pushKV("walletname", pwallet->GetName());
+    const auto bal = GetBalance(*pwallet);
+    obj.pushKV("balance", ValueFromAmount(bal.m_mine_trusted));
+    obj.pushKV("unconfirmed_balance", ValueFromAmount(bal.m_mine_untrusted_pending));
+    obj.pushKV("immature_balance", ValueFromAmount(bal.m_mine_immature));
     obj.pushKV("walletversion", latest_legacy_wallet_minversion);
     obj.pushKV("format", pwallet->GetDatabase().Format());
     obj.pushKV("txcount",       (int)pwallet->mapWallet.size());

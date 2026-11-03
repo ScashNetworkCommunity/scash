@@ -161,7 +161,6 @@ struct Params {
     bool fPowRandomX{false};
     uint32_t nRuleChangeActivationThreshold{0};
     uint32_t nMinerConfirmationWindow{0};
-    uint32_t nRandomXV2ActivationEpoch{2970};
     uint32_t nRandomXEpochDuration;
 
     /** Used by the ASERT DAA */

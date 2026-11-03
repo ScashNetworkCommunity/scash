@@ -461,7 +461,7 @@ RPCHelpMan settxfee()
 
     LOCK(pwallet->cs_wallet);
 
-    if (!pwallet->chain().rpcEnableDeprecated("settxfee")) {
+    if (false /* !SCASH: keep settxfee enabled by default */) {
         throw JSONRPCError(RPC_METHOD_DEPRECATED, "settxfee is deprecated and will be fully removed in v31.0."
         "\nTo use settxfee restart bitcoind with -deprecatedrpc=settxfee.");
     }

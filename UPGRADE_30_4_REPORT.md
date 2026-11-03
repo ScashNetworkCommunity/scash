@@ -1,8 +1,8 @@
-# Scash 3.0.0 (Mid-World) — Bitcoin Core v30.4 + RandomX v2 Build & Test Report
+# Scash 2.3.0 (Mid-World) — Bitcoin Core v30.4 Build & Verification Report
 
 - **Branch**: `scash-30.4-Mid-World`
-- **Target Core Release**: `v30.4` (Scash 3.0.0 "Mid-World")
-- **RandomX Branch**: `ScashNetworkCommunity/RandomX@scash-v2` (`RANDOMX_PROGRAM_SIZE_V2=384`, `RANDOMX_FLAG_V2=128`)
+- **Version**: `v2.3.0-mid-world-core-30.4.0` (Non-hard-fork upgrade on Bitcoin Core 30.4)
+- **RandomX**: `ScashNetworkCommunity/RandomX@scash` (v1.2.1 with `RANDOMX_ARGON_SALT="RandomX-Scash\x01"`)
 
 ## 1. CMake Configure Summary (exit code: 0)
 ```text
@@ -18,22 +18,22 @@ Treat compiler warnings as errors ..... OFF
 Use ccache for compiling .............. ON
 
 
--- Configuring done (20.0s)
--- Generating done (0.2s)
+-- Configuring done (25.5s)
+-- Generating done (0.3s)
 -- Build files have been written to: /home/runner/work/scash/scash/build
 ```
 
 ## 2. Build & Unit Test Outcome (exit code: 0)
 **BUILD SUCCEEDED (scashd + scash-qt + scash-cli + test_scash)!**
 ```text
-Scash daemon version v3.0.0-mid-world-core-30.4.0 bitcoind
+Scash daemon version v2.3.0-mid-world-core-30.4.0 bitcoind
 Copyright (C) 2009-2026 The Scash developers
 Copyright (C) 2009-2026 The Bitcoin Core developers
-Scash RPC client version v3.0.0-mid-world-core-30.4.0
+Scash RPC client version v2.3.0-mid-world-core-30.4.0
 Copyright (C) 2009-2026 The Scash developers
 Copyright (C) 2009-2026 The Bitcoin Core developers
---- Unit Test Suite (80 test cases including randomx_v2_mid_world_test) ---
-Running 80 test cases...
+--- Unit Test Suite (79 test cases) ---
+Running 79 test cases...
 
 [1;32;49m*** No errors detected
 [0;39;49m--- Live Scash Regtest Check (0.1 sat/vB minrelaytxfee, OP_RETURN blocked, & legacy getwalletinfo fields) ---
@@ -45,6 +45,9 @@ Scash starting
   "maxdatacarriersize": 0
 [createwallet & getwalletinfo legacy fields]
   "walletname": "testwallet",
+  "balance": 0.00000000,
+  "unconfirmed_balance": 0.00000000,
+  "immature_balance": 0.00000000,
 [getmininginfo]
   "chain": "scashregtest",
   "pow_algo": "randomx",
