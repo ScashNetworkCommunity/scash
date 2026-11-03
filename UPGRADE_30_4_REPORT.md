@@ -18,8 +18,8 @@ Treat compiler warnings as errors ..... OFF
 Use ccache for compiling .............. ON
 
 
--- Configuring done (20.5s)
--- Generating done (0.3s)
+-- Configuring done (20.0s)
+-- Generating done (0.2s)
 -- Build files have been written to: /home/runner/work/scash/scash/build
 ```
 
@@ -34,15 +34,9 @@ Copyright (C) 2009-2026 The Scash developers
 Copyright (C) 2009-2026 The Bitcoin Core developers
 --- Unit Test Suite (80 test cases including randomx_v2_mid_world_test) ---
 Running 80 test cases...
-test/pow_tests.cpp(1038): [1;31;49merror: in "pow_tests/randomx_v2_mid_world_test": check CheckProofOfWorkRandomX(block, chainParams->GetConsensus(), POW_VERIFY_MINING, &rx_hash_v1) has failed[0;39;49m
-test/pow_tests.cpp(1040): [1;31;49merror: in "pow_tests/randomx_v2_mid_world_test": check CheckProofOfWorkRandomX(block, chainParams->GetConsensus(), POW_VERIFY_FULL) has failed[0;39;49m
-test/pow_tests.cpp(1046): [1;31;49merror: in "pow_tests/randomx_v2_mid_world_test": check CheckProofOfWorkRandomX(block_v2, chainParams->GetConsensus(), POW_VERIFY_MINING, &rx_hash_v2) has failed[0;39;49m
-test/pow_tests.cpp(1048): [1;31;49merror: in "pow_tests/randomx_v2_mid_world_test": check CheckProofOfWorkRandomX(block_v2, chainParams->GetConsensus(), POW_VERIFY_FULL) has failed[0;39;49m
-test/pow_tests.cpp(1049): [1;31;49merror: in "pow_tests/randomx_v2_mid_world_test": check rx_hash_v1 != rx_hash_v2 has failed[0;39;49m
 
-[1;31;49m*** 5 failures are detected in the test module "Bitcoin Core Test Suite"
-[0;39;49mbash: line 86: ./build/libexec/test_scash: No such file or directory
---- Live Scash Regtest Check (0.1 sat/vB minrelaytxfee, OP_RETURN blocked, & legacy getwalletinfo fields) ---
+[1;32;49m*** No errors detected
+[0;39;49m--- Live Scash Regtest Check (0.1 sat/vB minrelaytxfee, OP_RETURN blocked, & legacy getwalletinfo fields) ---
 Scash starting
 [getmempoolinfo]
   "loaded": true,
