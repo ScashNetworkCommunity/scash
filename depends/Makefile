@@ -165,8 +165,8 @@ zmq_packages_$(NO_ZMQ) = $(zmq_packages)
 ipc_packages_$(NO_IPC) = $(ipc_packages)
 usdt_packages_$(NO_USDT) = $(usdt_$(host_os)_packages)
 
-packages += $($(host_arch)_$(host_os)_packages) $(host_os_packages) $(randomx_packages) $(boost_packages) $(libevent_packages) $(qt_packages) $(wallet_packages) $(usdt_packages)
-native_packages += $($(host_arch)_$(host_os)_native_packages) $(host_os_native_packages) $(qt_native_packages)
+packages += $($(host_arch)_$(host_os)_packages) $($(host_os)_packages) $(randomx_packages) $(boost_packages_) $(libevent_packages_) $(qt_packages_) $(wallet_packages_) $(usdt_packages_)
+native_packages += $($(host_arch)_$(host_os)_native_packages) $($(host_os)_native_packages) $(qt_native_packages_)
 
 ifneq ($(zmq_packages_),)
 packages += $(zmq_packages)
