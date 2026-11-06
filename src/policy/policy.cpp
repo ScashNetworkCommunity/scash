@@ -133,6 +133,7 @@ bool IsStandardTx(const CTransaction& tx, const std::optional<unsigned>& max_dat
         }
     }
 
+    unsigned int nDataOut = 0;
     unsigned int datacarrier_bytes_left = max_datacarrier_bytes.value_or(0);
     TxoutType whichType;
     for (const CTxOut& txout : tx.vout) {
@@ -142,6 +143,11 @@ bool IsStandardTx(const CTransaction& tx, const std::optional<unsigned>& max_dat
         }
 
         if (whichType == TxoutType::NULL_DATA) {
+            nDataOut++;
+            if (nDataOut > 1) {
+                reason = "multi-op-return";
+                return false;
+            }
             unsigned int size = txout.scriptPubKey.size();
             if (size > datacarrier_bytes_left) {
                 reason = "datacarrier";

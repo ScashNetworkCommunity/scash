@@ -761,7 +761,9 @@ fs::path GetDefaultDataDir()
 #ifdef WIN32
     // Windows
     // !SCASH
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Scash";
+    fs::path legacy_path = GetSpecialFolderPath(CSIDL_APPDATA) / "Scash";
+    if (fs::exists(legacy_path)) return legacy_path;
+    return GetSpecialFolderPath(CSIDL_LOCAL_APPDATA) / "Scash";
     // !SCASH END
 #else
     fs::path pathRet;

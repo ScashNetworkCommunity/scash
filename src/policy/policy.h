@@ -81,7 +81,7 @@ static constexpr unsigned int DEFAULT_SUSPICIOUS_REORG_DEPTH = COINBASE_MATURITY
 /**
  * Default setting for -datacarriersize in vbytes.
  */
-static const unsigned int MAX_OP_RETURN_RELAY = MAX_STANDARD_TX_WEIGHT / WITNESS_SCALE_FACTOR;
+static const unsigned int MAX_OP_RETURN_RELAY = 83;
 /**
  * An extra transaction can be added to a package, as long as it only has one
  * ancestor and is no larger than this. Not really any reason to make this
