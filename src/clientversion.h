@@ -15,6 +15,7 @@
 #endif
 
 //! Copyright string used in Windows .rc files
+#define CLIENT_VERSION_STRING STRINGIZE(CLIENT_VERSION_MAJOR) "." STRINGIZE(CLIENT_VERSION_MINOR) "." STRINGIZE(CLIENT_VERSION_BUILD)
 #define COPYRIGHT_STR "2009-" STRINGIZE(COPYRIGHT_YEAR) " " COPYRIGHT_HOLDERS_FINAL
 
 // Windows .rc files include this header, but they cannot cope with real C++ code.
