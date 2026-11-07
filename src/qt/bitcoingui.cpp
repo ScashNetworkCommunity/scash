@@ -90,6 +90,7 @@ const std::string BitcoinGUI::DEFAULT_UIPLATFORM =
 
 
 
+
 // !SCASH KAWAII THEME HELPER
 static void ApplyScashKawaiiStyle(QMainWindow* win, bool enable)
 {
