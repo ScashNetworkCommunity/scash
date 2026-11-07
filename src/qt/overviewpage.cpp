@@ -1,3 +1,9 @@
+#include <QCoreApplication>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QPixmap>
+#include <QSettings>
+#include <QVBoxLayout>
 // Copyright (c) 2011-2022 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -136,6 +142,49 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     txdelegate(new TxViewDelegate(platformStyle, this))
 {
     ui->setupUi(this);
+
+    // !SCASH KAWAII MASCOT SHOWCASE (ACTIVE ONLY IN SIDE WALLET scash-qtkawaii)
+    if (QCoreApplication::applicationFilePath().toLower().contains("kawaii")) {
+        QFrame* kawaiiCard = new QFrame(this);
+        kawaiiCard->setObjectName("scashKawaiiBanner");
+        QHBoxLayout* kawaiiLayout = new QHBoxLayout(kawaiiCard);
+        kawaiiLayout->setContentsMargins(10, 8, 10, 8);
+        kawaiiLayout->setSpacing(10);
+
+        QLabel* mascotSign = new QLabel(kawaiiCard);
+        QPixmap pm1(":/icons/scash_mascot_sign");
+        if (!pm1.isNull()) {
+            mascotSign->setPixmap(pm1.scaledToHeight(170, Qt::SmoothTransformation));
+        }
+        mascotSign->setAlignment(Qt::AlignCenter);
+
+        QVBoxLayout* centerTextLayout = new QVBoxLayout();
+        QLabel* kawaiiTitle = new QLabel(QString::fromUtf8("✨ Scash Kawaii Sanctuary ✨"), kawaiiCard);
+        kawaiiTitle->setObjectName("scashKawaiiTitle");
+        kawaiiTitle->setAlignment(Qt::AlignCenter);
+        kawaiiTitle->setWordWrap(true);
+        QLabel* kawaiiSub = new QLabel(QString::fromUtf8("CPU-Only • RandomX\nMid-World v2.3.0 🌸"), kawaiiCard);
+        kawaiiSub->setObjectName("scashKawaiiSub");
+        kawaiiSub->setAlignment(Qt::AlignCenter);
+        centerTextLayout->addStretch();
+        centerTextLayout->addWidget(kawaiiTitle);
+        centerTextLayout->addWidget(kawaiiSub);
+        centerTextLayout->addStretch();
+
+        QLabel* mascotFloral = new QLabel(kawaiiCard);
+        QPixmap pm2(":/icons/scash_mascot_floral");
+        if (!pm2.isNull()) {
+            mascotFloral->setPixmap(pm2.scaledToHeight(170, Qt::SmoothTransformation));
+        }
+        mascotFloral->setAlignment(Qt::AlignCenter);
+
+        kawaiiLayout->addWidget(mascotSign);
+        kawaiiLayout->addLayout(centerTextLayout, 1);
+        kawaiiLayout->addWidget(mascotFloral);
+
+        ui->verticalLayout_2->addWidget(kawaiiCard);
+    }
+    // !SCASH KAWAII END
 
     // use a SingleColorIcon for the "out of sync warning" icon
     QIcon icon = m_platform_style->SingleColorIcon(QStringLiteral(":/icons/warning"));

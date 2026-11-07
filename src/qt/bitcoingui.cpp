@@ -1,3 +1,7 @@
+#include <QApplication>
+#include <QCoreApplication>
+#include <QSettings>
+#include <QToolBar>
 // Copyright (c) 2011-2022 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -81,6 +85,92 @@ const std::string BitcoinGUI::DEFAULT_UIPLATFORM =
         "other"
 #endif
         ;
+
+
+// !SCASH KAWAII THEME HELPER
+static void ApplyScashKawaiiStyle(QMainWindow* win, bool enable)
+{
+    if (enable) {
+        const QString qss =
+            "QMainWindow, QDialog, QWidget#OverviewPage, QWidget#SendCoinsDialog, QWidget#ReceiveCoinsDialog { "
+            "  background-color: #161224; color: #f3e8ff; "
+            "} "
+            "QWidget { color: #f3e8ff; selection-background-color: #9333ea; selection-color: #ffffff; } "
+            "QMenuBar { background-color: #1d1730; color: #e9d5ff; border-bottom: 1px solid #4fd1c5; } "
+            "QMenuBar::item:selected { background-color: #3b2d5e; border-radius: 4px; } "
+            "QMenu { background-color: #1f1933; color: #f3e8ff; border: 1px solid #a855f7; } "
+            "QMenu::item:selected { background-color: #6d28d9; color: #ffffff; } "
+            "QToolBar { "
+            "  background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #1d1732, stop:0.5 #271e42, stop:1 #1d1732); "
+            "  border-bottom: 2px solid #4fd1c5; spacing: 6px; padding: 6px; "
+            "} "
+            "QToolBar QToolButton { "
+            "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #322854, stop:1 #211a38); "
+            "  color: #e9d5ff; border: 1px solid #7c3aed; border-radius: 10px; "
+            "  padding: 6px 12px; font-weight: bold; margin: 2px; "
+            "} "
+            "QToolBar QToolButton:hover { "
+            "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #4c3b7c, stop:1 #312554); "
+            "  border: 1px solid #5eead4; color: #ffffff; "
+            "} "
+            "QToolBar QToolButton:checked, QToolBar QToolButton:pressed { "
+            "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #fb923c, stop:0.5 #ea580c, stop:1 #c2410c); "
+            "  color: #ffffff; border: 2px solid #fde047; "
+            "} "
+            "QFrame#frame, QFrame#frame_2, QGroupBox { "
+            "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #231c38, stop:1 #191429); "
+            "  border: 2px solid #4fd1c5; border-radius: 14px; padding: 10px; "
+            "} "
+            "QFrame#scashKawaiiBanner { "
+            "  background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #261d3f, stop:0.5 #1f243d, stop:1 #2b1d3d); "
+            "  border: 2px solid #c084fc; border-radius: 14px; margin-top: 6px; "
+            "} "
+            "QLabel#scashKawaiiTitle { color: #f472b6; font-size: 14px; font-weight: bold; background: transparent; } "
+            "QLabel#scashKawaiiSub { color: #5eead4; font-size: 11px; font-weight: bold; background: transparent; } "
+            "QPushButton { "
+            "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #382c5c, stop:1 #241c3d); "
+            "  color: #f5f3ff; border: 1px solid #5eead4; border-radius: 9px; "
+            "  padding: 6px 14px; font-weight: bold; "
+            "} "
+            "QPushButton:hover { "
+            "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #fb923c, stop:1 #ea580c); "
+            "  border: 1px solid #fde047; color: #ffffff; "
+            "} "
+            "QPushButton:pressed { background-color: #be185d; } "
+            "QPushButton:disabled { background-color: #1e192b; color: #6b6380; border: 1px solid #38304c; } "
+            "QLineEdit, QAbstractSpinBox, QComboBox, QPlainTextEdit, QTextEdit { "
+            "  background-color: #120e1e; color: #6ee7b7; border: 1px solid #8b5cf6; "
+            "  border-radius: 7px; padding: 4px 8px; "
+            "} "
+            "QLineEdit:focus, QAbstractSpinBox:focus, QComboBox:focus { border: 2px solid #4fd1c5; } "
+            "QTableView, QListView, QTreeWidget { "
+            "  background-color: #181326; alternate-background-color: #211a34; "
+            "  color: #f3e8ff; border: 1px solid #7c3aed; border-radius: 8px; gridline-color: #2e2448; "
+            "} "
+            "QHeaderView::section { "
+            "  background-color: #261f3d; color: #5eead4; border: 1px solid #3b2d5e; padding: 5px; font-weight: bold; "
+            "} "
+            "QProgressBar { "
+            "  background-color: #120e1e; color: #ffffff; border: 1px solid #4fd1c5; border-radius: 6px; text-align: center; "
+            "} "
+            "QProgressBar::chunk { "
+            "  background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #f59e0b, stop:0.5 #fbbf24, stop:1 #34d399); "
+            "  border-radius: 5px; "
+            "} "
+            "QStatusBar { background-color: #141022; color: #c4b5fd; border-top: 1px solid #7c3aed; } "
+            "QScrollBar:vertical { background: #161224; width: 10px; border-radius: 5px; } "
+            "QScrollBar::handle:vertical { background: #6d28d9; border-radius: 5px; min-height: 20px; }";
+        qApp->setStyleSheet(qss);
+    } else {
+        qApp->setStyleSheet("");
+    }
+    if (win) {
+        for (QWidget* w : win->findChildren<QWidget*>("scashKawaiiBanner")) {
+            w->setVisible(enable);
+        }
+    }
+}
+// !SCASH KAWAII END
 
 BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformStyle, const NetworkStyle *networkStyle, QWidget *parent) :
     QMainWindow(parent),
@@ -606,6 +696,12 @@ void BitcoinGUI::createToolBars()
         QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
         appToolBar = toolbar;
         toolbar->setMovable(false);
+    // !SCASH KAWAII SIDE WALLET THEME (ACTIVE ONLY IN scash-qtkawaii, BASE scash-qt STAYS 100% PURE)
+    if (QCoreApplication::applicationFilePath().toLower().contains("kawaii")) {
+        setWindowTitle(windowTitle() + QString::fromUtf8(" 🌸 [Kawaii Edition]"));
+        ApplyScashKawaiiStyle(this, true);
+    }
+    // !SCASH KAWAII END
         toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         toolbar->addAction(overviewAction);
         toolbar->addAction(sendCoinsAction);
