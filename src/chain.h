@@ -49,8 +49,8 @@ class CBlockFileInfo
 {
 public:
     unsigned int nBlocks{};      //!< number of blocks stored in file
-    unsigned int nSize{};        //!< number of used bytes of block file
-    unsigned int nUndoSize{};    //!< number of used bytes in the undo file
+    uint64_t nSize{};            //!< number of used bytes of block file
+    uint64_t nUndoSize{};        //!< number of used bytes in the undo file
     unsigned int nHeightFirst{}; //!< lowest height of block in file
     unsigned int nHeightLast{};  //!< highest height of block in file
     uint64_t nTimeFirst{};       //!< earliest time of block in file
@@ -93,7 +93,7 @@ enum BlockStatus : uint32_t {
     //! Reserved (was BLOCK_VALID_HEADER).
     BLOCK_VALID_RESERVED     =    1,
 
-    //! All parent headers found, difficulty matches, timestamp >= median previous, checkpoint. Implies all parents
+    //! All parent headers found, difficulty matches, timestamp >= median previous. Implies all parents
     //! are also at least TREE.
     BLOCK_VALID_TREE         =    2,
 
@@ -157,10 +157,10 @@ public:
     int nFile GUARDED_BY(::cs_main){0};
 
     //! Byte offset within blk?????.dat where this block's data is stored
-    unsigned int nDataPos GUARDED_BY(::cs_main){0};
+    uint64_t nDataPos GUARDED_BY(::cs_main){0};
 
     //! Byte offset within rev?????.dat where this block's undo data is stored
-    unsigned int nUndoPos GUARDED_BY(::cs_main){0};
+    uint64_t nUndoPos GUARDED_BY(::cs_main){0};
 
     //! (memory only) Total amount of work (expected number of hashes) in the chain up to and including this block
     arith_uint256 nChainWork{};
@@ -303,7 +303,7 @@ public:
     std::string ToString() const;
 
     //! Check whether this block index entry is valid up to the passed validity level.
-    bool IsValid(enum BlockStatus nUpTo = BLOCK_VALID_TRANSACTIONS) const
+    bool IsValid(enum BlockStatus nUpTo) const
         EXCLUSIVE_LOCKS_REQUIRED(::cs_main)
     {
         AssertLockHeld(::cs_main);
@@ -485,9 +485,6 @@ public:
 
     /** Set/initialize a chain with a given tip. */
     void SetTip(CBlockIndex& block);
-
-    /** Return a CBlockLocator that refers to the tip in of this chain. */
-    CBlockLocator GetLocator() const;
 
     /** Find the last common block between this chain and a block index entry. */
     const CBlockIndex* FindFork(const CBlockIndex* pindex) const;

@@ -69,11 +69,12 @@ unset CPLUS_INCLUDE_PATH
 unset OBJC_INCLUDE_PATH
 unset OBJCPLUS_INCLUDE_PATH
 
-export C_INCLUDE_PATH="${NATIVE_GCC}/include"
-export CPLUS_INCLUDE_PATH="${NATIVE_GCC}/include/c++:${NATIVE_GCC}/include"
+# Set native toolchain
+build_CC="${NATIVE_GCC}/bin/gcc -isystem ${NATIVE_GCC}/include"
+build_CXX="${NATIVE_GCC}/bin/g++ -isystem ${NATIVE_GCC}/include/c++ -isystem ${NATIVE_GCC}/include"
 
 case "$HOST" in
-    *darwin*) export LIBRARY_PATH="${NATIVE_GCC}/lib" ;; # Required for qt/qmake
+    *darwin*) export LIBRARY_PATH="${NATIVE_GCC}/lib" ;; # Required for native packages
     *mingw*) export LIBRARY_PATH="${NATIVE_GCC}/lib" ;;
     *)
         NATIVE_GCC_STATIC="$(store_path gcc-toolchain static)"
@@ -136,8 +137,7 @@ export GUIX_LD_WRAPPER_DISABLE_RPATH=yes
 # Make /usr/bin if it doesn't exist
 [ -e /usr/bin ] || mkdir -p /usr/bin
 
-# Symlink file and env to a conventional path
-[ -e /usr/bin/file ] || ln -s --no-dereference "$(command -v file)" /usr/bin/file
+# Symlink env to a conventional path
 [ -e /usr/bin/env ]  || ln -s --no-dereference "$(command -v env)"  /usr/bin/env
 
 # Determine the correct value for -Wl,--dynamic-linker for the current $HOST
@@ -171,6 +171,8 @@ make -C depends --jobs="$JOBS" HOST="$HOST" \
                                    ${SOURCES_PATH+SOURCES_PATH="$SOURCES_PATH"} \
                                    ${BASE_CACHE+BASE_CACHE="$BASE_CACHE"} \
                                    ${SDK_PATH+SDK_PATH="$SDK_PATH"} \
+                                   ${build_CC+build_CC="$build_CC"} \
+                                   ${build_CXX+build_CXX="$build_CXX"} \
                                    x86_64_linux_CC=x86_64-linux-gnu-gcc \
                                    x86_64_linux_CXX=x86_64-linux-gnu-g++ \
                                    x86_64_linux_AR=x86_64-linux-gnu-gcc-ar \
@@ -181,8 +183,6 @@ make -C depends --jobs="$JOBS" HOST="$HOST" \
 case "$HOST" in
     *darwin*)
         # Unset now that Qt is built
-        unset C_INCLUDE_PATH
-        unset CPLUS_INCLUDE_PATH
         unset LIBRARY_PATH
         ;;
 esac
@@ -211,6 +211,7 @@ CONFIGFLAGS="-DREDUCE_EXPORTS=ON -DBUILD_BENCH=OFF -DBUILD_GUI_TESTS=OFF -DBUILD
 # CFLAGS
 HOST_CFLAGS="-O2 -g"
 HOST_CFLAGS+=$(find /gnu/store -maxdepth 1 -mindepth 1 -type d -exec echo -n " -ffile-prefix-map={}=/usr" \;)
+HOST_CFLAGS+=" -fdebug-prefix-map=${DISTSRC}/src=."
 case "$HOST" in
     *mingw*)  HOST_CFLAGS+=" -fno-ident" ;;
     *darwin*) unset HOST_CFLAGS ;;
@@ -242,6 +243,7 @@ mkdir -p "$DISTSRC"
     cmake -S . -B build \
           --toolchain "${BASEPREFIX}/${HOST}/toolchain.cmake" \
           -DWITH_CCACHE=OFF \
+          -Werror=dev \
           ${CONFIGFLAGS}
 
     # Build Bitcoin Core
@@ -289,7 +291,7 @@ mkdir -p "$DISTSRC"
             *)
                 # Split binaries from their debug symbols
                 {
-                    find "${DISTNAME}/bin" -type f -executable -print0
+                    find "${DISTNAME}/bin" "${DISTNAME}/libexec" -type f -executable -print0
                 } | xargs -0 -P"$JOBS" -I{} "${DISTSRC}/build/split-debug.sh" {} {} {}.dbg
                 ;;
         esac
@@ -391,12 +393,14 @@ mv --no-target-directory "$OUTDIR" "$ACTUAL_OUTDIR" \
     || ( rm -rf "$ACTUAL_OUTDIR" && exit 1 )
 
 (
+    tmp="$(mktemp)"
     cd /outdir-base
     {
         echo "$GIT_ARCHIVE"
         find "$ACTUAL_OUTDIR" -type f
     } | xargs realpath --relative-base="$PWD" \
-      | xargs sha256sum \
-      | sort -k2 \
-      | sponge "$ACTUAL_OUTDIR"/SHA256SUMS.part
+        | xargs sha256sum \
+        | sort -k2 \
+        > "$tmp";
+    mv "$tmp" "$ACTUAL_OUTDIR"/SHA256SUMS.part
 )

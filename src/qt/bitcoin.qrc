@@ -2,6 +2,9 @@
     <qresource prefix="/icons">
         <!-- SCASH -->
         <file alias="bitcoin">res/icons/scash.png</file>
+        <file alias="scash_kawaii_bg">res/icons/scash_kawaii_bg.png</file>
+        <file alias="scash_kawaii_mascot">res/icons/scash_kawaii_mascot.png</file>
+        <file alias="scash_kawaii_bg">res/icons/scash_kawaii_bg.png</file>
         <!-- SCASH END -->
         <file alias="address-book">res/icons/address-book.png</file>
         <file alias="send">res/icons/send.png</file>

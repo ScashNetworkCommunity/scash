@@ -1022,5 +1022,4 @@ BOOST_AUTO_TEST_CASE(asert_activation_anchor_scash_test) {
 // !SCASH END
 
 // !BITCOINCASH END
-
 BOOST_AUTO_TEST_SUITE_END()

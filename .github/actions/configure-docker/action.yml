@@ -1,14 +1,26 @@
 name: 'Configure Docker'
 description: 'Set up Docker build driver and configure build cache args'
 inputs:
-  use-cirrus:
-    description: 'Use cirrus cache'
+  cache-provider:
+    description: 'gha or cirrus cache provider'
     required: true
 runs:
   using: 'composite'
   steps:
+    - name: Check inputs
+      shell: bash
+      run: |
+        # We expect only gha or cirrus as inputs to cache-provider
+        case "${{ inputs.cache-provider }}" in
+          gha|cirrus)
+            ;;
+          *)
+            echo "::warning title=Unknown input to configure docker action::Provided value was ${{ inputs.cache-provider }}"
+            ;;
+        esac
+
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      uses: docker/setup-buildx-action@v4
       with:
         # Use host network to allow access to cirrus gha cache running on the host
         driver-opts: |
@@ -36,7 +48,7 @@ runs:
         # which are set automatically when running on GitHub infra: https://docs.docker.com/build/cache/backends/gha/#synopsis
 
         # Use cirrus cache host
-        if [[ ${{ inputs.use-cirrus }} == 'true' ]]; then
+        if [[ ${{ inputs.cache-provider }} == 'cirrus' ]]; then
           url_args="url=${CIRRUS_CACHE_HOST},url_v2=${CIRRUS_CACHE_HOST}"
         else
           url_args=""

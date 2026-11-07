@@ -6,12 +6,12 @@
 #include <bitcoin-build-config.h>
 #ifndef SCASH_CLIENT_VERSION_MAJOR
 #define SCASH_CLIENT_VERSION_MAJOR 2
-#define SCASH_CLIENT_VERSION_MINOR 2
+#define SCASH_CLIENT_VERSION_MINOR 3
 #define SCASH_CLIENT_VERSION_BUILD 0
 #define SCASH_CLIENT_VERSION_IS_RELEASE true
 #endif
 #ifndef SCASH_RELEASE_NAME
-#define SCASH_RELEASE_NAME "fillory"
+#define SCASH_RELEASE_NAME "mid-world"
 #endif
  // IWYU pragma: keep
 
@@ -48,7 +48,7 @@ const std::string UA_NAME("Scash");
     #define BUILD_DESC BUILD_GIT_TAG
     #define BUILD_SUFFIX ""
 #else
-    #define BUILD_DESC "v" CLIENT_VERSION_STRING
+    #define BUILD_DESC "v" STRINGIZE(SCASH_CLIENT_VERSION_MAJOR) "." STRINGIZE(SCASH_CLIENT_VERSION_MINOR) "." STRINGIZE(SCASH_CLIENT_VERSION_BUILD) "-" SCASH_RELEASE_NAME "-core-" CLIENT_VERSION_STRING
     #if CLIENT_VERSION_IS_RELEASE
         #define BUILD_SUFFIX ""
     #elif defined(BUILD_GIT_COMMIT)
@@ -116,6 +116,6 @@ std::string LicenseInfo()
            "\n" +
            "\n" +
            _("This is experimental software.") + "\n" +
-           strprintf(_("Distributed under the MIT software license, see the accompanying file %s or %s"), "COPYING", "<https://opensource.org/licenses/MIT>").translated +
+           strprintf(_("Distributed under the MIT software license, see the accompanying file %s or %s"), "COPYING", "<https://opensource.org/license/MIT>").translated +
            "\n";
 }

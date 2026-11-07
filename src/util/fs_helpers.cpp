@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2023 The Bitcoin Core developers
+// Copyright (c) 2009-present The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -22,24 +22,18 @@
 #include <utility>
 
 #ifndef WIN32
-// for posix_fallocate, in cmake/introspection.cmake we check if it is present after this
-#ifdef __linux__
-
-#ifdef _POSIX_C_SOURCE
-#undef _POSIX_C_SOURCE
-#endif
-
-#define _POSIX_C_SOURCE 200112L
-
-#endif // __linux__
-
 #include <fcntl.h>
 #include <sys/resource.h>
 #include <unistd.h>
 #else
-#include <io.h> /* For _get_osfhandle, _chsize */
-#include <shlobj.h> /* For SHGetSpecialFolderPathW */
+#include <io.h>
+#include <shlobj.h>
 #endif // WIN32
+
+#ifdef __APPLE__
+#include <sys/mount.h>
+#include <sys/param.h>
+#endif
 
 /** Mutex to protect dir_locks. */
 static GlobalMutex cs_dir_locks;
@@ -147,10 +141,10 @@ void DirectoryCommit(const fs::path& dirname)
 #endif
 }
 
-bool TruncateFile(FILE* file, unsigned int length)
+bool TruncateFile(FILE* file, uint64_t length)
 {
 #if defined(WIN32)
-    return _chsize(_fileno(file), length) == 0;
+    return _chsize_s(_fileno(file), length) == 0;
 #else
     return ftruncate(fileno(file), length) == 0;
 #endif
@@ -184,7 +178,7 @@ int RaiseFileDescriptorLimit(int nMinFD)
  * this function tries to make a particular range of a file allocated (corresponding to disk space)
  * it is advisory, and the range specified in the arguments will never contain live data
  */
-void AllocateFileRange(FILE* file, unsigned int offset, unsigned int length)
+void AllocateFileRange(FILE* file, uint64_t offset, unsigned int length)
 {
 #if defined(WIN32)
     // Windows-specific version
@@ -219,7 +213,7 @@ void AllocateFileRange(FILE* file, unsigned int offset, unsigned int length)
     // Fallback version
     // TODO: just write one byte per block
     static const char buf[65536] = {};
-    if (fseek(file, offset, SEEK_SET)) {
+    if (FileSeek64(file, offset, SEEK_SET)) {
         return;
     }
     while (length > 0) {
@@ -309,3 +303,15 @@ std::optional<fs::perms> InterpretPermString(const std::string& s)
         return std::nullopt;
     }
 }
+
+#ifdef __APPLE__
+FSType GetFilesystemType(const fs::path& path)
+{
+    if (struct statfs fs_info; statfs(path.c_str(), &fs_info)) {
+        return FSType::ERROR;
+    } else if (std::string_view{fs_info.f_fstypename} == "exfat") {
+        return FSType::EXFAT;
+    }
+    return FSType::OTHER;
+}
+#endif
