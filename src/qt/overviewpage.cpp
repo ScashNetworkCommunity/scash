@@ -1,3 +1,4 @@
+#include <QEvent>
 #include <QCoreApplication>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -135,6 +136,31 @@ private:
 
 #include <qt/overviewpage.moc>
 
+
+// !SCASH KAWAII BG FILTER
+namespace {{
+class ScashKawaiiBgFilter : public QObject
+{{
+    QPixmap m_bg;
+public:
+    explicit ScashKawaiiBgFilter(QObject* parent = nullptr)
+        : QObject(parent), m_bg(QStringLiteral(":/icons/scash_kawaii_bg")) {{}}
+protected:
+    bool eventFilter(QObject* obj, QEvent* ev) override
+    {{
+        if (ev->type() == QEvent::Paint && !m_bg.isNull()) {{
+            if (QWidget* w = qobject_cast<QWidget*>(obj)) {{
+                QPainter p(w);
+                p.setRenderHint(QPainter::SmoothPixmapTransform, true);
+                p.drawPixmap(w->rect(), m_bg);
+            }}
+        }}
+        return QObject::eventFilter(obj, ev);
+    }}
+}};
+}} // namespace
+// !SCASH KAWAII BG FILTER END
+
 OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OverviewPage),
@@ -143,47 +169,16 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
 {
     ui->setupUi(this);
 
-    // !SCASH KAWAII MASCOT SHOWCASE (ACTIVE ONLY IN SIDE WALLET scash-qtkawaii)
-    if (QCoreApplication::applicationFilePath().toLower().contains("kawaii")) {
-        QFrame* kawaiiCard = new QFrame(this);
-        kawaiiCard->setObjectName("scashKawaiiBanner");
-        QHBoxLayout* kawaiiLayout = new QHBoxLayout(kawaiiCard);
-        kawaiiLayout->setContentsMargins(10, 8, 10, 8);
-        kawaiiLayout->setSpacing(10);
-
-        QLabel* mascotSign = new QLabel(kawaiiCard);
-        QPixmap pm1(":/icons/scash_mascot_sign");
-        if (!pm1.isNull()) {
-            mascotSign->setPixmap(pm1.scaledToHeight(170, Qt::SmoothTransformation));
-        }
-        mascotSign->setAlignment(Qt::AlignCenter);
-
-        QVBoxLayout* centerTextLayout = new QVBoxLayout();
-        QLabel* kawaiiTitle = new QLabel(QString::fromUtf8("✨ Scash Kawaii Sanctuary ✨"), kawaiiCard);
-        kawaiiTitle->setObjectName("scashKawaiiTitle");
-        kawaiiTitle->setAlignment(Qt::AlignCenter);
-        kawaiiTitle->setWordWrap(true);
-        QLabel* kawaiiSub = new QLabel(QString::fromUtf8("CPU-Only • RandomX\nMid-World v2.3.0 🌸"), kawaiiCard);
-        kawaiiSub->setObjectName("scashKawaiiSub");
-        kawaiiSub->setAlignment(Qt::AlignCenter);
-        centerTextLayout->addStretch();
-        centerTextLayout->addWidget(kawaiiTitle);
-        centerTextLayout->addWidget(kawaiiSub);
-        centerTextLayout->addStretch();
-
-        QLabel* mascotFloral = new QLabel(kawaiiCard);
-        QPixmap pm2(":/icons/scash_mascot_floral");
-        if (!pm2.isNull()) {
-            mascotFloral->setPixmap(pm2.scaledToHeight(170, Qt::SmoothTransformation));
-        }
-        mascotFloral->setAlignment(Qt::AlignCenter);
-
-        kawaiiLayout->addWidget(mascotSign);
-        kawaiiLayout->addLayout(centerTextLayout, 1);
-        kawaiiLayout->addWidget(mascotFloral);
-
-        ui->verticalLayout_2->addWidget(kawaiiCard);
-    }
+    // !SCASH KAWAII MASCOT SHOWCASE (BACKGROUND ART ACTIVE ONLY IN SIDE WALLET scash-qtkawaii)
+    if (QCoreApplication::applicationFilePath().toLower().contains("kawaii")) {{
+        this->setAttribute(Qt::WA_StyledBackground, true);
+        this->installEventFilter(new ScashKawaiiBgFilter(this));
+        QWidget* kawaiiSpacer = new QWidget(this);
+        kawaiiSpacer->setObjectName("scashKawaiiSpacer");
+        kawaiiSpacer->setMinimumHeight(215);
+        kawaiiSpacer->setStyleSheet("background: transparent; border: none;");
+        ui->verticalLayout_2->addWidget(kawaiiSpacer);
+    }}
     // !SCASH KAWAII END
 
     // use a SingleColorIcon for the "out of sync warning" icon
