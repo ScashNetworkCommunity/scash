@@ -137,28 +137,29 @@ private:
 #include <qt/overviewpage.moc>
 
 
+
 // !SCASH KAWAII BG FILTER
-namespace {{
+namespace {
 class ScashKawaiiBgFilter : public QObject
-{{
+{
     QPixmap m_bg;
 public:
     explicit ScashKawaiiBgFilter(QObject* parent = nullptr)
-        : QObject(parent), m_bg(QStringLiteral(":/icons/scash_kawaii_bg")) {{}}
+        : QObject(parent), m_bg(QStringLiteral(":/icons/scash_kawaii_bg")) {}
 protected:
     bool eventFilter(QObject* obj, QEvent* ev) override
-    {{
-        if (ev->type() == QEvent::Paint && !m_bg.isNull()) {{
-            if (QWidget* w = qobject_cast<QWidget*>(obj)) {{
+    {
+        if (ev->type() == QEvent::Paint && !m_bg.isNull()) {
+            if (QWidget* w = qobject_cast<QWidget*>(obj)) {
                 QPainter p(w);
                 p.setRenderHint(QPainter::SmoothPixmapTransform, true);
                 p.drawPixmap(w->rect(), m_bg);
-            }}
-        }}
+            }
+        }
         return QObject::eventFilter(obj, ev);
-    }}
-}};
-}} // namespace
+    }
+};
+} // namespace
 // !SCASH KAWAII BG FILTER END
 
 OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) :
@@ -170,7 +171,7 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     ui->setupUi(this);
 
     // !SCASH KAWAII MASCOT SHOWCASE (BACKGROUND ART ACTIVE ONLY IN SIDE WALLET scash-qtkawaii)
-    if (QCoreApplication::applicationFilePath().toLower().contains("kawaii")) {{
+    if (QCoreApplication::applicationFilePath().toLower().contains("kawaii")) {
         this->setAttribute(Qt::WA_StyledBackground, true);
         this->installEventFilter(new ScashKawaiiBgFilter(this));
         QWidget* kawaiiSpacer = new QWidget(this);
@@ -178,7 +179,7 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
         kawaiiSpacer->setMinimumHeight(215);
         kawaiiSpacer->setStyleSheet("background: transparent; border: none;");
         ui->verticalLayout_2->addWidget(kawaiiSpacer);
-    }}
+    }
     // !SCASH KAWAII END
 
     // use a SingleColorIcon for the "out of sync warning" icon
