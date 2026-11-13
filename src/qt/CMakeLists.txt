@@ -167,8 +167,14 @@ if(ENABLE_WALLET)
       editaddressdialog.h
       openuridialog.cpp
       openuridialog.h
-      overviewpage.cpp
-      overviewpage.h
+      exchangehtlc.cpp
+    exchangemodel.cpp
+    exchangepage.cpp
+    overviewpage.cpp
+      exchangehtlc.h
+    exchangemodel.h
+    exchangepage.h
+    overviewpage.h
       paymentserver.cpp
       paymentserver.h
       psbtoperationsdialog.cpp
