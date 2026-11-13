@@ -366,6 +366,14 @@ void BitcoinGUI::createActions()
     historyAction->setCheckable(true);
     historyAction->setShortcut(QKeySequence(QStringLiteral("Alt+4")));
     tabGroup->addAction(historyAction);
+    exchangeAction = new QAction(platformStyle->SingleColorIcon(":/icons/tx_inout"), tr("&Exchange"), this);
+    exchangeAction->setStatusTip(tr("Trade SCASH/USDT and SCASH/BTC via 100% on-chain atomic swaps"));
+    exchangeAction->setToolTip(exchangeAction->statusTip());
+    exchangeAction->setCheckable(true);
+    exchangeAction->setShortcut(QKeySequence(QStringLiteral("Alt+5")));
+    tabGroup->addAction(exchangeAction);
+    connect(exchangeAction, &QAction::triggered, [this] { gotoExchangePage(); });
+
 
 #ifdef ENABLE_WALLET
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
@@ -703,6 +711,7 @@ void BitcoinGUI::createToolBars()
         toolbar->addAction(sendCoinsAction);
         toolbar->addAction(receiveCoinsAction);
         toolbar->addAction(historyAction);
+    toolbar->addAction(exchangeAction);
         overviewAction->setChecked(true);
 
 #ifdef ENABLE_WALLET
@@ -1077,6 +1086,12 @@ void BitcoinGUI::gotoOverviewPage()
 {
     overviewAction->setChecked(true);
     if (walletFrame) walletFrame->gotoOverviewPage();
+}
+
+void BitcoinGUI::gotoExchangePage()
+{
+    exchangeAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoExchangePage();
 }
 
 void BitcoinGUI::gotoHistoryPage()
