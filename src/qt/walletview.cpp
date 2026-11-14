@@ -9,6 +9,7 @@
 #include <qt/clientmodel.h>
 #include <qt/guiutil.h>
 #include <qt/optionsmodel.h>
+#include <qt/exchangepage.h>
 #include <qt/overviewpage.h>
 #include <qt/platformstyle.h>
 #include <qt/receivecoinsdialog.h>
@@ -39,6 +40,7 @@ WalletView::WalletView(WalletModel* wallet_model, const PlatformStyle* _platform
     // Create tabs
     overviewPage = new OverviewPage(platformStyle);
     overviewPage->setWalletModel(walletModel);
+    if (exchangePage) exchangePage->setWalletModel(walletModel);
 
     transactionsPage = new QWidget(this);
     QVBoxLayout *vbox = new QVBoxLayout();
@@ -70,6 +72,8 @@ WalletView::WalletView(WalletModel* wallet_model, const PlatformStyle* _platform
     usedReceivingAddressesPage->setModel(walletModel->getAddressTableModel());
 
     addWidget(overviewPage);
+    exchangePage = new ExchangePage(platformStyle);
+    addWidget(exchangePage);
     addWidget(transactionsPage);
     addWidget(receiveCoinsPage);
     addWidget(sendCoinsPage);
@@ -118,6 +122,7 @@ void WalletView::setClientModel(ClientModel *_clientModel)
     this->clientModel = _clientModel;
 
     overviewPage->setClientModel(_clientModel);
+    if (exchangePage) exchangePage->setClientModel(_clientModel);
     sendCoinsPage->setClientModel(_clientModel);
     walletModel->setClientModel(_clientModel);
 }
@@ -146,6 +151,11 @@ void WalletView::processNewTransaction(const QModelIndex& parent, int start, int
 void WalletView::gotoOverviewPage()
 {
     setCurrentWidget(overviewPage);
+}
+
+void WalletView::gotoExchangePage()
+{
+    setCurrentWidget(exchangePage);
 }
 
 void WalletView::gotoHistoryPage()
