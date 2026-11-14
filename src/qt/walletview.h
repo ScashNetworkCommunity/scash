@@ -11,6 +11,7 @@
 #include <QStackedWidget>
 
 class ClientModel;
+class ExchangePage;
 class OverviewPage;
 class PlatformStyle;
 class ReceiveCoinsDialog;
@@ -59,6 +60,7 @@ private:
     WalletModel* const walletModel;
 
     OverviewPage *overviewPage;
+    ExchangePage* exchangePage = nullptr;
     QWidget *transactionsPage;
     ReceiveCoinsDialog *receiveCoinsPage;
     SendCoinsDialog *sendCoinsPage;
@@ -73,6 +75,7 @@ private:
 public Q_SLOTS:
     /** Switch to overview (home) page */
     void gotoOverviewPage();
+    void gotoExchangePage();
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
     /** Switch to receive coins page */
